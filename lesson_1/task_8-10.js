@@ -2,14 +2,10 @@
 
 class Animal {
 
-  constructor(name, color, energyOfAnimal = 0) {
+  constructor(name, color) {
     this.name = name;
     this.color = color;
-    this.setEnergy(energyOfAnimal);
-  }
-
-  setEnergy(count) {
-    this.energy = (count > 100) ? 100 : count;
+    this.energy = 0;
   }
 
   get nameAndColorOfAnimal() {
@@ -28,8 +24,9 @@ class Animal {
 
 class Cat extends Animal {
 
-  constructor(name, color, energy = 50) {
-    super(name, color, energy);
+  constructor(name, color) {
+    super(name, color);
+    this.energy = 50;
   }
 
   say(message) {
@@ -38,12 +35,11 @@ class Cat extends Animal {
 
   eat(food) {
     super.eat(food);
-
     if(this.energy < 100) console.log("don't enough food");
   }
 
   catchMouse() {
-    if(this.energy - 20 >= 0) {
+    if(this.energy >= 20) {
       this.energy = this.energy - 20;
       return console.log('mouse had been catched');
     }
@@ -63,8 +59,9 @@ class BritishShorthair extends Cat {
 
 class Dog extends Animal {
 
-  constructor(name, color, energy = 75) {
-    super(name, color, energy);
+  constructor(name, color) {
+    super(name, color);
+    this.energy = 75;
   }
 
   say(message) {
@@ -73,17 +70,18 @@ class Dog extends Animal {
 
   eat(food) {
     super.eat(food);
-
     if(this.energy < 100) console.log("don't enough food");
   }
 
   guard() {
-    if(this.energy - 25 >= 0) {
+    if(this.energy >= 25) {
       this.energy = this.energy - 25;
-      return console.log('you are guarded');
+      console.log('you are guarded');
+      return true;
     }
     else {
-      return console.log("don't enough energy");
+      console.log("don't enough energy");
+      return false;
     }
   }
 }
@@ -91,8 +89,8 @@ class Dog extends Animal {
 class PitBull extends Dog {
 
   guard() {
-    console.log('the host is protected like never before');
-    super.guard();
+    if(super.guard())
+      console.log('the host is protected like never before');
   }
 }
 
@@ -116,7 +114,7 @@ class PitBull extends Dog {
  console.log();
  console.log();
 
- let dog = new Dog('rex', 'gray', 150);
+ let dog = new Dog('rex', 'gray');
  console.log(dog.nameAndColorOfAnimal);
  console.log(dog.energy);
  dog.say(' want eat');

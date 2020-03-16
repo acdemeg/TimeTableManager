@@ -23,7 +23,7 @@ const messageEnum = Object.freeze({
   List_Time_Space : 'List of space at time for the current week\n',
   Title_Event: 'Enter title event: ',
   Date_Event: 'Enter date event in format YYYY-MM-DD: ',
-  Day_Assign: 'Pleas enter another date ',
+  Day_Assign: 'Please enter another date ',
   Time_Event_Start: 'Enter time start event in format HH:MM: ',
   Time_Event_End: 'Enter time end event in format HH:MM: ',
   Create_Events_Continue: 'Continue create events? Enter yes/no: '

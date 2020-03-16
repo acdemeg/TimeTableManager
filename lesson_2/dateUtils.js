@@ -103,20 +103,6 @@ function searchNearTimeSpaceStart(timePoint, array){
   });
 }
 
-/*function searchNearTimeSpaceEnd(timePoint, array){
-  return array.reduce((nearPoint, curV) => {
-    if(timePoint <= curV.spaceEnd){
-      if((curV.spaceEnd - timePoint) < (nearPoint.spaceEnd - timePoint)
-      		&& (nearPoint.spaceEnd - timePoint >= 0))
-      {
-      	return curV;
-      }
-      else return nearPoint;
-    }
-    else return nearPoint;
-  }, { spaceEnd: Infinity }).spaceEnd;
-}*/
-
 module.exports.getDateEvent = getDateEvent;
 module.exports.getTitleDay = getTitleDay;
 module.exports.getWeekStartDate = getWeekStartDate;

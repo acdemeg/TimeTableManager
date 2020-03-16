@@ -22,99 +22,97 @@ class Event {
     this.dateStart = dateStart;
     this.dateEnd = dateEnd;
   }
-}
 
-function makeTitleEvent(firstWordLength, secondWordLength) {
-  let title = '';
-  let variants = "abcdefghijklmnopqrstuvwxyz";
+  static makeTitleEvent(firstWordLength, secondWordLength) {
+    let title = '';
+    let variants = "abcdefghijklmnopqrstuvwxyz";
 
-  for(let i = 0; i < firstWordLength; i++ ) {
-    title += variants.charAt(Math.round(Math.random() * (variants.length - 1)));
+    for(let i = 0; i < firstWordLength; i++ ) {
+      title += variants.charAt(Math.round(Math.random() * (variants.length - 1)));
+    }
+
+    title += ' ';
+
+    for(let i = 0; i < secondWordLength; i++ ) {
+      title += variants.charAt(Math.round(Math.random() * (variants.length - 1)));
+    }
+
+    return title;
   }
 
-  title += ' ';
-
-  for(let i = 0; i < secondWordLength; i++ ) {
-    title += variants.charAt(Math.round(Math.random() * (variants.length - 1)));
+  static generateOfEvents(countEvents) {
+    for(let i = 0; i < countEvents; i++) {
+      let generatorDates = dateUtils.getDateEvent(storageDayEventListMap);
+      let event = new Event(main.getRandomInt(10000, 99999), Event.makeTitleEvent(4, 6),
+        generatorDates.next().value, generatorDates.next().value);
+      storageDayEventListMap.get(event.dateStart.getDay()).push(event);
+      temporaryDayEvetnsTimePointMap.get(event.dateStart.getDay()).push({
+        spaceStart: event.dateStart,
+        spaceEnd: event.dateEnd
+      });
+    }
+    Event.setTimeSpaceBetweenEvents();
   }
 
-  return title;
-}
-
-function generateOfEvents(countEvents) {
-  for(let i = 0; i < countEvents; i++) {
-    let generatorDates = dateUtils.getDateEvent(storageDayEventListMap);
-    let event = new Event(main.getRandomInt(10000, 99999), makeTitleEvent(4, 6),
-      generatorDates.next().value, generatorDates.next().value);
-    storageDayEventListMap.get(event.dateStart.getDay()).push(event);
-    temporaryDayEvetnsTimePointMap.get(event.dateStart.getDay()).push({
-      spaceStart: event.dateStart,
-      spaceEnd: event.dateEnd
-    });
-  }
-  setTimeSpaceBetweenEvents();
-}
-
-function setTimeSpaceBetweenEvents(){
-  for(let events of temporaryDayEvetnsTimePointMap.values()){
-    if(events.length === 0)
-      continue;
-    events.sort((a, b) => a.spaceStart - b.spaceStart);
-    events.unshift({
-      spaceEnd: events[0].spaceStart,
-      spaceStart: new Date(new Date(events[0].spaceStart.getTime()).setHours(8, 0, 0, 0))
-     })
-    for(let i = 0; i < events.length; i++){
-     if(i === 0){
-       storageDayFreeTimeMap.get(events[i].spaceStart.getDay()).push({
-         spaceStart: events[i].spaceStart,
-         spaceEnd: events[i].spaceEnd
+  static setTimeSpaceBetweenEvents(){
+    for(let events of temporaryDayEvetnsTimePointMap.values()) {
+      if(events.length === 0)
+        continue;
+      events.sort((a, b) => a.spaceStart - b.spaceStart);
+      events.unshift({
+        spaceEnd: events[0].spaceStart,
+        spaceStart: new Date(new Date(events[0].spaceStart.getTime()).setHours(8, 0, 0, 0))
        })
-      continue;
-     }
-     if(i === events.length - 1){
-        events[i].spaceStart = events[i].spaceEnd;
-        let end = new Date(events[i].spaceEnd.getTime());
-        events[i].spaceEnd = new Date(end.setHours(19, 0, 0, 0));
+      for(let i = 0; i < events.length; i++){
+       if(i === 0) {
+         storageDayFreeTimeMap.get(events[i].spaceStart.getDay()).push({
+           spaceStart: events[i].spaceStart,
+           spaceEnd: events[i].spaceEnd
+         })
+        continue;
+       }
+
+      events[i].spaceStart = events[i].spaceEnd;
+      events[i].spaceEnd = (i === events.length - 1)
+        ? new Date(new Date(events[i].spaceEnd.getTime()).setHours(19, 0, 0, 0))
+          : events[i + 1].spaceStart;
+
+        storageDayFreeTimeMap.get(events[i].spaceStart.getDay()).push({
+          spaceStart: events[i].spaceStart,
+          spaceEnd: events[i].spaceEnd
+        })
       }
-      else {
-        events[i].spaceStart = events[i].spaceEnd;
-        events[i].spaceEnd = events[i + 1].spaceStart;
-      }
-      storageDayFreeTimeMap.get(events[i].spaceStart.getDay()).push({
-        spaceStart: events[i].spaceStart,
-        spaceEnd: events[i].spaceEnd
-      })
     }
   }
-}
 
-function addTimeSpacesBetweenEvents(){
-  for(let events of temporaryDayEvetnsTimePointMap.values()){
-    if(events.length === 0)
-      continue;
-    for(let i = 0; i < events.length; i++){
+  static addTimeSpacesBetweenEvents(){
+    for(let events of temporaryDayEvetnsTimePointMap.values()){
+      if(events.length === 0){
+        continue;
+      }
+      events.forEach(el => {
 
-      const array = storageDayFreeTimeMap.get(events[i].spaceStart.getDay());
+        const array = storageDayFreeTimeMap.get(el.spaceStart.getDay());
 
-      const eventTime = dateUtils.searchNearTimeSpaceStart(
-        events[i].spaceStart,
-        array
-      );
+        const eventTime = dateUtils.searchNearTimeSpaceStart(
+          el.spaceStart,
+          array
+        );
 
-      array.push({
-        spaceStart: eventTime.spaceStart,
-        spaceEnd: events[i].spaceStart
-      });
+        array.push({
+          spaceStart: eventTime.spaceStart,
+          spaceEnd: el.spaceStart
+        });
 
-      array.push({
-        spaceStart: events[i].spaceEnd,
-        spaceEnd: eventTime.spaceEnd
-      });
+        array.push({
+          spaceStart: el.spaceEnd,
+          spaceEnd: eventTime.spaceEnd
+        });
 
-      // remove interval that divide
-      array.splice(array.indexOf(eventTime), 1);
+        // remove interval that divide
+        array.splice(array.indexOf(eventTime), 1);
 
+      })
     }
   }
 }
@@ -262,7 +260,7 @@ async function createEvent(user) {
         spaceEnd: event.dateEnd
       });
 
-      addTimeSpacesBetweenEvents();
+      Event.addTimeSpacesBetweenEvents();
 
       freeTimeSpacePresent();
 
@@ -321,8 +319,7 @@ async function saveScheduleToFile(schedule, userName) {
   });
 }
 
-module.exports.makeTitleEvent = makeTitleEvent;
-module.exports.generateOfEvents = generateOfEvents;
+module.exports.generateOfEvents = Event.generateOfEvents;
 module.exports.eventPresent = eventPresent;
 module.exports.freeTimeSpacePresent = freeTimeSpacePresent;
 module.exports.createEvent = createEvent;

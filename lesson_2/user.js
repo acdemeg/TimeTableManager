@@ -14,12 +14,7 @@ class User {
 }
 
 async function registerUser() {
-  /**
-      Here temporary stubs, in order to faster test working entire.
-      Registration functions is working;
-  */
-
-  let name = 'valery'; /*await (async function getAnswer() {
+  let name = await (async function getAnswer() {
     let answer = await main.readLine(`\x1b[32m${messages.messageEnum.Name}\x1b[0m`)
 
     if(!answer.match(regexp.name)) {
@@ -28,10 +23,10 @@ async function registerUser() {
     }
     else return answer;
 
-  })();*/
+  })();
   console.log(name);
 
-  let email = 'vkr@mail.ru';/*await (async function getAnswer() {
+  let email = await (async function getAnswer() {
     let answer = await main.readLine(`\x1b[32m${messages.messageEnum.Email}\x1b[0m`)
 
     if(!answer.match(regexp.email)) {
@@ -40,7 +35,7 @@ async function registerUser() {
     }
     else return answer;
 
-  })();*/
+  })();
   console.log(email);
   console.log();
 

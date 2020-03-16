@@ -28,10 +28,10 @@ schemes:
 - "https"
 - "http"
 paths:
-  /schedule:
+  /schedules:
     post:
       tags:
-      - "schedule"
+      - "schedules"
       summary: "Add a new schedule"
       description: ""
       operationId: "addSchedule"
@@ -47,14 +47,14 @@ paths:
         schema:
           $ref: "#/definitions/Schedule"
       responses:
-        405:
+        500:
           description: "Invalid input"
-    put:
+    patch:
       tags:
       - "schedule"
-      summary: "Update an existing schedule"
+      summary: "Update title the schedule"
       description: ""
-      operationId: "updateSchedule"
+      operationId: "updateScheduleTitle"
       consumes:
       - "application/json"
       produces:
@@ -62,7 +62,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "Schedule object that needs to be added to the store"
+        description: "new schedule title"
         required: true
         schema:
           $ref: "#/definitions/Schedule"
@@ -71,8 +71,8 @@ paths:
           description: "Invalid ID supplied"
         404:
           description: "schedule not found"
-        405:
-          description: "Validation exception"
+        500:
+          description: "internal error"
     get:
       tags:
       - "schedule"
@@ -86,37 +86,10 @@ paths:
       responses:
         404:
           description: "schedules not found"
-        405:
-          description: "Validation exception"
+        500:
+          description: "internal error"
 
-  /schedule/findByTags:
-    get:
-      tags:
-      - "schedule"
-      summary: "Finds Shedules by tags"
-      description: "Muliple tags can be provided with comma separated strings. Use         tag1, tag2, tag3 for testing."
-      operationId: "findSchedulesByTags"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "tags"
-        in: "query"
-        description: "Tags to filter by"
-        required: true
-        type: "array"
-        items:
-          type: "string"
-        collectionFormat: "multi"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Schedule"
-        400:
-          description: "Invalid tag value"
-  /schedule/{scheduleId}:
+  /schedules/{scheduleId}:
     get:
       tags:
       - "schedule"
@@ -141,40 +114,9 @@ paths:
           description: "Invalid ID supplied"
         404:
           description: "schedule not found"
-    post:
-      tags:
-      - "schedule"
-      summary: "Updates a schedule in the store with form data"
-      description: ""
-      operationId: "updatescheduleWithForm"
-      consumes:
-      - "application/x-www-form-urlencoded"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "scheduleId"
-        in: "path"
-        description: "ID of schedule that needs to be updated"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "name"
-        in: "formData"
-        description: "Updated name of the schedule"
-        required: false
-        type: "string"
-      - name: "status"
-        in: "formData"
-        description: "Updated status of the schedule"
-        required: false
-        type: "string"
-      responses:
-        405:
-          description: "Invalid input"
     delete:
       tags:
-      - "schedule"
+      - "schedules"
       summary: "Deletes a schedule"
       description: ""
       operationId: "deleteschedule"
@@ -197,7 +139,7 @@ paths:
           description: "Invalid ID supplied"
         404:
           description: "schedule not found"
-  
+
   /user:
     post:
       tags:
@@ -222,37 +164,22 @@ paths:
       tags:
       - "user"
       summary: "Logs user into the system"
-      description: ""
       operationId: "loginUser"
+      consumes:
+      - "application/json"
       produces:
       - "application/json"
       parameters:
-      - name: "username"
-        in: "query"
-        description: "The user name for login"
+      - in: "body"
+        name: "body"
+        description: "login and passw into body"
         required: true
-        type: "string"
-      - name: "password"
-        in: "query"
-        description: "The password for login in clear text"
-        required: true
-        type: "string"
+        schema:
+          $ref: "#/definitions/User"
       responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "string"
-          headers:
-            X-Rate-Limit:
-              type: "integer"
-              format: "int32"
-              description: "calls per hour allowed by the user"
-            X-Expires-After:
-              type: "string"
-              format: "date-time"
-              description: "date in UTC when token expires"
-        400:
-          description: "Invalid username/password supplied"
+        500:
+          description: "Invalid input"
+
   /user/reserve/{numberSlot}:
     post:
       tags:
@@ -261,7 +188,7 @@ paths:
       description: ""
       operationId: "reserveOfSlot"
       consumes:
-      - "application/x-www-form-urlencoded"
+      - "application/json"
       produces:
       - "application/json"
       parameters:
@@ -271,8 +198,9 @@ paths:
         type: "integer"
         format: "int64"
       responses:
-        405:
-          description: "Invalid input"
+        500:
+          description: "internal error"
+
   /user/{userId}/reserve:
     get:
       tags:
@@ -289,44 +217,9 @@ paths:
         type: "integer"
         format: "int64"
       responses:
-        405:
-          description: "Invalid input"     
-  /user/{userId}/events:
-    get:
-      tags:
-      - "reserve"
-      summary: "get all own events"
-      description: ""
-      operationId: "getEvents"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "userId"
-        in: "path"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        405:
-          description: "Invalid input"
-  /user/{userId}/eventsExpired:        
-    get:
-      tags:
-      - "reserve"
-      summary: "get all own events that expired"
-      description: ""
-      operationId: "getEventsExpired"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "userId"
-        in: "path"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        405:
-          description: "Invalid input"     
+        500:
+          description: "internal error"
+
   /user/logout:
     post:
       tags:
@@ -403,14 +296,48 @@ paths:
       responses:
         404:
           description: "User not found"
-          
-  /admin/resolveReservation/{reservationId}:
-    get:
+
+  /users/{userId}/reservations:
+   get:
+    tags:
+    - "users"
+    description: ""
+    operationId: "getReservationsOfUser"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "userId"
+      in: "path"
+      required: true
+      type: "string"
+    responses:
+      200:
+        description: "fetched reservations"
+        schema:
+          $ref: "#/definitions/Reservation"
+      404:
+        description: "User not found"
+
+  /users:
+   get:
+    tags:
+    - "users"
+    description: "get all users"
+    operationId: "getUsers"
+    produces:
+    - "application/json"
+    responses:
+      200:
+        description: "fetched users"
+        schema:
+          $ref: "#/definitions/User"
+
+  /admin/reservation/{reservationId}:
+    patch:
       tags:
       - "admin"
-      summary: "resolve reservation"
-      description: ""
-      operationId: "resolveReservation"
+      description: "update reservation status"
+      operationId: "updateReservation"
       produces:
       - "application/json"
       parameters:
@@ -420,53 +347,13 @@ paths:
         type: "integer"
         format: "int64"
       responses:
-        405:
-          description: "Invalid input"
+        500:
+          description: "internal error"
+        404:
+          description: "not found"
           schema:
             $ref: "#/definitions/Notice"
-            
-  
-  /admin/getScheduleByUserId/{userId}:
-    get:
-      tags:
-      - "admin"
-      summary: "get schedule specific user by it Id"
-      description: ""
-      operationId: "getscheduleByUserId"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "userId"
-        in: "path"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        405:
-          description: "Invalid input"
-        
-        
-  /admin/rejectReservation/{reservationId}:
-    post:
-      tags:
-      - "admin"
-      summary: "reject reservation"
-      description: ""
-      operationId: "rejectReservation"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "reservationId"
-        in: "path"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        405:
-          description: "Invalid input" 
-          schema:
-            $ref: "#/definitions/Notice"
-  
+
 definitions:
 
   Attribute:
@@ -477,20 +364,23 @@ definitions:
         format: "int64"
       title:
         type: "string"
-      typeOfAttribute: 
+      typeOfAttribute:
         description: "string or number or Date"
       isRequire:
         type: "boolean"
-        
+
   Reservation:
     type: "object"
     properties:
       id:
         type: "integer"
         format: "int64"
+      id_schedule:
+        type: "integer"
+        format: "int64"
       author:
         type: "string"
-      period: 
+      period:
         type: "object"
         properties:
           dateStart:
@@ -501,7 +391,7 @@ definitions:
         description: "confirmed or created or rejected"
       values:
         type: "object"
-        
+
   Notice:
     type: "object"
     properties:
@@ -538,28 +428,9 @@ definitions:
         type: "integer"
         format: "int32"
         description: "User Status"
-  Admin:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      username:
-        type: "string"
-      firstName:
-        type: "string"
-      lastName:
-        type: "string"
-      email:
-        type: "string"
-      password:
-        type: "string"
-      phone:
-        type: "string"
-      userStatus:
-        type: "integer"
-        format: "int32"
-        description: "User Status"
+      isAdmin:
+        type: "boolean"
+
   Schedule:
     type: "object"
     required:
@@ -575,10 +446,11 @@ definitions:
       period:
         type: "object"
         description: "into object timestamps Start and End"
-      slots: 
+      slots:
         type: "array"
         items:
           type: "number"
+
   ApiResponse:
     type: "object"
     properties:

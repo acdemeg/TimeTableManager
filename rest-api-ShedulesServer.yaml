@@ -140,7 +140,7 @@ paths:
         404:
           description: "schedule not found"
 
-  /user:
+  /user/reg:
     post:
       tags:
       - "user"
@@ -163,7 +163,7 @@ paths:
     post:
       tags:
       - "user"
-      summary: "Logs user into the system"
+      summary: "Login user into the system"
       operationId: "loginUser"
       consumes:
       - "application/json"
@@ -304,7 +304,7 @@ paths:
         404:
           description: "User not found"
 
-  /users/{userId}/reservations:
+  /{adminId}/users/{userId}/reservations:
    get:
     tags:
     - "users"
@@ -317,6 +317,10 @@ paths:
       in: "path"
       required: true
       type: "string"
+    - name: "adminId"
+      in: "path"
+      required: true
+      type: "string"
     responses:
       200:
         description: "fetched reservations"
@@ -325,7 +329,7 @@ paths:
       404:
         description: "User not found"
 
-  /users:
+  /{userId}/users:
    get:
     tags:
     - "users"
@@ -333,6 +337,12 @@ paths:
     operationId: "getUsers"
     produces:
     - "application/json"
+    parameters:
+    - name: "userId"
+      in: "path"
+      required: true
+      type: "integer"
+      format: "int64"
     responses:
       200:
         description: "fetched users"

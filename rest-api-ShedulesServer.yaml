@@ -9,8 +9,8 @@ info:
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "schedulestore.swagger.io"
-basePath: "/v2"
+# host: "schedulestore.swagger.io"
+# basePath: "/v2"
 tags:
 - name: "schedule"
   description: "Everything about your Schedule"
@@ -180,10 +180,10 @@ paths:
         500:
           description: "Invalid input"
 
-  /user/reserve/{numberSlot}:
+  /user/reserve/{scheduleId}/{numberSlot}:
     post:
       tags:
-      - "reserve"
+      - "reservations"
       summary: "reserve of free slot"
       description: ""
       operationId: "reserveOfSlot"
@@ -197,21 +197,7 @@ paths:
         required: true
         type: "integer"
         format: "int64"
-      responses:
-        500:
-          description: "internal error"
-
-  /user/{userId}/reserve:
-    get:
-      tags:
-      - "reserve"
-      summary: "get all own slots"
-      description: ""
-      operationId: "getSlots"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "userId"
+      - name: "scheduleId"
         in: "path"
         required: true
         type: "integer"
@@ -219,6 +205,27 @@ paths:
       responses:
         500:
           description: "internal error"
+
+  /reservations/{scheduleId}/:
+   get:
+    tags:
+    - "reservations"
+    description: ""
+    operationId: "getReservationsOfSchedule"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "scheduleId"
+      in: "path"
+      required: true
+      type: "string"
+    responses:
+      200:
+        description: "fetched reservations"
+        schema:
+          $ref: "#/definitions/Reservation"
+      404:
+        description: "Schedule not found"
 
   /user/logout:
     post:
@@ -332,7 +339,7 @@ paths:
         schema:
           $ref: "#/definitions/User"
 
-  /admin/reservation/{reservationId}:
+  /admin/reservation/{scheduleId}/{reservationId}:
     patch:
       tags:
       - "admin"
@@ -341,6 +348,11 @@ paths:
       produces:
       - "application/json"
       parameters:
+      - name: "scheduleId"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
       - name: "reservationId"
         in: "path"
         required: true
@@ -464,3 +476,6 @@ definitions:
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /acdemeg/time_tables_server/1.0.0

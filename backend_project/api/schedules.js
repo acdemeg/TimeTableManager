@@ -1,3 +1,5 @@
+const sessionUsersMap = require('./users').sessionUsersMap;
+
 let schedulesMap = new Map([
   ['1',
     {
@@ -72,15 +74,28 @@ const getSchedulesById = (response, request, params) => {
 }
 
 const getReservationsOfUser = (response, request, params) => {
-  const [ userId ] = params;
-  response.setHeader('Content-Type', 'application/json');
-  const res = mapUserIdReservationsMap.get(Number(userId));
+  const [ adminId, userId ] = params;
 
-  if(!res){
-    response.statusCode = 404;
-    response.end("Not Found");
+  if(!sessionUsersMap.get(adminId)){
+    response.statusCode = 500;
+    response.end("Need Authorization");
+    return;
   }
-  else response.end(JSON.stringify(Array.from(res.values())));
+
+  if(sessionUsersMap.get(adminId).isAdmin) {
+    response.setHeader('Content-Type', 'application/json');
+    const res = mapUserIdReservationsMap.get(Number(userId));
+
+    if(!res){
+      response.statusCode = 404;
+      response.end("Not Found");
+    }
+    else response.end(JSON.stringify(Array.from(res.values())));
+  }
+  else {
+    response.statusCode = 500;
+    response.end("You isn't Admin");
+  }
 }
 
 const getReservationsByScheduleId = (response, request, params) => {
@@ -96,6 +111,24 @@ const getReservationsByScheduleId = (response, request, params) => {
 }
 
 const addNewSchedule = (response, request) => {
+
+  const validateQuery = (schedule, adminId) => {
+    if(!sessionUsersMap.get(adminId)){
+      response.statusCode = 500;
+      response.end("Need Authorization");
+      return;
+    }
+
+    if(sessionUsersMap.get(adminId).isAdmin) {
+      schedulesMap.set(schedule.id, schedule);
+      response.end("succses add new schedule");
+    }
+    else {
+      response.statusCode = 500;
+      response.end("You isn't Admin");
+    }
+  }
+
   let postData = '';
   request.setEncoding("utf8");
   request.addListener("data", postDataChunk => {
@@ -103,8 +136,7 @@ const addNewSchedule = (response, request) => {
   });
   request.addListener("end", () => {
     const schedule = JSON.parse(postData);
-    schedulesMap.set(schedule.id, schedule);
-    response.end("succses");
+    validateQuery(schedule.body, schedule.adminId)
   });
 }
 
@@ -115,12 +147,18 @@ const reserveOfSlot = (response, request, params) => {
     postData += postDataChunk;
   });
   request.addListener("end", () => {
-    createReservation(params, JSON.parse(postData));
-    response.end("succses");
+    createReservation(response, params, JSON.parse(postData));
+
   });
 };
 
-function createReservation(params, postData){
+function createReservation(response, params, postData){
+  if(!sessionUsersMap.get(postData.userId)){
+    response.statusCode = 500;
+    response.end("Need Authorization");
+    return;
+  }
+
   const [ scheduleId, numberSlot ] = params;
 
   const schedule = schedulesMap.get(scheduleId);
@@ -136,6 +174,8 @@ function createReservation(params, postData){
 
   (reservationsOfUser) ? reservationsOfUser.set(postData.id, postData)
     : mapUserIdReservationsMap.set(postData.userId, new Map([[postData.id, postData]]));
+
+  response.end("succses reserve of slot");
 }
 
 module.exports = {

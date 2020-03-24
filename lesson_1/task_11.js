@@ -21,12 +21,7 @@ async function spotMaxValue() {
 
     if(!isNaN(answer)) {
       // than initial maxValue first value
-      if(positions[0] == 'second') {
-        maxValue = answer;
-      }
-      else {
-        maxValue = Math.max(answer, maxValue);
-      }
+      maxValue = (positions[0] == 'second') ? answer : Math.max(answer, maxValue);
     }
     else throw new Error('value is NaN').message;
   }

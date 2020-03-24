@@ -49,7 +49,7 @@ async function makeSchedule(storageUserIdEventsMap, userId) {
   const endWeek = dateUtils.getWeekEndDate().getTime();
   const msInDay = 86400000;
 
-  for(let date = startWeek; date <= endWeek; date = date + msInDay) {
+  for(let date = startWeek; date <= endWeek + 1; date = date + msInDay) {
     let eventsOnDate = eventsArray.filter( el => Math.abs(date - el.dateStart.getTime()) < msInDay/2 );
     if(eventsOnDate.length !== 0){
       let arr = eventsOnDate.map(el => `${el.title}  ${el.dateStart.getHours()}:${el.dateStart.getMinutes()} - ${el.dateEnd.getHours()}:${el.dateEnd.getMinutes()}`);
@@ -58,7 +58,7 @@ async function makeSchedule(storageUserIdEventsMap, userId) {
   }
 
   const dateNow = new Date(Date.now());
-
+  
   return {
     id_shedule: main.getRandomInt(10000, 99999),
     user_id: userId,

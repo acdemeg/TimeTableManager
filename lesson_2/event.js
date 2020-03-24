@@ -56,32 +56,34 @@ class Event {
 
   static setTimeSpaceBetweenEvents(){
     for(let events of temporaryDayEvetnsTimePointMap.values()) {
-      if(events.length === 0)
+      if(events.length === 0){
         continue;
+      }
       events.sort((a, b) => a.spaceStart - b.spaceStart);
       events.unshift({
         spaceEnd: events[0].spaceStart,
         spaceStart: new Date(new Date(events[0].spaceStart.getTime()).setHours(8, 0, 0, 0))
        })
-      for(let i = 0; i < events.length; i++){
-       if(i === 0) {
+
+      events.forEach((el, i, events) => {
+        if(i === 0) {
+          storageDayFreeTimeMap.get(events[i].spaceStart.getDay()).push({
+            spaceStart: events[i].spaceStart,
+            spaceEnd: events[i].spaceEnd
+          })
+         return;
+        }
+
+       events[i].spaceStart = events[i].spaceEnd;
+       events[i].spaceEnd = (i === events.length - 1)
+         ? new Date(new Date(events[i].spaceEnd.getTime()).setHours(19, 0, 0, 0))
+           : events[i + 1].spaceStart;
+
          storageDayFreeTimeMap.get(events[i].spaceStart.getDay()).push({
            spaceStart: events[i].spaceStart,
            spaceEnd: events[i].spaceEnd
          })
-        continue;
-       }
-
-      events[i].spaceStart = events[i].spaceEnd;
-      events[i].spaceEnd = (i === events.length - 1)
-        ? new Date(new Date(events[i].spaceEnd.getTime()).setHours(19, 0, 0, 0))
-          : events[i + 1].spaceStart;
-
-        storageDayFreeTimeMap.get(events[i].spaceStart.getDay()).push({
-          spaceStart: events[i].spaceStart,
-          spaceEnd: events[i].spaceEnd
-        })
-      }
+      })
     }
   }
 
@@ -301,6 +303,9 @@ function initializeTemporaryDayEvetnsTimePointMap() {
 }
 
 async function saveScheduleToFile(schedule, userName) {
+
+  console.log("saveScheduleToFile")
+  console.log(schedule)
 
   //checking exitst of Folder -> create new folder if Error
   await fs.promises.access('./Time_tables')

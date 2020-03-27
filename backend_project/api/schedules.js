@@ -1,3 +1,4 @@
+const HttpStatus = require('http-status-codes');
 const sessionUsersMap = require('./users').sessionUsersMap;
 
 let schedulesMap = new Map([
@@ -61,23 +62,23 @@ const getSchedules = (response) => {
   response.end(JSON.stringify(Array.from(schedulesMap.values())));
 }
 
-const getSchedulesById = (response, request, params) => {
+const getSchedulesById = ({ response, request, params }) => {
   const [ scheduleId ] = params;
   response.setHeader('Content-Type', 'application/json');
   const res = schedulesMap.get(scheduleId);
 
   if(!res){
-    response.statusCode = 404;
+    response.statusCode = HttpStatus.NOT_FOUND;
     response.end("Not Found");
   }
   else response.end(JSON.stringify(res));
 }
 
-const getReservationsOfUser = (response, request, params) => {
+const getReservationsOfUser = ({ response, request, params }) => {
   const [ adminId, userId ] = params;
 
   if(!sessionUsersMap.get(adminId)){
-    response.statusCode = 500;
+    response.statusCode = HttpStatus.FORBIDDEN;
     response.end("Need Authorization");
     return;
   }
@@ -87,34 +88,34 @@ const getReservationsOfUser = (response, request, params) => {
     const res = mapUserIdReservationsMap.get(Number(userId));
 
     if(!res){
-      response.statusCode = 404;
+      response.statusCode = HttpStatus.NOT_FOUND;
       response.end("Not Found");
     }
     else response.end(JSON.stringify(Array.from(res.values())));
   }
   else {
-    response.statusCode = 500;
+    response.statusCode = HttpStatus.FORBIDDEN;
     response.end("You isn't Admin");
   }
 }
 
-const getReservationsByScheduleId = (response, request, params) => {
+const getReservationsByScheduleId = ({ response, request, params }) => {
   const [ scheduleId ] = params;
   response.setHeader('Content-Type', 'application/json');
   const res = mapScheduleIdReservationsMap.get(scheduleId);
 
   if(!res){
-    response.statusCode = 404;
+    response.statusCode = HttpStatus.NOT_FOUND;
     response.end("Not Found");
   }
   else response.end(JSON.stringify(Array.from(res.values())));
 }
 
-const addNewSchedule = (response, request) => {
+const addNewSchedule = ({ response, request }) => {
 
   const validateQuery = (schedule, adminId) => {
     if(!sessionUsersMap.get(adminId)){
-      response.statusCode = 500;
+      response.statusCode = HttpStatus.UNAUTHORIZED;
       response.end("Need Authorization");
       return;
     }
@@ -124,7 +125,7 @@ const addNewSchedule = (response, request) => {
       response.end("succses add new schedule");
     }
     else {
-      response.statusCode = 500;
+      response.statusCode = HttpStatus.FORBIDDEN;
       response.end("You isn't Admin");
     }
   }
@@ -140,7 +141,7 @@ const addNewSchedule = (response, request) => {
   });
 }
 
-const reserveOfSlot = (response, request, params) => {
+const reserveOfSlot = ({ response, request, params }) => {
   let postData = '';
   request.setEncoding("utf8");
   request.addListener("data", postDataChunk => {
@@ -153,8 +154,8 @@ const reserveOfSlot = (response, request, params) => {
 };
 
 function createReservation(response, params, postData){
-  if(!sessionUsersMap.get(postData.userId)){
-    response.statusCode = 500;
+  if(!sessionUsersMap.get(String(postData.userId))){
+    response.statusCode = HttpStatus.UNAUTHORIZED;
     response.end("Need Authorization");
     return;
   }

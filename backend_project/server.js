@@ -13,7 +13,6 @@ else {
 }
 
 server.on('request', (request, response) => {
-     console.log(request.method);
      router(request, response);
 });
 

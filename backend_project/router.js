@@ -1,17 +1,25 @@
 'use strict';
 
-const routerMap = require('./routesMap');
+const HttpStatus = require('http-status-codes');
+const routerMap = require('./routesMap').routerMap;
+const urlKeyMap = require('./routesMap').urlKeyMap;
 
 function routeHandler(request, response) {
   const req = getParams(request.url);
+  const url = (req.param) ? urlKeyMap.get(req.newUrl) : req.newUrl;
+  console.log(`${request.method}:${url}`);
+  const handler = routerMap.get(`${request.method}:${url}`);
 
-  const handler = routerMap.get(`${request.method}:${req.newUrl}`);
   if(handler){
-    handler(response, request, req.param)
+    handler({
+      response: response,
+      request: request,
+      params: req.param
+    })
   }
   else {
     {
-      response.statusCode = 404;
+      response.statusCode = HttpStatus.NOT_FOUND;
       response.end("Not Found");
     }
   }
@@ -25,9 +33,6 @@ function getParams(url) {
       newUrl: url,
       param: null
     };
-
-  console.log('param = ' + param);
-  console.log(url.replace(/\d+/gm, '{param}'))
 
   return {
     newUrl: url.replace(/\d/gm, '{param}'),

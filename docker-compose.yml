@@ -19,8 +19,8 @@ services:
     image: postgres:11
     restart: always
     environment:
-      POSTGRES_DB: lntsunday
-      POSTGRES_PASSWORD: lineate4@Sun
+      POSTGRES_DB: time_tables
+      POSTGRES_PASSWORD: passw
     volumes:
       - db-data:/var/lib/postgresql/data
       - ./ops/db-backups:/backup

@@ -5,7 +5,7 @@ const FRONTEND_DIR = path.resolve(__dirname, 'src');
 
 const config = {
   mode: 'development',
-  entry: FRONTEND_DIR + '/index.js',
+  entry: `${FRONTEND_DIR}/index.js`,
   output: {
     path: BUILD_DIR,
     filename: 'bundle.js',
@@ -18,6 +18,13 @@ const config = {
         use: {
           loader: 'babel-loader',
         },
+      },
+      {
+        // Preprocess your css files
+        // you can add additional loaders here (e.g. sass/less etc.)
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.s[ac]ss$/i,
@@ -34,6 +41,10 @@ const config = {
           // Compiles Sass to CSS
           'sass-loader',
         ],
+      },
+      {
+        test: /\.(png|jpg)$/,
+        loader: 'url-loader',
       },
     ],
   },

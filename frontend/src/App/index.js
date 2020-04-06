@@ -1,22 +1,24 @@
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import TimeTables from '../scenes/TimeTables';
+import Timeline from '../scenes/Timeline';
+import Profile from '../scenes/Profile';
+import Notificatons from '../scenes/Notificatons';
+import Navigation from '../components/Navbar';
+import './styles.css';
 
-import Main from '../scenes/Main';
-import Header from './Header';
-import Scene from './Scene';
-
-function App() {
+const App = () => {
   return (
-    <div style={{ paddingTop: '100px' }}>
-      <Header>
-        Welcome to
-        <span>Your</span>
-        final project template!
-      </Header>
-      <Scene>
-        <Main />
-      </Scene>
-    </div>
+    <>
+      <Navigation />
+      <Switch>
+        <Route path="/" exact component={TimeTables} />
+        <Route path="/timeline" component={Timeline} />
+        <Route path="/notifications" component={Notificatons} />
+        <Route path="/profile" component={Profile} />
+      </Switch>
+    </>
   );
-}
+};
 
 export default App;

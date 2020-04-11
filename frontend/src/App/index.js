@@ -3,6 +3,8 @@ import { Route, Switch } from 'react-router-dom';
 import TimeTables from '../scenes/TimeTables';
 import Timeline from '../scenes/Timeline';
 import Profile from '../scenes/Profile';
+import Registration from '../scenes/Registration';
+import SignIn from '../scenes/SignIn';
 import Notificatons from '../scenes/Notificatons';
 import Navigation from '../components/Navbar';
 import './styles.css';
@@ -16,6 +18,8 @@ const App = () => {
         <Route path="/timeline" component={Timeline} />
         <Route path="/notifications" component={Notificatons} />
         <Route path="/profile" component={Profile} />
+        <Route path="/registration" component={Registration} />
+        <Route path="/signIn" component={SignIn} />
       </Switch>
     </>
   );

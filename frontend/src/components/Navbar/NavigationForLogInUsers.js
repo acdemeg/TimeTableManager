@@ -11,7 +11,7 @@ function NavigationForLogInUsers({ userName = 'username' }) {
         <NavLinkComponent path="/timeline" title="Timeline" />
         <NavLinkComponent path="/notifications" title="Notificatons" />
       </ul>
-      <ul className={styles.profile}>
+      <ul className={styles.right}>
         <NavLinkComponent path="/profile" title={userName} />
         <LogOut />
       </ul>

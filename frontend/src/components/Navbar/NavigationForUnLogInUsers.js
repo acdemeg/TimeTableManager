@@ -8,8 +8,9 @@ function NavigationForUnLogInUsers() {
       <ul>
         <NavLinkComponent path="/" title="Timetables" />
       </ul>
-      <ul className={styles.profile}>
-        <NavLinkComponent path="/authorization" title="Log In" />
+      <ul className={styles.right}>
+        <NavLinkComponent path="/signIn" title="Sign In" />
+        <NavLinkComponent path="/registration" title="Register" />
       </ul>
     </>
   );

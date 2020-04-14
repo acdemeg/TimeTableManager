@@ -35,10 +35,10 @@ Run all commands project root folder
 
 # DB commands
 ## Make a dump
-`docker-compose exec db sh -c 'exec pg_dump -U postgres lntsunday > /backup/dump.sql'`
+`docker-compose exec db sh -c 'exec pg_dump -U postgres time_tables > /backup/dump.sql'`
 
 ## Restore from the dump
-`docker-compose exec db sh -c 'exec psql -U postgres lntsunday < /backup/dump.sql'`
+`docker-compose exec db sh -c 'exec psql -U postgres time_tables < /backup/dump.sql'`
 
 # Useful commands
 ## Clean all docker containers info

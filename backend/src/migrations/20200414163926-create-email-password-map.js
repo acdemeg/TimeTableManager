@@ -1,32 +1,30 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('TimeTables', {
+    return queryInterface.createTable('Email_Password_Maps', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      title: {
+      email: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      startDate: {
-        type: Sequelize.DATE,
+      password: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
-      endDate: {
-        type: Sequelize.DATE,
+      userId: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-      },
-      slotSize: {
-        type: Sequelize.ENUM('HOUR', 'DAY', 'WEEK'),
-        allowNull: false,
-      },
-      attributeRequire: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
+        references: {
+          model: 'Users', // name of Target model
+          key: 'id', // key in Target model that we're referencing
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       createdAt: {
         allowNull: false,
@@ -39,6 +37,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('TimeTables');
+    return queryInterface.dropTable('Email_Password_Maps');
   },
 };

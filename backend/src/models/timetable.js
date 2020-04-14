@@ -4,14 +4,13 @@ module.exports = (sequelize, DataTypes) => {
     'TimeTable',
     {
       title: DataTypes.STRING,
-      startDate: DataTypes.INTEGER,
-      endDate: DataTypes.INTEGER,
+      startDate: DataTypes.DATE,
+      endDate: DataTypes.DATE,
       slotSize: DataTypes.ENUM('HOUR', 'DAY', 'WEEK'),
+      attributeRequire: DataTypes.BOOLEAN,
     },
     {},
   );
-  TimeTable.associate = function(models) {
-    // associations can be defined here
-  };
+  TimeTable.associate = function(models) {};
   return TimeTable;
 };

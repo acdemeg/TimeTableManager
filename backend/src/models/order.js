@@ -3,15 +3,18 @@ module.exports = (sequelize, DataTypes) => {
   const Order = sequelize.define(
     'Order',
     {
-      author: DataTypes.STRING,
-      startDate: DataTypes.INTEGER,
-      endDate: DataTypes.INTEGER,
+      authorId: DataTypes.INTEGER,
+      startDate: DataTypes.DATE,
+      endDate: DataTypes.DATE,
       status: DataTypes.ENUM('CREATED', 'ACCEPTED', 'CANCELED'),
+      attributeTitle: DataTypes.STRING,
+      attributeDescription: DataTypes.STRING,
+      timeTableId: DataTypes.INTEGER,
     },
     {},
   );
   Order.associate = function(models) {
-    // associations can be defined here
+    Order.belongsTo(models.TimeTable);
   };
   return Order;
 };

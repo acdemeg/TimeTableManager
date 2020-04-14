@@ -1,30 +1,26 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('TimeTables', {
+    return queryInterface.createTable('Notifications', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      title: {
-        type: Sequelize.STRING,
+      orderId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Orders', // name of Target model
+          key: 'id', // key in Target model that we're referencing
+        },
+      },
+      type: {
+        type: Sequelize.ENUM('ORDER_CREATED', 'ORDER_ACCEPTED', 'ORDER_CANCELED', 'ORDER_DELETED'),
         allowNull: false,
       },
-      startDate: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      endDate: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      slotSize: {
-        type: Sequelize.ENUM('HOUR', 'DAY', 'WEEK'),
-        allowNull: false,
-      },
-      attributeRequire: {
+      isRead: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
       },
@@ -39,6 +35,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('TimeTables');
+    return queryInterface.dropTable('Notifications');
   },
 };

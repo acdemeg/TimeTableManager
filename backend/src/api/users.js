@@ -2,7 +2,7 @@
 const { User, EmailPasswordMap } = require('@root/models');
 
 const users = {
-  getAll: async () => {
+  getUsers: async () => {
     return 'Users';
   },
   logIn: async user => {
@@ -11,7 +11,9 @@ const users = {
         email: user.email,
         password: user.password,
       },
-    });
+    })
+      .then(res => res)
+      .catch(() => 'reject login');
   },
   register: async user => {
     return await User.create({

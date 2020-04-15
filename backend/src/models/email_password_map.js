@@ -1,4 +1,5 @@
 'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const EmailPasswordMap = sequelize.define(
     'Email_Password_Map',

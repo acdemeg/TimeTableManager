@@ -16,8 +16,6 @@ const timetablesRouter = require('./routes/timetables-router');
 const notificationsRouter = require('./routes/notifications-router');
 const logger = pino({ prettyPrint: true });
 
-// const db = require('@root/db');
-
 const staticDir = path.resolve(__dirname, '..', '..', 'public');
 const app = new Koa();
 app.keys = [' secret key '];

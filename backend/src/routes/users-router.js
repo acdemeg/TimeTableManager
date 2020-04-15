@@ -4,7 +4,7 @@ const usersRouter = new Router();
 
 usersRouter
   .get('/users', async ctx => {
-    ctx.body = await users.getAll();
+    ctx.body = await users.getUsers();
   })
   .get('/users/profile', async ctx => {
     ctx.body = await users.getProfile();

@@ -1,4 +1,3 @@
-// const HttpStatus = require('http-status-codes');
 // const { Notification } = require('@root/models');
 
 const notifications = {

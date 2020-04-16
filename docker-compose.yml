@@ -6,6 +6,7 @@ volumes:
 services:
   web:
     image: node:12-alpine
+    restart: always
     tty: true
     working_dir: /home/node/app
     command: "npm run start"

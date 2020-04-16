@@ -1,4 +1,3 @@
-// const HttpStatus = require('http-status-codes');
 const { Order } = require('@root/models');
 
 const orders = {

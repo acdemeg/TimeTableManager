@@ -1,9 +1,8 @@
-// const HttpStatus = require('http-status-codes');
 const { User, EmailPasswordMap } = require('@root/models');
 
 const users = {
   getUsers: async () => {
-    return 'Users';
+    return await User.findAll().catch(err => `can't get users ${err}`);
   },
   logIn: async user => {
     return await EmailPasswordMap.findOne({
@@ -12,12 +11,12 @@ const users = {
         password: user.password,
       },
     })
-      .then(res => res)
-      .catch(() => 'reject login');
+      .then(res => users.getProfileById(res.userId))
+      .catch(err => `reject logIn ${err}`);
   },
   register: async user => {
     return await User.create({
-      name: user.name,
+      firstName: user.name,
       email: user.email,
     })
       .then(userRecord => {
@@ -28,13 +27,18 @@ const users = {
         });
       })
       .then(() => 'succses registration')
-      .catch(() => 'reject registration');
+      .catch(err => `reject registration ${err}`);
   },
   getProfileById: async userId => {
     return await User.findOne({ where: { id: userId } });
   },
-  updateProfileById: async id => {
-    return 'updateProfileOfUser';
+  updateProfileById: async (id, obj) => {
+    const user = await users.getProfileById(id).catch(err => `can't get user ${err}`);
+    user.firstName = obj.firstName;
+    user.lastName = obj.lastName;
+    user.email = obj.email;
+    await user.save().catch(err => `can't update profile ${err}`);
+    return await users.getProfileById(id).catch(err => `can't get user ${err}`);
   },
   deleteProfileById: async id => {
     return 'deleteProfileById';

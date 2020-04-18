@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Navbar.scss';
 import NavLinkComponent from './NavLinkComponent';
-import LogOut from '../LogIn/LogOut';
+import LogOut from '../LogOut';
 
 function NavigationForLogInUsers({ userName = 'username' }) {
   return (

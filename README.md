@@ -3,6 +3,14 @@
 This repo contains the template of the project for Thumbtack(Lineate) Sunday School.
 If you are a student of the school - please replace the content of this file with your project info.
 
+
+## How to run app:
+1. `docker-compose up -d`
+2. restore DB from dump, from backside folder run command: 
+    `docker-compose exec db sh -c 'exec psql -U postgres time_tables < /backup/dump.sql'`
+    or also can run all migrations and seeds files.
+3. Go to http://localhost
+
 ## Requirements:
 1. Node v12.x or higher
 2. NPM v6.x or higher
@@ -26,19 +34,15 @@ Run all commands project root folder
 ### Show logs containers
 `docker-compose logs -f web`
 
-## How to run app:
-1. `docker-compose up -d`
-2. Go to http://localhost
-
 ## How to watch static:
 `cd ./frontend && npm run watch`
 
 # DB commands
 ## Make a dump
-`docker-compose exec db sh -c 'exec pg_dump -U postgres lntsunday > /backup/dump.sql'`
+`docker-compose exec db sh -c 'exec pg_dump -U postgres time_tables > /backup/dump.sql'`
 
 ## Restore from the dump
-`docker-compose exec db sh -c 'exec psql -U postgres lntsunday < /backup/dump.sql'`
+`docker-compose exec db sh -c 'exec psql -U postgres time_tables < /backup/dump.sql'`
 
 # Useful commands
 ## Clean all docker containers info

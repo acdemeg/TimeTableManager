@@ -5,7 +5,7 @@ import Timeline from '../scenes/Timeline';
 import Profile from '../scenes/Profile';
 import Registration from '../scenes/Registration';
 import SignIn from '../scenes/SignIn';
-import Notificatons from '../scenes/Notificatons';
+import Notificatons from '../scenes/Announcement';
 import Navigation from '../components/Navbar';
 import './styles.css';
 

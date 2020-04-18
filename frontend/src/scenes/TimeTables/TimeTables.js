@@ -1,65 +1,54 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
+import { connect } from 'react-redux';
 import Schedule from '../../components/Schedule';
 import styles from './TimeTables.scss';
+import { fetchTimeTables } from '../../store/actions';
+import Spinner from '../../components/Spinner';
+import ErrorIndicator from '../../components/Error-boundry/Error-indicator';
 
-const TimeTables = () => {
-  const schedules = [
-    {
-      id: 1,
-      title: 'Study',
-      slotSize: 'Hour',
-      period: 'Sep 01 2020 - May 30 2020',
-    },
-    {
-      id: 2,
-      title: 'Study',
-      slotSize: 'Hour',
-      period: 'Sep 01 2020 - May 30 2020',
-    },
-    {
-      id: 3,
-      title: 'Study',
-      slotSize: 'Hour',
-      period: 'Sep 01 2020 - May 30 2020',
-    },
-    {
-      id: 4,
-      title: 'Study',
-      slotSize: 'Hour',
-      period: 'Sep 01 2020 - May 30 2020',
-    },
-    {
-      id: 5,
-      title: 'Study',
-      slotSize: 'Hour',
-      period: 'Sep 01 2020 - May 30 2020',
-    },
-    {
-      id: 6,
-      title: 'Study',
-      slotSize: 'Hour',
-      period: 'Sep 01 2020 - May 30 2020',
-    },
-  ];
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: left;
+  margin-left: 5%;
+`;
 
-  const Container = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: left;
-  `;
+const TimeTables = ({ timeTables }) => (
+  <div>
+    <div className={styles.googleFont}>Available TimeTables</div>
+    <Container>
+      {timeTables.map(schedule => (
+        <Schedule key={schedule.id} schedule={schedule} />
+      ))}
+    </Container>
+  </div>
+);
 
-  return (
-    <div>
-      <div className={styles.available}>Available TimeTables</div>
-      <Container>
-        {schedules.map(schedule => (
-          <Schedule key={schedule.id} schedule={schedule} />
-        ))}
-      </Container>
-    </div>
-  );
+const TimeTablesContainer = ({ timeTables, loading, error, notifications, fetchSchedules }) => {
+  useEffect(() => {
+    fetchSchedules();
+  }, []);
+
+  if (loading) {
+    return <Spinner />;
+  }
+
+  if (error) {
+    return <ErrorIndicator />;
+  }
+  return <TimeTables timeTables={timeTables} notifications={notifications} />;
 };
 
-export default TimeTables;
+const mapStateToProps = ({ timeTablesList: { timeTables, loading, error } }) => ({
+  timeTables,
+  loading,
+  error,
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchSchedules: fetchTimeTables(dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TimeTablesContainer);

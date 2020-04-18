@@ -1,7 +1,16 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCrow, faStar } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEnvelope,
+  faCheck,
+  faLock,
+  faExclamation,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons';
 
-// To make icons project-wide accessed
-export function initFontAwesomeLibrary() {
-  library.add(faCrow, faStar);
+const compose = (...func) => comp => func.reduceRight((wrapped, f) => f(wrapped), comp);
+
+function initFontAwesomeLibrary() {
+  library.add(faEnvelope, faCheck, faLock, faExclamation, faUser);
 }
+
+export { compose, initFontAwesomeLibrary };

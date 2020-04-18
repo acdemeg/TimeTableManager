@@ -9,6 +9,7 @@
     "css:build": "node-sass --indented-syntax --omit-source-map-url src/App/App.scss public/dist/styles.css",
     "test": "jest",
     "style:css": "prettier --loglevel silent --write 'src/**/*.{scss,sass}'",
+    "style:pretty": "prettier --write './src/**/*.js'",
     "style:check": "eslint --color --quiet --fix ./src"
   },
   "author": "",
@@ -26,7 +27,10 @@
     "classnames": "^2.2.6",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-router-dom": "^5.1.2"
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^5.1.2",
+    "react-transition-group": "^4.3.0",
+    "redux": "^4.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

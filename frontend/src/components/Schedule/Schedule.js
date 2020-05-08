@@ -10,7 +10,7 @@ const Schedule = ({ schedule }) => {
   return (
     <div>
       <div className={styles.schedule}>
-        <NavLink to={`/timeTable/:${id}`}>
+        <NavLink to={`/timeTable/${id}`}>
           <div className={styles.title}>{title}</div>
         </NavLink>
         <div>

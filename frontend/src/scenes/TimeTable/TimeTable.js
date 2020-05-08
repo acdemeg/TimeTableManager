@@ -68,7 +68,8 @@ const TimeTableContainer = ({ timeTables, loading, error, notifications, fetchSc
     return <ErrorIndicator />;
   }
 
-  const scheduleId = Number(useParams().id.slice(1));
+  const params = useParams();
+  const scheduleId = Number(params.id);
   const timeTable = timeTables.filter(val => val.id === scheduleId)[0];
 
   return <TimeTable timeTable={timeTable} notifications={notifications} />;

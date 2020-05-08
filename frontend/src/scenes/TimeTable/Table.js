@@ -38,7 +38,7 @@ const Table = ({ slotSize, countColumns, startDate }) => {
   } else {
     const cells = [];
 
-    for (let i = 1; i <= 25; i + 1) {
+    for (let i = 1; i <= 25; i += 1) {
       if (i === 1) {
         cells.push(<TimeCell key={i} />);
       } else {
@@ -73,7 +73,7 @@ const Table = ({ slotSize, countColumns, startDate }) => {
         ${printEndPeriod()}`;
   };
 
-  for (let i = 1; i <= countColumns; i + 1) {
+  for (let i = 1; i <= countColumns; i += 1) {
     columns.push(
       <div className={styles.column} key={i}>
         <TimeTableColumn period={getPeriod(i)} countCell={countCell} />

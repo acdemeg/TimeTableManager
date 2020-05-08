@@ -7,9 +7,16 @@ const TimeTableColumn = ({ period, countCell }) => {
 
   rows.push(<TimeCell time={period} key={0} />);
 
-  for (let i = 1; i <= countCell; i + 1) {
+  for (let i = 1; i <= countCell; i += 1) {
     rows.push(
-      <div className={styles.cell} key={i}>
+      <div
+        role="gridcell"
+        tabIndex={0} // for lint
+        className={styles.cell}
+        key={i}
+        onKeyDown={() => console.log(i)}
+        onClick={() => console.log(i)}
+      >
         <TimeTableCell />
       </div>,
     );

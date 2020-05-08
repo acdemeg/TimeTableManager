@@ -23,47 +23,39 @@ function Profile({
   handleCancel,
   handleSubmit,
   notifications,
-  isLoggedIn,
 }) {
-  console.log(`Profile: isLoggedIn = ${isLoggedIn}`);
-
-  if (isLoggedIn) {
-    return (
-      <>
-        <div className="profile">
-          <div className="profile-header">
-            <b>My profile</b>
-          </div>
-
-          <div className="profile-container">
-            <div style={{ float: 'left' }}>
-              <ProfileField value={name} title="Name" icon="user" />
-              <ProfileField value={email} title="Email" icon="envelope" />
-            </div>
-
-            <RedactFields openModal={openModal} />
-          </div>
+  return (
+    <div>
+      <div className="profile">
+        <div className="profile-header">
+          <b>My profile</b>
         </div>
 
+        <div className="profile-container">
+          <div style={{ float: 'left' }}>
+            <ProfileField value={name} title="Name" icon="user" />
+            <ProfileField value={email} title="Email" icon="envelope" />
+          </div>
+
+          <RedactFields openModal={openModal} />
+        </div>
+      </div>
+
+      {!isOpenModal ? null : (
         <Modal
           title={titleModal}
           typeModal={typeModal}
-          isOpenModal={isOpenModal}
           onCancel={handleCancel}
           onSubmit={handleSubmit}
         />
-
-        <Notification notifications={notifications} currentScene={scenesEnum.PROFILE} />
-      </>
-    );
-  }
-
-  return null;
+      )}
+      <Notification notifications={notifications} currentScene={scenesEnum.PROFILE} />
+    </div>
+  );
 }
 
 const mapStateToProps = ({
   profile: { isOpenModal, email, name, titleModal, typeModal },
-  authorization: { isLoggedIn, userId },
   notifications,
 }) => ({
   isOpenModal,
@@ -71,8 +63,6 @@ const mapStateToProps = ({
   name,
   titleModal,
   typeModal,
-  isLoggedIn,
-  userId,
   notifications,
 });
 

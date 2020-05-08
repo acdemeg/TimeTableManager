@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiBase = 'http://localhost/';
+const apiBase = `${window.location.protocol}//${window.location.host}/`;
 
 const appServiceData = {
   async getTimeTables() {

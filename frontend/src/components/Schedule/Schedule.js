@@ -1,15 +1,18 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import styles from './Schedule.scss';
 
 const Schedule = ({ schedule }) => {
-  const { title, startDate, endDate, slotSize } = schedule;
+  const { id, title, startDate, endDate, slotSize } = schedule;
   const startDateObj = new Date(Date.parse(startDate));
   const endDateObj = new Date(Date.parse(endDate));
 
   return (
     <div>
       <div className={styles.schedule}>
-        <div className={styles.title}>{title}</div>
+        <NavLink to={`/timeTable/:${id}`}>
+          <div className={styles.title}>{title}</div>
+        </NavLink>
         <div>
           Timetable type: &nbsp;
           <p>

@@ -1,0 +1,22 @@
+.wrapper {
+  margin: 2% auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: whitesmoke;
+}
+
+.wrapperSettings {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  p {
+    text-align: center;
+    margin: 2vh auto;
+    font: bold 130% fantasy;
+  }
+}
+
+.buttons {
+  text-align: center;
+}

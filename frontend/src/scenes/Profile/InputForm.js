@@ -8,6 +8,7 @@ const InputForm = ({ typeModal, getValueFromInput }) => {
       return (
         <input
           id="modal"
+          className="input-modal-profile"
           type="text"
           required
           minLength="1"
@@ -20,6 +21,7 @@ const InputForm = ({ typeModal, getValueFromInput }) => {
       return (
         <input
           id="modal"
+          className="input-modal-profile"
           type="email"
           required
           minLength="3"

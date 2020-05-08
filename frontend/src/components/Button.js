@@ -1,11 +1,21 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-function Button() {
+function Button({ title, handler }) {
   return (
-    <div className="button">
-      <FontAwesomeIcon css={{ color: 'hotpink', marginRight: '10px' }} icon="crow" />
-      :&nbsp; React is Awesome!
+    <div
+      role="button"
+      tabIndex={0} // for lint
+      onClick={handler}
+      onKeyDown={handler}
+      className="button"
+      style={{
+        margin: '0 0.5vw',
+        backgroundColor: `${title === 'Save' ? 'mediumseagreen' : 'bisque'}`,
+        width: 'fit-content',
+        alignSelf: 'center',
+      }}
+    >
+      {title}
     </div>
   );
 }

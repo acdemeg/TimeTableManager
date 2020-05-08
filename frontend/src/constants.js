@@ -31,6 +31,12 @@ const typeModalEnum = Object.freeze({
   EMAIL: 'email_redact',
 });
 
+const timeTableTypeEnum = Object.freeze({
+  HOUR: 'HOUR',
+  DAY: 'DAY',
+  WEEK: 'WEEK',
+});
+
 const messages = Object.freeze({
   MAKE_ORDER: 'You make to order',
   EMAIL_UPDATE: 'Your email updated',
@@ -43,4 +49,4 @@ const messages = Object.freeze({
   REG_ERROR: 'Registraton failed',
 });
 
-export { actionsEnum, scenesEnum, typeModalEnum, messages };
+export { actionsEnum, scenesEnum, timeTableTypeEnum, typeModalEnum, messages };

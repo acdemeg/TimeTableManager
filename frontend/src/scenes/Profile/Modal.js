@@ -1,10 +1,10 @@
 import React from 'react';
 import { typeModalEnum, messages } from '../../constants';
 import InputForm from './InputForm';
-
+import ButtonModal from '../../components/ButtonModal';
 import './Modal.css';
 
-const Modal = ({ title, typeModal, isOpenModal, onCancel, onSubmit }) => {
+const Modal = ({ title, typeModal, onCancel, onSubmit }) => {
   let inputValue = 'unknown';
   const getValueFromInput = value => {
     inputValue = value;
@@ -23,38 +23,23 @@ const Modal = ({ title, typeModal, isOpenModal, onCancel, onSubmit }) => {
   };
 
   return (
-    <>
-      {isOpenModal && (
-        <div className="modalOverlay">
-          <div className="modalWindow">
-            <div className="modalHeader">
-              <div className="modalTitle">{title}</div>
-            </div>
-            <div className="modalBody">
-              <InputForm typeModal={typeModal} getValueFromInput={getValueFromInput} />
-            </div>
-            <div className="modalFooter">
-              <button
-                type="button"
-                onClick={onCancel}
-                className="button is-rounded is-small cancel"
-              >
-                {' '}
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={() => onSubmit(inputValue, getAlertText())}
-                className="button is-rounded is-small submit"
-              >
-                {' '}
-                Submit
-              </button>
-            </div>
-          </div>
+    <div className="modalOverlay">
+      <div className="modalWindow">
+        <div className="modalHeader">
+          <div className="modalTitle">{title}</div>
         </div>
-      )}
-    </>
+        <div className="modalBody">
+          <InputForm typeModal={typeModal} getValueFromInput={getValueFromInput} />
+        </div>
+        <div className="modalFooter">
+          <ButtonModal view={{ title: 'Cancel', style: 'cancel' }} handler={onCancel} />
+          <ButtonModal
+            view={{ title: 'Submit', style: 'submit' }}
+            handler={() => onSubmit(inputValue, getAlertText())}
+          />
+        </div>
+      </div>
+    </div>
   );
 };
 

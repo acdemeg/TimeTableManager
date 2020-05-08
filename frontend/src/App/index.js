@@ -1,23 +1,28 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
 import TimeTables from '../scenes/TimeTables';
+import TimeTable from '../scenes/TimeTable';
+import CreateTimeTable from '../scenes/CreateTimeTable';
 import Timeline from '../scenes/Timeline';
 import Profile from '../scenes/Profile';
 import Registration from '../scenes/Registration';
 import SignIn from '../scenes/SignIn';
 import Notificatons from '../scenes/Announcement';
-import Navigation from '../components/Navbar';
+import Navigation from './Navbar';
 import './styles.css';
 
-const App = () => {
+const App = ({ isLoggedIn }) => {
   return (
     <>
       <Navigation />
       <Switch>
         <Route path="/" exact component={TimeTables} />
-        <Route path="/timeline" component={Timeline} />
-        <Route path="/notifications" component={Notificatons} />
-        <Route path="/profile" component={Profile} />
+        <Route path="/createTimeTable" exact component={CreateTimeTable} />
+        <Route path="/timeTable/:id" component={TimeTable} />
+        <Route path="/timeline" component={isLoggedIn ? Timeline : null} />
+        <Route path="/notifications" component={isLoggedIn ? Notificatons : null} />
+        <Route path="/profile" component={isLoggedIn ? Profile : null} />
         <Route path="/registration" component={Registration} />
         <Route path="/signIn" component={SignIn} />
       </Switch>
@@ -25,4 +30,6 @@ const App = () => {
   );
 };
 
-export default App;
+const mapStateToProps = ({ authorization: { isLoggedIn } }) => ({ isLoggedIn });
+
+export default connect(mapStateToProps, null)(App);

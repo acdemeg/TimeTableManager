@@ -6,6 +6,7 @@ import styles from './TimeTables.scss';
 import { fetchTimeTables } from '../../store/actions';
 import Spinner from '../../components/Spinner';
 import ErrorIndicator from '../../components/Error-boundry/Error-indicator';
+import ButtonAddTimeTable from '../../components/ButtonAddTimeTable';
 
 const Container = styled.div`
   display: flex;
@@ -16,13 +17,14 @@ const Container = styled.div`
 `;
 
 const TimeTables = ({ timeTables }) => (
-  <div>
+  <div style={{ textAlign: 'center' }}>
     <div className={styles.googleFont}>Available TimeTables</div>
     <Container>
       {timeTables.map(schedule => (
         <Schedule key={schedule.id} schedule={schedule} />
       ))}
     </Container>
+    <ButtonAddTimeTable />
   </div>
 );
 
@@ -34,10 +36,10 @@ const TimeTablesContainer = ({ timeTables, loading, error, notifications, fetchS
   if (loading) {
     return <Spinner />;
   }
-
   if (error) {
     return <ErrorIndicator />;
   }
+
   return <TimeTables timeTables={timeTables} notifications={notifications} />;
 };
 

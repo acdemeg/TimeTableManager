@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styles from './SignIn.scss';
 import register from '../TimeTables/TimeTables.scss';
-import InputIcon from '../../components/InputIcon';
 import { LOGIN } from '../../store/actions';
 import { scenesEnum } from '../../constants';
 import Notification from '../../components/Notification';
+import PassAndEmailInputs from '../../components/PassAndEmailInputs';
+import ButtonConfirm from '../../components/ButtonConfirm';
 
 const SignIn = ({ onLogin, notifications }) => {
   return (
@@ -13,36 +14,8 @@ const SignIn = ({ onLogin, notifications }) => {
       <div className={register.googleFont}>
         Sign In
         <div className={styles.signInForm}>
-          <div className="field">
-            <p className="control has-icons-left has-icons-right">
-              <input
-                className="input"
-                type="email"
-                name="email"
-                placeholder="Email"
-                autoComplete="on"
-              />
-              <InputIcon side="left" icon="envelope" />
-              <InputIcon side="right" icon="check" />
-            </p>
-          </div>
-          <div className="field">
-            <p className="control has-icons-left">
-              <input
-                className="input"
-                type="password"
-                name="password"
-                placeholder="Password"
-                autoComplete="on"
-              />
-              <InputIcon side="left" icon="lock" />
-            </p>
-          </div>
-          <div>
-            <button type="submit" className="button is-primary is-rounded">
-              Confirm
-            </button>
-          </div>
+          <PassAndEmailInputs />
+          <ButtonConfirm />
         </div>
       </div>
       <Notification notifications={notifications} currentScene={scenesEnum.LOG_IN} />

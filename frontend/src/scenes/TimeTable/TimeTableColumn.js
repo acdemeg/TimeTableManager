@@ -1,11 +1,14 @@
 import React from 'react';
 import styles from './TimeTable.scss';
 import { TimeTableCell, TimeCell } from './TimeTableCell';
+import { typeModalEnum } from '../../constants';
+import DateUtils from './date_utils';
 
-const TimeTableColumn = ({ period, countCell }) => {
+const TimeTableColumn = ({ period, countCell, openModal, slotSize }) => {
   const rows = [];
+  const date = new DateUtils(slotSize, period);
 
-  rows.push(<TimeCell time={period} key={0} />);
+  rows.push(<TimeCell time={period.string} key={0} />);
 
   for (let i = 1; i <= countCell; i += 1) {
     rows.push(
@@ -14,8 +17,18 @@ const TimeTableColumn = ({ period, countCell }) => {
         tabIndex={0} // for lint
         className={styles.cell}
         key={i}
-        onKeyDown={() => console.log(i)}
-        onClick={() => console.log(i)}
+        onKeyDown={() =>
+          openModal({
+            type: typeModalEnum.ACCEPT_ORDER,
+            title: date.getPeriodForCells(i).string,
+          })
+        }
+        onClick={() =>
+          openModal({
+            type: typeModalEnum.CREATE_ORDER,
+            title: date.getPeriodForCells(i).string,
+          })
+        }
       >
         <TimeTableCell />
       </div>,

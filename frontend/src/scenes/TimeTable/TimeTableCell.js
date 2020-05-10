@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './TimeTable.scss';
 
-const TimeTableCell = ({ attributeTitle = '', attributeDescription = '' }) => {
+const TimeTableCell = ({ attributeTitle, attributeDescription }) => {
   return (
     <div>
       <b>{attributeTitle}</b>

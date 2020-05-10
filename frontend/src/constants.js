@@ -4,14 +4,18 @@ const actionsEnum = Object.freeze({
   TIME_TABLES_ERROR: 'FETCH_TIME_TABLES_FAILURE',
   PROFILE_LOADED: 'FETCH_PROFILE_SUCCESS',
   PROFILE_ERROR: 'FETCH_PROFILE_FAILURE',
+  ORDERS_ERROR: 'FETCH_ORDERS_FAILURE',
   ORDERS_LOADED: 'FETCH_ORDERS_SUCCESS',
   ORDERS_REQUESTED: 'FETCH_ORDERS_REQUESTED',
-  ORDERS_ERROR: 'FETCH_ORDERS_FAILURE',
   SHOW_ALERT: 'SHOW_ALERT',
   HIDE_ALERT: 'HIDE_ALERT',
-  OPEN_MODAL_WINDOW: 'OPEN_MODAL_WINDOW',
-  CANCEL_MODAL_WINDOW: 'CANCEL_MODAL_WINDOW',
-  SUBMIT_MODAL_WINDOW: 'SUBMIT_MODAL_WINDOW',
+  OPEN_MODAL_PROFILE: 'OPEN_MODAL_PROFILE',
+  CANCEL_MODAL_PROFILE: 'CANCEL_MODAL_PROFILE',
+  SUBMIT_MODAL_PROFILE: 'SUBMIT_MODAL_PROFILE',
+  OPEN_MODAL_ORDERS: 'OPEN_MODAL_ORDERS',
+  CANCEL_MODAL_ORDERS: 'CANCEL_MODAL_ORDERS',
+  SUBMIT_MODAL_ORDERS: 'SUBMIT_MODAL_ORDERS',
+  REJECT_MODAL_ORDERS: 'REJECT_MODAL_ORDERS',
   MAKE_ORDER: 'MAKE_ORDER',
   UPDATE_ORDER: 'UPDATE_ORDER',
   LOG_IN: 'LOG_IN',
@@ -21,6 +25,7 @@ const actionsEnum = Object.freeze({
 const scenesEnum = Object.freeze({
   PROFILE: 'Profile',
   TIME_TABLES: 'Timetables',
+  TIME_TABLE: 'Timetable',
   TIMELINE: 'Timeline',
   LOG_IN: 'Log-In',
   REG: 'Reg',
@@ -29,6 +34,10 @@ const scenesEnum = Object.freeze({
 const typeModalEnum = Object.freeze({
   NAME: 'name_redact',
   EMAIL: 'email_redact',
+  CREATE_ORDER: 'CREATE_ORDER',
+  INFO_ORDER: 'INFO_ORDER',
+  ACCEPT_ORDER: 'ACCEPT_ORDER',
+  REJECT_ORDER: 'REJECT_ORDER',
 });
 
 const timeTableTypeEnum = Object.freeze({
@@ -47,6 +56,9 @@ const messages = Object.freeze({
   LOG_IN_ERROR: 'Incorrect email or password',
   REG: 'You succses registered',
   REG_ERROR: 'Registraton failed',
+  ORDER_ADDED: 'You order had added',
+  ORDER_ACCEPTED: 'You accetp this order',
+  ORDER_REJECTED: 'You reject this order',
 });
 
 export { actionsEnum, scenesEnum, timeTableTypeEnum, typeModalEnum, messages };

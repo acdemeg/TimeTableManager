@@ -41,3 +41,48 @@
 .timeTable {
   overflow-x: scroll;
 }
+
+.modalWindow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: whitesmoke;
+  min-height: 300px;
+  min-width: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modalHeader,
+.modalFooter {
+  padding: 10px 20px;
+  text-align: center;
+}
+
+input:invalid {
+  border: 1px solid red;
+}
+
+.modalBodyField {
+  margin-bottom: 3%;
+}
+
+.modalHeader {
+  min-height: 50px;
+}
+
+.modalTitle {
+  font-family: 'Courier New';
+  font-size: 15pt;
+}
+
+.modalFooter {
+  align-self: flex-end;
+}
+
+.modalFooter button:last-child {
+  margin-left: 15px;
+}

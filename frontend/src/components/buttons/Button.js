@@ -10,7 +10,15 @@ function Button({ title, handler }) {
       className="button"
       style={{
         margin: '0 0.5vw',
-        backgroundColor: `${title === 'Save' ? 'mediumseagreen' : 'bisque'}`,
+        backgroundColor: `${(() => {
+          if (title === 'Reject') {
+            return 'orangered';
+          }
+          if (title === 'Cancel' || title === '+ Add attribute' || title === 'OK') {
+            return 'bisque';
+          }
+          return 'mediumseagreen';
+        })()}`,
         width: 'fit-content',
         alignSelf: 'center',
       }}

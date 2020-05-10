@@ -1,8 +1,6 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import Spinner from '../../components/Spinner';
-import ErrorIndicator from '../../components/Error-boundry/Error-indicator';
+import React from 'react';
 import timeTableHeader from '../TimeTables/TimeTables.scss';
+import WithData from '../../components/hoc-helpers/WithData';
 import style from './Timeline.scss';
 
 //* ***  NOT COMPLETED */
@@ -22,23 +20,6 @@ const Timeline = () => {
   );
 };
 
-const TimeLineContainer = ({ loading, error }) => {
-  useEffect(() => {}, []);
-
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (error) {
-    return <ErrorIndicator />;
-  }
-  return <Timeline />;
-};
-
-const mapStateToProps = ({ timeTablesList: { timeTables, loading, error } }) => ({
-  timeTables,
-  loading,
-  error,
+export default WithData(Timeline, () => () => {
+  return null;
 });
-
-export default connect(mapStateToProps, null)(TimeLineContainer);

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import styles from './CreateTimeTable.scss';
 import creatTimeTableHeader from '../TimeTables/TimeTables.scss';
-import TextInput from '../../components/TextInput';
-import SelectInput from '../../components/SelectInput';
-import DateInput from '../../components/DateInput';
+import TextInput from '../../components/inputs/TextInput';
+import SelectInput from '../../components/inputs/SelectInput';
+import DateInput from '../../components/inputs/DateInput';
 import Attribute from '../../components/Attribute';
-import Button from '../../components/Button';
+import Button from '../../components/buttons/Button';
 import { getNewIdGenerator } from '../../utils';
 
 const attributeKeysGen = getNewIdGenerator();

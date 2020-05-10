@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styles from './Registration.scss';
 import register from '../TimeTables/TimeTables.scss';
-import InputField from '../../components/InputField';
-import PassAndEmailInputs from '../../components/PassAndEmailInputs';
+import InputField from '../../components/inputs/InputField';
+import PassAndEmailInputs from '../../components/inputs/PassAndEmailInputs';
 import { REGISTER } from '../../store/actions';
 import { scenesEnum } from '../../constants';
 import Notification from '../../components/Notification';
-import ButtonConfirm from '../../components/ButtonConfirm';
+import ButtonConfirm from '../../components/buttons/ButtonConfirm';
 
 const Registration = ({ onReg, notifications }) => {
   return (

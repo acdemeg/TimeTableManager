@@ -2,9 +2,9 @@ import React from 'react';
 import './Profile.css';
 import { connect } from 'react-redux';
 import {
-  OPEN_MODAL_WINDOW,
-  CANCEL_MODAL_WINDOW,
-  SUBMIT_MODAL_WINDOW,
+  OPEN_MODAL_PROFILE,
+  CANCEL_MODAL_PROFILE,
+  SUBMIT_MODAL_PROFILE,
   SHOW_ALERT,
 } from '../../store/actions';
 import Modal from './Modal';
@@ -67,10 +67,10 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  openModal: ({ type, title }) => dispatch(OPEN_MODAL_WINDOW(type, title)),
-  handleCancel: () => dispatch(CANCEL_MODAL_WINDOW()),
+  openModal: ({ type, title }) => dispatch(OPEN_MODAL_PROFILE(type, title)),
+  handleCancel: () => dispatch(CANCEL_MODAL_PROFILE()),
   handleSubmit: (data, alertText) => {
-    dispatch(SUBMIT_MODAL_WINDOW(data));
+    dispatch(SUBMIT_MODAL_PROFILE(data));
     dispatch(SHOW_ALERT(scenesEnum.PROFILE, alertText));
   },
 });

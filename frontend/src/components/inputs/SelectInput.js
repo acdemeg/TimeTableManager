@@ -1,5 +1,5 @@
 import React from 'react';
-import { timeTableTypeEnum } from '../constants';
+import { timeTableTypeEnum } from '../../constants';
 
 const SelectInput = ({ labelName, labelId }) => {
   return (

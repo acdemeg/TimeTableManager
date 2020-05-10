@@ -35,9 +35,7 @@ const updateProfile = (state, action) => {
 
   const openNeedModal = () => ({
     isOpenModal: true,
-    balance: state.profile.balance,
     email: state.profile.email,
-    phone: state.profile.phone,
     name: state.profile.name,
     typeModal: action.payload.type,
     titleModal: action.payload.title,
@@ -45,20 +43,18 @@ const updateProfile = (state, action) => {
 
   const cancelModal = () => ({
     email: state.profile.email,
-    phone: state.profile.phone,
     name: state.profile.name,
-    balance: state.profile.balance,
     isOpenModal: false,
   });
 
   switch (action.type) {
-    case actionsEnum.OPEN_MODAL_WINDOW:
+    case actionsEnum.OPEN_MODAL_PROFILE:
       return openNeedModal(state, action);
 
-    case actionsEnum.CANCEL_MODAL_WINDOW:
+    case actionsEnum.CANCEL_MODAL_PROFILE:
       return cancelModal();
 
-    case actionsEnum.SUBMIT_MODAL_WINDOW:
+    case actionsEnum.SUBMIT_MODAL_PROFILE:
       return updateInfo();
 
     case actionsEnum.PROFILE_LOADED:

@@ -48,18 +48,36 @@ const HIDE_ALERT = () => ({
   type: actionsEnum.HIDE_ALERT,
 });
 
-const OPEN_MODAL_WINDOW = (type, title) => ({
-  type: actionsEnum.OPEN_MODAL_WINDOW,
+const OPEN_MODAL_PROFILE = (type, title) => ({
+  type: actionsEnum.OPEN_MODAL_PROFILE,
   payload: { type, title },
 });
 
-const CANCEL_MODAL_WINDOW = () => ({
-  type: actionsEnum.CANCEL_MODAL_WINDOW,
+const CANCEL_MODAL_PROFILE = () => ({
+  type: actionsEnum.CANCEL_MODAL_PROFILE,
 });
 
-const SUBMIT_MODAL_WINDOW = data => ({
-  type: actionsEnum.SUBMIT_MODAL_WINDOW,
+const SUBMIT_MODAL_PROFILE = data => ({
+  type: actionsEnum.SUBMIT_MODAL_PROFILE,
   payload: data,
+});
+
+const OPEN_MODAL_ORDERS = (type, title) => ({
+  type: actionsEnum.OPEN_MODAL_ORDERS,
+  payload: { type, title },
+});
+
+const CANCEL_MODAL_ORDERS = () => ({
+  type: actionsEnum.CANCEL_MODAL_ORDERS,
+});
+
+const SUBMIT_MODAL_ORDERS = data => ({
+  type: actionsEnum.SUBMIT_MODAL_ORDERS,
+  payload: data,
+});
+
+const REJECT_MODAL_ORDERS = () => ({
+  type: actionsEnum.REJECT_MODAL_ORDERS,
 });
 
 const LOG_IN = userId => ({
@@ -167,9 +185,13 @@ export {
   fetchProfile,
   SHOW_ALERT,
   HIDE_ALERT,
-  OPEN_MODAL_WINDOW,
-  CANCEL_MODAL_WINDOW,
-  SUBMIT_MODAL_WINDOW,
+  OPEN_MODAL_PROFILE,
+  CANCEL_MODAL_PROFILE,
+  SUBMIT_MODAL_PROFILE,
+  OPEN_MODAL_ORDERS,
+  CANCEL_MODAL_ORDERS,
+  SUBMIT_MODAL_ORDERS,
+  REJECT_MODAL_ORDERS,
   MAKE_ORDER,
   UPDATE_ORDER,
   LOG_IN,

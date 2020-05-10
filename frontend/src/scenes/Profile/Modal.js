@@ -1,7 +1,7 @@
 import React from 'react';
 import { typeModalEnum, messages } from '../../constants';
 import InputForm from './InputForm';
-import ButtonModal from '../../components/ButtonModal';
+import ButtonModal from '../../components/buttons/ButtonModal';
 import './Modal.css';
 
 const Modal = ({ title, typeModal, onCancel, onSubmit }) => {

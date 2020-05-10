@@ -3,24 +3,12 @@ import styles from './TimeTable.scss';
 import TimeTableColumn from './TimeTableColumn';
 import { timeTableTypeEnum } from '../../constants';
 import { TimeCell } from './TimeTableCell';
+import DateUtils from './date_utils';
 
-const Table = ({ slotSize, countColumns, startDate }) => {
+const Table = ({ slotSize, countColumns, startDate, openModal }) => {
   const columns = [];
-  let period = startDate;
-  const millisecInDay = 86400000;
   const countCell = slotSize === timeTableTypeEnum.DAY ? 7 : 24;
-
-  const printStartPeriod = () => {
-    return `${period.getDate()}
-      ${period.toLocaleString('eng', { month: 'long' })}
-      ${period.getFullYear()}`;
-  };
-
-  const printEndPeriod = () => {
-    return `${new Date(period.getTime() + millisecInDay * 7).getDate()}
-      ${new Date(period.getTime() + millisecInDay * 7).toLocaleString('eng', { month: 'long' })}
-      ${new Date(period.getTime() + millisecInDay * 7).getFullYear()}`;
-  };
+  const date = new DateUtils(slotSize, startDate);
 
   if (slotSize === timeTableTypeEnum.DAY) {
     columns.push(
@@ -53,30 +41,15 @@ const Table = ({ slotSize, countColumns, startDate }) => {
     );
   }
 
-  const getPeriod = currentCollumn => {
-    if (slotSize === timeTableTypeEnum.HOUR) {
-      if (currentCollumn === 1) {
-        return printStartPeriod();
-      }
-      period = new Date(period.getTime() + millisecInDay);
-      return printStartPeriod();
-    }
-    if (currentCollumn === 1) {
-      return `${printStartPeriod()}
-        -
-        ${printEndPeriod()}`;
-    }
-
-    period = new Date(period.getTime() + millisecInDay * 7);
-    return `${printStartPeriod()}
-        -
-        ${printEndPeriod()}`;
-  };
-
   for (let i = 1; i <= countColumns; i += 1) {
     columns.push(
       <div className={styles.column} key={i}>
-        <TimeTableColumn period={getPeriod(i)} countCell={countCell} />
+        <TimeTableColumn
+          period={date.getPeriodForColumns(i)}
+          countCell={countCell}
+          openModal={openModal}
+          slotSize={slotSize}
+        />
       </div>,
     );
   }

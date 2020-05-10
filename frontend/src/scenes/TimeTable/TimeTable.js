@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import { connect } from 'react-redux';
-import ErrorIndicator from '../../components/Error-boundry/Error-indicator';
-import Spinner from '../../components/Spinner';
 import { fetchTimeTables } from '../../store/actions';
 import Table from './Table';
-import { timeTableTypeEnum } from '../../constants';
+import { timeTableTypeEnum, scenesEnum } from '../../constants';
 import styles from './TimeTable.scss';
 import timeTableHeader from '../TimeTables/TimeTables.scss';
+import WithData from '../../components/hoc-helpers/WithData';
+import OrderModal from './OrderModal';
+import Notification from '../../components/Notification';
 
 const TimeTableDetailField = ({ fieldName, info }) => {
   return (
@@ -19,7 +19,20 @@ const TimeTableDetailField = ({ fieldName, info }) => {
   );
 };
 
-const TimeTable = ({ timeTable }) => {
+const TimeTable = ({
+  timeTables,
+  isOpenModal,
+  openModal,
+  handleCancel,
+  handleSubmit,
+  handleReject,
+  titleModal,
+  typeModal,
+  notifications,
+}) => {
+  const params = useParams();
+  const scheduleId = Number(params.id);
+  const timeTable = timeTables.filter(val => val.id === scheduleId)[0];
   const { title, startDate, endDate, slotSize } = timeTable;
   const startDateObj = new Date(Date.parse(startDate));
   const endDateObj = new Date(Date.parse(endDate));
@@ -50,39 +63,25 @@ const TimeTable = ({ timeTable }) => {
         <TimeTableDetailField fieldName="Order attributes:" info="Description" />
       </div>
       <div className={styles.table}>
-        <Table slotSize={slotSize} countColumns={countColumns} startDate={startDateObj} />
+        <Table
+          slotSize={slotSize}
+          countColumns={countColumns}
+          startDate={startDateObj}
+          openModal={openModal}
+        />
       </div>
+      {!isOpenModal ? null : (
+        <OrderModal
+          title={titleModal}
+          typeModal={typeModal}
+          onCancel={handleCancel}
+          onSubmit={handleSubmit}
+          onReject={handleReject}
+        />
+      )}
+      <Notification notifications={notifications} currentScene={scenesEnum.TIME_TABLE} />
     </div>
   );
 };
 
-const TimeTableContainer = ({ timeTables, loading, error, notifications, fetchSchedules }) => {
-  useEffect(() => {
-    fetchSchedules();
-  }, []);
-
-  if (loading) {
-    return <Spinner />;
-  }
-  if (error) {
-    return <ErrorIndicator />;
-  }
-
-  const params = useParams();
-  const scheduleId = Number(params.id);
-  const timeTable = timeTables.filter(val => val.id === scheduleId)[0];
-
-  return <TimeTable timeTable={timeTable} notifications={notifications} />;
-};
-
-const mapStateToProps = ({ timeTablesList: { timeTables, loading, error } }) => ({
-  timeTables,
-  loading,
-  error,
-});
-
-const mapDispatchToProps = dispatch => ({
-  fetchSchedules: fetchTimeTables(dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TimeTableContainer);
+export default WithData(TimeTable, fetchTimeTables);

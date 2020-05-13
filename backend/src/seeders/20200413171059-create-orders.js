@@ -5,14 +5,24 @@ module.exports = {
     return queryInterface.bulkInsert('Orders', [
       {
         authorId: 1,
-        startDate: new Date(),
-        endDate: new Date(),
+        startDate: new Date(Date.parse('2020-04-11T16:00:00.000Z')),
+        endDate: new Date(Date.parse('2020-04-11T17:00:00.000Z')),
         status: 'CREATED',
-        attributeTitle: 'Meeting',
-        attributeDescription: 'hackathon js',
         timeTableId: 1,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+      },
+      {
+        authorId: 2,
+        startDate: new Date(Date.parse('2020-04-11T16:00:00.000Z')),
+        endDate: new Date(Date.parse('2020-04-11T17:00:00.000Z')),
+        status: 'CREATED',
+        timeTableId: 1,
+      },
+      {
+        authorId: 2,
+        startDate: new Date(Date.parse('2020-04-11T16:00:00.000Z')),
+        endDate: new Date(Date.parse('2020-04-11T17:00:00.000Z')),
+        status: 'CREATED',
+        timeTableId: 1,
       },
     ]);
   },

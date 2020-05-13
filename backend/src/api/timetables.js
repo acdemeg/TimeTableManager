@@ -1,26 +1,83 @@
-const { TimeTable } = require('@root/models');
+const { TimeTable, Order } = require('@root/models');
+const attributesAPI = require('./attributes');
 
 const timeTables = {
   addTimeTable: async timeTable => {
-    return await TimeTable.create({
-      title: timeTable.title,
-      startDate: timeTable.startDate,
-      endDate: timeTable.endDate,
-      slotSize: timeTable.slotSize,
-      attributeRequire: timeTable.attributeRequire,
-    }).catch(err => `can't add TimeTable ${err}`);
+    return await TimeTable.create(
+      {
+        title: timeTable.title,
+        startDate: timeTable.startDate,
+        endDate: timeTable.endDate,
+        slotSize: timeTable.slotSize,
+      },
+      { raw: true },
+    ).catch(err => `can't add TimeTable ${err}`);
   },
-  getTimeTables: async () => {
-    return await TimeTable.findAll().catch(err => `can't get TimeTables ${err}`);
+  getTimeTables: async timeTablesIds => {
+    let timeTablesAll;
+
+    if (timeTablesIds) {
+      timeTablesAll = await TimeTable.findAll({ where: { id: timeTablesIds } }).catch(
+        err => `can't get TimeTables ${err}`,
+      );
+    } else {
+      timeTablesAll = await TimeTable.findAll().catch(err => `can't get TimeTables ${err}`);
+    }
+
+    if (timeTablesAll) {
+      const orders = await timeTables.getOrdersForTimeTables(
+        timeTablesAll.map(timeTable => timeTable.id),
+      );
+      const attributeValues = await attributesAPI.getAttributesForOrders(
+        orders.map(order => order.id),
+      );
+      return {
+        timeTables: timeTablesAll,
+        orders: orders,
+        attributeValues,
+      };
+    }
+    return [];
   },
   getTimeTableById: async timeTableId => {
-    return await TimeTable.findOne({ where: { id: timeTableId } });
+    const timeTable = await TimeTable.findOne({ where: { id: timeTableId } }).catch(
+      err => `can't find TimeTable with id = ${timeTableId} ${err}`,
+    );
+    if (timeTable) {
+      const orders = await timeTables.getOrdersForTimeTables(timeTable.id);
+      const attributeValues = await attributesAPI.getAttributesForOrders(
+        orders.map(order => order.id),
+      );
+      return {
+        timeTable: timeTable,
+        orders: orders,
+        attributeValues,
+      };
+    }
+    return `timeTable with id = ${timeTableId} doesn't exist`;
   },
-  updateTimeTableById: async (id, obj) => {
-    return 'updateTimeTableById';
+  updateTimeTableById: async (timeTableId, obj) => {
+    return await TimeTable.update({ title: obj.title }, { where: { id: timeTableId } }).catch(
+      err => `can't update timeTable status ${err}`,
+    );
   },
-  deleteTimeTableById: async id => {
-    return 'deleteTimeTableById';
+  deleteTimeTableById: async timeTableId => {
+    return await TimeTable.destroy({
+      where: {
+        id: timeTableId,
+      },
+    })
+      .then(res =>
+        res ? 'succses delete timeTable' : `timeTable with id = ${timeTableId} doesn't exist`,
+      )
+      .catch(err => `reject delete timeTable ${err}`);
+  },
+  getOrdersForTimeTables: async timeTableIds => {
+    const timeTablesIds = Array.isArray(timeTableIds) ? timeTableIds : [timeTableIds];
+    const orders = await Order.findAll({ where: { timeTableId: timeTablesIds } }).catch(
+      err => `can't get orders ${err}`,
+    );
+    return orders;
   },
 };
 

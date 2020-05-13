@@ -10,10 +10,8 @@ const session = require('koa-session');
 const koaBody = require('koa-body');
 const pino = require('koa-pino-logger');
 const err = require('./error');
-const usersRouter = require('./routes/users-router');
-const ordersRouter = require('./routes/orders-router');
-const timetablesRouter = require('./routes/timetables-router');
-const notificationsRouter = require('./routes/notifications-router');
+const rootRouter = require('./routes/main-router');
+
 const logger = pino({ prettyPrint: true });
 
 const staticDir = path.resolve(__dirname, '..', '..', 'public');
@@ -37,14 +35,7 @@ app.use(
 
 app.use(serve(staticDir));
 app.use(koaBody());
-app.use(usersRouter.routes());
-app.use(usersRouter.allowedMethods());
-app.use(ordersRouter.routes());
-app.use(ordersRouter.allowedMethods());
-app.use(timetablesRouter.routes());
-app.use(timetablesRouter.allowedMethods());
-app.use(notificationsRouter.routes());
-app.use(notificationsRouter.allowedMethods());
+app.use(rootRouter.routes());
 app.use(err);
 
 // Default route

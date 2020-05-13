@@ -12,8 +12,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Users', // name of Target model
-          key: 'id', // key in Target model that we're referencing
+          model: 'Users',
+          key: 'id',
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
@@ -30,13 +30,6 @@ module.exports = {
         type: Sequelize.ENUM('CREATED', 'ACCEPTED', 'CANCELED'),
         allowNull: false,
       },
-      attributeTitle: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      attributeDescription: {
-        type: Sequelize.STRING,
-      },
       timeTableId: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -46,14 +39,6 @@ module.exports = {
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
       },
     });
   },

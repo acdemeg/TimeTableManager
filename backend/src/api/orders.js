@@ -1,42 +1,86 @@
-const { Order } = require('@root/models');
+const { Order, AttributeValue } = require('@root/models');
+const timeTablesAPI = require('./timetables');
+const attributesAPI = require('./attributes');
 
 const orders = {
-  getOrdersOfUser: async id => {
-    return `if (!id) return JSON.stringify([]);
-    // for each order need get good list
-    return await Order.findAll({
-      include: [{ model: Product }],
-      where: { userId: id },
-    });`;
+  updateOrderById: async (orderId, obj) => {
+    return await Order.update({ status: obj.status }, { where: { id: orderId } }).catch(
+      err => `can't update order status ${err}`,
+    );
   },
-  updateOrderById: async (id, obj) => {
-    return `const order = await orders.getOrder(id);
-    order.status = obj.status === 'Cancel' ? 'Canceled' : 'Done';
-    await order.save();
-    return 'succses updateOrderStatus';`;
+  searchInfoAboutOrders: async queryString => {
+    if (queryString.userId) {
+      const userId = Number(queryString.userId);
+      if (!isNaN(userId)) {
+        return await orders.getOrdersListByUserId(userId);
+      }
+      return 'UserId must be number';
+    }
+
+    if (queryString.timeTablesIds) {
+      const timeTablesIds = queryString.timeTablesIds
+        .slice(1, -1)
+        .split(',')
+        .map(id => Number(id));
+      return await timeTablesAPI.getTimeTables(timeTablesIds);
+    }
+
+    return [];
   },
-  searchInfoAboutOrders: async () => {
-    return 'searchInfoAboutOrders';
-  },
-  deleteOrderById: async id => {
-    return 'deleteOrderById';
+  deleteOrderById: async orderId => {
+    return await Order.destroy({
+      where: {
+        id: orderId,
+      },
+    })
+      .then(res => (res ? 'succses delete order' : `order with id = ${orderId} doesn't exist`))
+      .catch(err => `reject delete order ${err}`);
   },
   getOrdersInfoById: async orderId => {
-    return await Order.findOne({ where: { id: orderId } });
+    const order = await Order.findOne({ where: { id: orderId } }).catch(
+      err => `can't get order ${err}`,
+    );
+    if (order) {
+      return await attributesAPI.getAttributesForOrders(order);
+    }
+    return `order with id = ${orderId} doesn't exist`;
   },
   createOrder: async order => {
-    return `await Order.create({
+    const orderRecord = await Order.create({
       authorId: order.authorId,
-      total: order.total,
-    })
-      .then(orderRecord => {
-        order.products.forEach(element => {
-          element.orderId = orderRecord.id;
-        });
-        ProductsInOrder.bulkCreate(order.products);
-      })
-      .then(() => 'succses createOrder')
-      .catch(() => 'createOrder error');`;
+      startDate: order.startDate,
+      endDate: order.endDate,
+      status: order.status,
+      timeTableId: order.timeTableId,
+    }).catch(err => `create Order Error ${err}`);
+
+    order.attributeValues.forEach(attribute => {
+      attribute.orderId = orderRecord.id;
+    });
+
+    const attributes = await AttributeValue.bulkCreate(order.attributeValues).catch(
+      err => `Add attributes Error: ${err}`,
+    );
+
+    return {
+      order: orderRecord,
+      attributes: attributes,
+    };
+  },
+  getOrdersListByUserId: async userId => {
+    const ordersArr = await Order.findAll({ where: { authorId: userId } }).catch(
+      err => `can't get orders ${err}`,
+    );
+    if (ordersArr.length) {
+      const attributesArr = await attributesAPI.getAttributesForOrders(
+        ordersArr.map(order => order.id),
+      );
+      return {
+        orders: ordersArr,
+        attributeValues: attributesArr,
+      };
+    }
+    return `User with id = ${userId} haven't exist orders`;
   },
 };
 

@@ -1,50 +1,50 @@
-const { User, EmailPasswordMap } = require('@root/models');
+const { User } = require('@root/models');
 
 const users = {
   getUsers: async () => {
     return await User.findAll().catch(err => `can't get users ${err}`);
   },
   logIn: async user => {
-    return await EmailPasswordMap.findOne({
+    return await User.findOne({
       where: {
         email: user.email,
         password: user.password,
       },
     })
-      .then(res => users.getProfileById(res.userId))
+      .then(res => {
+        if (res) {
+          return users.getProfileById(res.id);
+        } else return 'invalid password or email';
+      })
       .catch(err => `reject logIn ${err}`);
   },
   register: async user => {
     return await User.create({
-      firstName: user.name,
+      name: user.name,
       email: user.email,
+      password: user.password,
     })
-      .then(userRecord => {
-        EmailPasswordMap.create({
-          email: userRecord.email,
-          password: user.password,
-          userId: userRecord.id,
-        });
-      })
       .then(() => 'succses registration')
       .catch(err => `reject registration ${err}`);
   },
   getProfileById: async userId => {
-    return await User.findOne({ where: { id: userId } });
+    return await User.findOne({ where: { id: userId } }).catch(
+      err => `can't find user with id = ${userId} ${err}`,
+    );
   },
-  updateProfileById: async (id, obj) => {
-    const user = await users.getProfileById(id).catch(err => `can't get user ${err}`);
-    user.firstName = obj.firstName;
-    user.lastName = obj.lastName;
-    user.email = obj.email;
-    await user.save().catch(err => `can't update profile ${err}`);
-    return await users.getProfileById(id).catch(err => `can't get user ${err}`);
+  updateProfileById: async (userId, obj) => {
+    return await User.update({ name: obj.name }, { where: { id: userId } }).catch(
+      err => `can't update profile ${err}`,
+    );
   },
-  deleteProfileById: async id => {
-    return 'deleteProfileById';
-  },
-  getReservationsListByUserId: async id => {
-    return 'getReservationsListByUserId';
+  deleteProfileById: async userId => {
+    return await User.destroy({
+      where: {
+        id: userId,
+      },
+    })
+      .then(res => (res ? 'succses delete profile' : `user with id = ${userId} doesn't exist`))
+      .catch(err => `reject delete profile ${err}`);
   },
 };
 

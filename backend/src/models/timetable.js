@@ -8,10 +8,13 @@ module.exports = (sequelize, DataTypes) => {
       startDate: DataTypes.DATE,
       endDate: DataTypes.DATE,
       slotSize: DataTypes.ENUM('HOUR', 'DAY', 'WEEK'),
-      attributeRequire: DataTypes.BOOLEAN,
     },
     {},
   );
-  TimeTable.associate = function(models) {};
+  TimeTable.associate = function(models) {
+    TimeTable.hasMany(models.Order);
+    TimeTable.hasMany(models.Attribute);
+    TimeTable.hasMany(models.AttributeValue);
+  };
   return TimeTable;
 };

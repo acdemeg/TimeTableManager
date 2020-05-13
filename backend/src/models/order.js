@@ -8,14 +8,14 @@ module.exports = (sequelize, DataTypes) => {
       startDate: DataTypes.DATE,
       endDate: DataTypes.DATE,
       status: DataTypes.ENUM('CREATED', 'ACCEPTED', 'CANCELED'),
-      attributeTitle: DataTypes.STRING,
-      attributeDescription: DataTypes.STRING,
       timeTableId: DataTypes.INTEGER,
     },
     {},
   );
   Order.associate = function(models) {
+    Order.hasMany(models.AttributeValue);
     Order.belongsTo(models.TimeTable);
+    Order.belongsTo(models.User);
   };
   return Order;
 };

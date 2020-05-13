@@ -1,44 +1,49 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Notifications', {
+    return queryInterface.createTable('AttributeValues', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      orderId: {
+      timeTableId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Orders',
+          model: 'TimeTables',
           key: 'id',
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      userId: {
+      attributeId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Users', // name of Target model
+          model: 'Attributes',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
+      orderId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Orders', // name of Target model
           key: 'id', // key in Target model that we're referencing
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      type: {
-        type: Sequelize.ENUM('ORDER_CREATED', 'ORDER_ACCEPTED', 'ORDER_CANCELED', 'ORDER_DELETED'),
-        allowNull: false,
-      },
-      isRead: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
+      value: {
+        type: Sequelize.STRING,
       },
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Notifications');
+    return queryInterface.dropTable('OrderValues');
   },
 };

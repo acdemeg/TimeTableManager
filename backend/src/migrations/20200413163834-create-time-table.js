@@ -24,18 +24,6 @@ module.exports = {
         type: Sequelize.ENUM('HOUR', 'DAY', 'WEEK'),
         allowNull: false,
       },
-      attributeRequire: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
     });
   },
   down: (queryInterface, Sequelize) => {

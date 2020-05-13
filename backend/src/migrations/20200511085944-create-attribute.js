@@ -1,42 +1,38 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Email_Password_Maps', {
+    return queryInterface.createTable('Attributes', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      email: {
+      title: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      password: {
+      type_attr: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      userId: {
+      isRequired: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+      },
+      timeTableId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Users', // name of Target model
+          model: 'TimeTables', // name of Target model
           key: 'id', // key in Target model that we're referencing
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Email_Password_Maps');
+    return queryInterface.dropTable('Attributes');
   },
 };

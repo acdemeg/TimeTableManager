@@ -4,6 +4,9 @@ const Sequelize = require('sequelize');
 const config = require('@root/config/config.json');
 
 const db = new Sequelize(config[process.env.NODE_ENV].url, {
+  define: {
+    timestamps: false,
+  },
   pool: {
     max: 5,
     min: 0,

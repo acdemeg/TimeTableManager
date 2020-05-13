@@ -4,12 +4,14 @@ module.exports = {
   up: queryInterface => {
     return queryInterface.bulkInsert('Users', [
       {
-        id: 1,
-        firstName: 'John',
-        lastName: 'Doe',
+        name: 'Admin',
+        email: 'admin@google.com',
+        password: 'admin_passw',
+      },
+      {
+        name: 'John Doe',
         email: 'joo@google.com',
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        password: 'user_passw',
       },
     ]);
   },

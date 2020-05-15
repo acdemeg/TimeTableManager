@@ -25,17 +25,15 @@ const storeSession = {
     const session = await Session.findOne({
       where: {
         id: key,
-      },
+      } /*  */,
       raw: true,
     });
-    console.log('Session get', session);
     if (!session) return null;
     return JSON.parse(session.sess);
   },
 
   async set(key, sess) {
     const session = JSON.stringify(sess);
-    console.log('Session set', session);
     await Session.create(
       {
         id: key,
@@ -46,7 +44,6 @@ const storeSession = {
   },
 
   async destroy(key) {
-    console.log('Session destroy', session);
     await Session.destroy({ where: { sid: key }, row: true }).then(() =>
       console.log('session destroy'),
     );

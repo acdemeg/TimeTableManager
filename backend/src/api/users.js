@@ -7,19 +7,14 @@ const users = {
   },
   logIn: async (ctx, next) => {
     await passport.authenticate('local', async function(err, user) {
-      console.log('passport.authenticate');
       if (err) {
-        console.log('authenticate error ', err);
         next(err);
       }
       if (!user) {
-        console.log('authenticate wrong email or password ', err);
         return (ctx.body = 'wrong email or password');
       }
       ctx.logIn(user, async function(err) {
-        console.log('ctx.logIn ', user);
         if (err) {
-          console.log('ctx.login error ', err);
           return next(err);
         }
         return (ctx.body = {
@@ -31,7 +26,6 @@ const users = {
     })(ctx);
   },
   logOut: async ctx => {
-    console.log('ctx.session.externalKey ', ctx.session._sessCtx.externalKey);
     ctx.session._sessCtx.passport = null;
     ctx.redirect('/');
 
@@ -39,8 +33,6 @@ const users = {
       where: { id: ctx.session._sessCtx.externalKey },
       row: true,
     });
-
-    console.log('session destroy');
   },
   register: async ctx => {
     const user = ctx.request.body;

@@ -11,10 +11,10 @@ usersRouter
     ctx.body = await users.getProfile();
   })
   .post('/login', async ctx => {
-    ctx.body = await users.logIn(ctx.request.body);
+    ctx.body = await users.logIn(ctx);
   })
   .post('/register', async ctx => {
-    ctx.body = await users.register(ctx.request.body);
+    ctx.body = await users.register(ctx);
   })
   .get('/:id', async ctx => {
     ctx.body = await users.getProfileById(ctx.params.id);

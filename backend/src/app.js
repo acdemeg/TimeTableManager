@@ -6,35 +6,67 @@ const path = require('path');
 const Koa = require('koa');
 const send = require('koa-send');
 const serve = require('koa-static');
-const session = require('koa-session');
 const koaBody = require('koa-body');
 const pino = require('koa-pino-logger');
 const err = require('./error');
 const rootRouter = require('./routes/main-router');
+const passport = require('./passport');
+const session = require('koa-session');
+const { Session } = require('@root/models');
 
 const logger = pino({ prettyPrint: true });
 
 const staticDir = path.resolve(__dirname, '..', '..', 'public');
 const app = new Koa();
-app.keys = [' secret key '];
+app.keys = ['secret'];
 
-app.use(logger);
-app.use(
-  session(
-    {
-      key: 'sessionId',
-    },
-    app,
-  ),
-);
-/*
-  Can pass options.store object how {
-  db witch get, set, destroy methods
-}
-*/
+const storeSession = {
+  async get(key) {
+    const session = await Session.findOne({
+      where: {
+        sid: key,
+      },
+      raw: true,
+    });
+    console.log('Session get', session);
+    if (!session) return null;
+    return JSON.parse(session.sess);
+  },
+
+  async set(key, sess) {
+    const session = JSON.stringify(sess);
+    console.log('Session set', session);
+    await Session.create(
+      {
+        sid: key,
+        sess: session,
+      },
+      { raw: true },
+    ).then(() => console.log('session saved'));
+  },
+
+  async destroy(key) {
+    console.log('Session destroy', session);
+    await Session.destroy({ where: { sid: key }, row: true }).then(() =>
+      console.log('session destroy'),
+    );
+  },
+};
+
+const CONFIG = {
+  key: 'koa.sess',
+  maxAge: 3600000,
+  httpOnly: true,
+  renew: true,
+  store: storeSession,
+};
 
 app.use(serve(staticDir));
 app.use(koaBody());
+app.use(session(CONFIG, app));
+app.use(logger);
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(rootRouter.routes());
 app.use(err);
 

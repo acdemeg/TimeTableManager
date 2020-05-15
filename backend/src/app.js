@@ -10,7 +10,7 @@ const koaBody = require('koa-body');
 const pino = require('koa-pino-logger');
 const err = require('./error');
 const rootRouter = require('./routes/main-router');
-const passport = require('./passport');
+const { passport } = require('./passport');
 const session = require('koa-session');
 const { Session } = require('@root/models');
 
@@ -24,7 +24,7 @@ const storeSession = {
   async get(key) {
     const session = await Session.findOne({
       where: {
-        sid: key,
+        id: key,
       },
       raw: true,
     });
@@ -38,7 +38,7 @@ const storeSession = {
     console.log('Session set', session);
     await Session.create(
       {
-        sid: key,
+        id: key,
         sess: session,
       },
       { raw: true },
@@ -55,7 +55,7 @@ const storeSession = {
 
 const CONFIG = {
   key: 'koa.sess',
-  maxAge: 3600000,
+  maxAge: 36000,
   httpOnly: true,
   renew: true,
   store: storeSession,

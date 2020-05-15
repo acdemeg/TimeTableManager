@@ -21,6 +21,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      role: {
+        type: Sequelize.ENUM('USER', 'ADMIN'),
+        allowNull: false,
+      },
     });
   },
   down: queryInterface => {

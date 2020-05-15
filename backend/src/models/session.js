@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => {
   const Session = sequelize.define(
     'Session',
     {
-      sid: DataTypes.UUID,
       sess: DataTypes.JSONB,
     },
     {},

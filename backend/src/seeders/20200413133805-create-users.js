@@ -7,11 +7,19 @@ module.exports = {
         name: 'Admin',
         email: 'admin@google.com',
         password: 'admin_passw',
+        role: 'ADMIN',
       },
       {
         name: 'John Doe',
         email: 'joo@google.com',
-        password: 'user_passw',
+        password: 'john_passw',
+        role: 'USER',
+      },
+      {
+        name: 'Michail',
+        email: 'micha@mail.ru',
+        password: 'mich_passw',
+        role: 'USER',
       },
     ]);
   },

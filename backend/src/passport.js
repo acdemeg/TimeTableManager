@@ -2,30 +2,37 @@ const passport = require('koa-passport');
 const LocalStrategy = require('passport-local');
 const { User } = require('@root/models');
 
-// const userDB = {
-//   id: 1,
-//   email: "admin@google.com",
-//   password: "admin_passw"
-// }
+const auth = (ctx, next) => {
+  console.log('isAuthenticated ', ctx.session);
+  if (ctx.isAuthenticated()) {
+    next();
+  } else ctx.redirect('/');
+};
+
+const isAdmin = (ctx, next) => {
+  console.log('isAdmin ', ctx.session.passport);
+  if (ctx.session.passport.user.role === 'ADMIN') {
+    next();
+  } else ctx.redirect('/');
+};
 
 passport.serializeUser((user, done) => {
   console.log('Serialization', user);
-  done(null, user.id);
+  done(null, { id: user.id, role: user.role });
 });
 
-passport.deserializeUser(async (userId, done) => {
-  console.log('Deserialization', userId);
-  let user = await User.findOne({
+passport.deserializeUser(async (user, done) => {
+  console.log('Deserialization', user);
+  let userDB = await User.findOne({
     where: {
-      id: userId,
+      id: user.id,
     },
     raw: true,
   });
-  console.log('userDB', user);
-  console.log('userid', userId);
+  console.log('userDB', userDB);
 
-  user = user.id === userId ? user : false;
-  done(null, user);
+  userDB = userDB.id === user.id ? userDB : false;
+  done(null, userDB);
 });
 
 passport.use(
@@ -53,4 +60,6 @@ passport.use(
   }),
 );
 
-module.exports = passport;
+module.exports.passport = passport;
+module.exports.auth = auth;
+module.exports.isAdmin = isAdmin;

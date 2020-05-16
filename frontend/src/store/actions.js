@@ -89,30 +89,21 @@ const LOG_OUT = () => ({
   type: actionsEnum.LOG_OUT,
 });
 
-const fetchProfile = (dispatch, userId) => {
-  console.log('fetchProfile', userId);
-  appServiceData
-    .getProfileOfUser(userId)
-    .then(data => dispatch(PROFILE_LOADED(data)))
-    .catch(err => dispatch(PROFILE_ERROR(err)));
-};
-
 const LOGIN = (event, dispatch) => {
   event.preventDefault();
 
   const formDate = new FormData(document.getElementById('LogInForm'));
 
-  const user = {
+  const userRegData = {
     email: formDate.get('email'),
     password: formDate.get('password'),
   };
 
-  appServiceData.logInUser(user).then(res => {
-    console.log('LOGIN ACTION', res);
-    if (res) {
+  appServiceData.logInUser(userRegData).then(user => {
+    if (user) {
       dispatch(SHOW_ALERT(scenesEnum.LOG_IN, messages.LOG_IN));
-      dispatch(LOG_IN(res));
-      fetchProfile(dispatch, res);
+      dispatch(LOG_IN(user.id));
+      dispatch(PROFILE_LOADED(user));
     } else {
       dispatch(SHOW_ALERT(scenesEnum.LOG_IN, messages.LOG_IN_ERROR, 'error'));
     }
@@ -128,12 +119,7 @@ const REGISTER = (event, dispatch) => {
     password: formDate.get('password'),
   };
 
-  console.log('REGISTER ACTION', user);
-
   appServiceData.regUser(user).then(res => {
-    console.log('REGISTER ACTION');
-    console.log(res);
-
     if (res) {
       dispatch(SHOW_ALERT(scenesEnum.REG, messages.REG));
     } else dispatch(SHOW_ALERT(scenesEnum.REG, messages.REG_ERROR, 'error'));
@@ -150,7 +136,6 @@ const fetchTimeTables = dispatch => () => {
 
 const fetchOrders = (dispatch, userId) => {
   dispatch(ORDERS_REQUESTED());
-  console.log('fetchOrders', userId);
   appServiceData
     .getOrdersOfUser(userId)
     .then(data => dispatch(ORDERS_LOADED(data)))
@@ -182,7 +167,6 @@ const UPDATE_ORDER = (id, newStatus, dispatch, userId) => {
 export {
   fetchTimeTables,
   fetchOrders,
-  fetchProfile,
   SHOW_ALERT,
   HIDE_ALERT,
   OPEN_MODAL_PROFILE,
@@ -192,6 +176,7 @@ export {
   CANCEL_MODAL_ORDERS,
   SUBMIT_MODAL_ORDERS,
   REJECT_MODAL_ORDERS,
+  PROFILE_ERROR,
   MAKE_ORDER,
   UPDATE_ORDER,
   LOG_IN,

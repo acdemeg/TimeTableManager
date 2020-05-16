@@ -12,7 +12,7 @@ function Navigation({ isLoggedIn, name }) {
   } else navBar = <NavigationForUnLogInUsers />;
 
   return (
-    <div>
+    <div className={styles.wrapper}>
       <nav className={`panel-heading ${styles.navBar}`}>
         <div>
           <img src="/logo.png" alt="logo" width="50px" height="50px" />

@@ -1,13 +1,57 @@
 import React from 'react';
 import styles from './TimeTable.scss';
+import { typeModalEnum } from '../../constants';
 
-const TimeTableCell = ({ attributeTitle, attributeDescription }) => {
+const Cell = ({ styleCell, openModal, typeModal, date, attributeValues }) => {
   return (
-    <div>
-      <b>{attributeTitle}</b>
-      &emsp;
-      <p>{attributeDescription}</p>
+    <div
+      role="gridcell"
+      tabIndex={0} // for lint
+      className={styleCell}
+      onKeyDown={() =>
+        // for lint
+        openModal({
+          type: typeModal,
+          title: date,
+        })
+      }
+      onClick={() =>
+        openModal({
+          type: typeModal,
+          title: date,
+        })
+      }
+    >
+      {attributeValues ? (
+        <div>
+          <b>{attributeValues[0] ? attributeValues[0].value : null}</b>
+          <p>{attributeValues[1] ? attributeValues[1].value : null}</p>
+        </div>
+      ) : null}
     </div>
+  );
+};
+
+const TimeTableCell = ({ order, openModal, date }) => {
+  if (order) {
+    const { attributeValues } = order;
+    return (
+      <Cell
+        styleCell={styles.cellActive}
+        openModal={openModal}
+        typeModal={typeModalEnum.INFO_ORDER}
+        attributeValues={attributeValues}
+        date={date}
+      />
+    );
+  }
+  return (
+    <Cell
+      styleCell={styles.cell}
+      openModal={openModal}
+      typeModal={typeModalEnum.CREATE_ORDER}
+      date={date}
+    />
   );
 };
 

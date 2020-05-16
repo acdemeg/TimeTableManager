@@ -10,6 +10,34 @@ class DateUtils {
     this.time = period;
   }
 
+  getOrdersForColumn(orders) {
+    if (this.slotSize === timeTableTypeEnum.HOUR) {
+      const endDay = this.time.getTime() + millisecInDay;
+      const ordersColumn = orders.filter(
+        order =>
+          Date.parse(order.endDate) <= endDay && Date.parse(order.startDate) >= this.time.getTime(),
+      );
+      return ordersColumn;
+    }
+
+    const endWeek = this.time.getTime() + millisecInWeek;
+    const ordersColumn = orders.filter(
+      order =>
+        Date.parse(order.endDate) <= endWeek && Date.parse(order.startDate) >= this.time.getTime(),
+    );
+    return ordersColumn;
+  }
+
+  getOrderForCell(orders, numberCell) {
+    if (this.slotSize === timeTableTypeEnum.HOUR) {
+      const cellTime = this.time.date.getTime() + millisecInHour * (numberCell - 1);
+      return orders.find(order => Date.parse(order.startDate) === cellTime);
+    }
+
+    const cellTime = this.time.date.start.getTime() + millisecInDay * (numberCell - 1);
+    return orders.find(order => Date.parse(order.startDate) === cellTime);
+  }
+
   getStartPeriodColumn() {
     return {
       string: `${this.time.getDate()}

@@ -28,12 +28,14 @@ const TimeTable = ({
   handleReject,
   titleModal,
   typeModal,
+  // orderedBy,
+  // nameEvent,
   notifications,
 }) => {
   const params = useParams();
   const scheduleId = Number(params.id);
   const timeTable = timeTables.filter(val => val.id === scheduleId)[0];
-  const { title, startDate, endDate, slotSize } = timeTable;
+  const { title, startDate, endDate, slotSize, orders } = timeTable;
   const startDateObj = new Date(Date.parse(startDate));
   const endDateObj = new Date(Date.parse(endDate));
   const millisecInWeek = 604800000;
@@ -68,6 +70,7 @@ const TimeTable = ({
           countColumns={countColumns}
           startDate={startDateObj}
           openModal={openModal}
+          orders={orders}
         />
       </div>
       {!isOpenModal ? null : (

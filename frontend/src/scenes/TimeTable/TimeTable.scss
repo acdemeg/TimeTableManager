@@ -11,7 +11,13 @@
   border-color: gray;
   min-width: 250px;
   min-height: 50px;
+  padding-left: 5px;
   cursor: pointer;
+}
+
+.cellActive {
+  @extend .cell;
+  background-color: darkseagreen;
 }
 
 .timeCell {

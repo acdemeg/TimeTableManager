@@ -14,6 +14,14 @@ const { passport } = require('./passport');
 const session = require('koa-session');
 const { Session } = require('@root/models');
 
+/**
+ *
+ *  Есть Вопрос в user-router
+ *
+ *
+ *
+ */
+
 const logger = pino({ prettyPrint: true });
 
 const staticDir = path.resolve(__dirname, '..', '..', 'public');

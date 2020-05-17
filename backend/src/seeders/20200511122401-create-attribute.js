@@ -10,8 +10,8 @@ module.exports = {
         timeTableId: 1,
       },
       {
-        title: 'Count people',
-        type_attr: 'NUMBER',
+        title: 'Description',
+        type_attr: 'STRING',
         isRequired: false,
         timeTableId: 1,
       },

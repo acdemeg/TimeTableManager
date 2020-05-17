@@ -27,12 +27,13 @@ const users = {
   },
   logOut: async ctx => {
     ctx.session._sessCtx.passport = null;
-    ctx.redirect('/');
 
-    await Session.destroy({
+    const res = await Session.destroy({
       where: { id: ctx.session._sessCtx.externalKey },
       row: true,
     });
+
+    return res;
   },
   register: async ctx => {
     const user = ctx.request.body;
@@ -44,7 +45,7 @@ const users = {
       .then(() => 'succses registration')
       .catch(err => {
         ctx.status = 500;
-        ctx.response.send(`reject registration ${err}`);
+        return `reject registration ${err}`;
       });
   },
   getProfileById: async userId => {

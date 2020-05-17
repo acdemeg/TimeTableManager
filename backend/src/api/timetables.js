@@ -31,11 +31,30 @@ const timeTables = {
       const attributeValues = await attributesAPI.getAttributesForOrders(
         orders.map(order => order.id),
       );
-      return {
-        timeTables: timeTablesAll,
-        orders: orders,
-        attributeValues,
-      };
+
+      return timeTablesAll.map(timeTable => {
+        return {
+          id: timeTable.id,
+          title: timeTable.title,
+          startDate: timeTable.startDate,
+          endDate: timeTable.endDate,
+          slotSize: timeTable.slotSize,
+          orders: orders
+            .filter(order => order.timeTableId === timeTable.id)
+            .map(order => {
+              return {
+                id: order.id,
+                authorId: order.authorId,
+                authorName: order.authorName,
+                startDate: order.startDate,
+                endDate: order.endDate,
+                status: order.status,
+                timeTableId: order.timeTableId,
+                attributeValues: attributeValues.filter(value => value.orderId === order.id),
+              };
+            }),
+        };
+      });
     }
     return [];
   },

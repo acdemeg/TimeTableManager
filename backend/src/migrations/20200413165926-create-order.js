@@ -18,6 +18,10 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
+      authorName: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       startDate: {
         type: Sequelize.DATE,
         allowNull: false,

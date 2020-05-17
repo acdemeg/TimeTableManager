@@ -23,6 +23,7 @@ module.exports = {
       },
       role: {
         type: Sequelize.ENUM('USER', 'ADMIN'),
+        defaultValue: 'USER',
         allowNull: false,
       },
     });

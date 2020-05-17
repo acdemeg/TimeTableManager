@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     'Order',
     {
       authorId: DataTypes.INTEGER,
+      authorName: DataTypes.STRING,
       startDate: DataTypes.DATE,
       endDate: DataTypes.DATE,
       status: DataTypes.ENUM('CREATED', 'ACCEPTED', 'CANCELED'),

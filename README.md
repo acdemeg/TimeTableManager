@@ -5,10 +5,9 @@ If you are a student of the school - please replace the content of this file wit
 
 ## How to run app:
 1. `docker-compose up -d`
-2. restore DB from dump, from backside folder run command: 
-    `docker-compose exec db sh -c 'exec psql -U postgres time_tables < /backup/dump.sql'`
-    or run migrations -> than run seeders
-3. Go to http://localhost
+2. cd ./backside/backend/src
+3. npx sequelize-cli db:migrate ->  npx sequelize-cli db:seed:all
+4. Go to http://localhost
 
 ## Requirements:
 1. Node v12.x or higher

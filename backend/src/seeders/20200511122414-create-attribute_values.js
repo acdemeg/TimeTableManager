@@ -45,6 +45,12 @@ module.exports = {
         orderId: 3,
         value: 'Count people 25',
       },
+      {
+        timeTableId: 2,
+        attributeId: 1,
+        orderId: 6,
+        value: 'CodeWars',
+      },
     ]);
   },
 

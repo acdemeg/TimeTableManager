@@ -1,4 +1,4 @@
-const { TimeTable, Order } = require('@root/models');
+const { TimeTable, Order, Attribute } = require('@root/models');
 const attributesAPI = require('./attributes');
 
 const timeTables = {
@@ -14,6 +14,16 @@ const timeTables = {
     ).catch(err => `can't add TimeTable ${err}`);
   },
   getTimeTables: async timeTablesIds => {
+    /**
+     *
+     *  приходтися делать несклько запросов и потом вручную собирать данные т.к.
+     *  если испльзовать опцию { include: [ Model1, Model2, ...]} то получается
+     *  следующая ошибка:
+     *  can't get TimeTables SequelizeEagerLoadingError: Attribute is not associated to TimeTable!
+     *  или подобная хотя все отношения моделей прописасны в /models и они связанны внешним ключами...?
+     *
+     */
+
     let timeTablesAll;
 
     if (timeTablesIds) {
@@ -28,6 +38,7 @@ const timeTables = {
       const orders = await timeTables.getOrdersForTimeTables(
         timeTablesAll.map(timeTable => timeTable.id),
       );
+      const attributes = await timeTables.getAttributes();
       const attributeValues = await attributesAPI.getAttributesForOrders(
         orders.map(order => order.id),
       );
@@ -39,6 +50,7 @@ const timeTables = {
           startDate: timeTable.startDate,
           endDate: timeTable.endDate,
           slotSize: timeTable.slotSize,
+          attributes: attributes.filter(attribute => attribute.timeTableId === timeTable.id),
           orders: orders
             .filter(order => order.timeTableId === timeTable.id)
             .map(order => {
@@ -57,6 +69,9 @@ const timeTables = {
       });
     }
     return [];
+  },
+  getAttributes: async () => {
+    return await Attribute.findAll().catch(err => `can't get Attributes ${err}`);
   },
   getTimeTableById: async timeTableId => {
     const timeTable = await TimeTable.findOne({ where: { id: timeTableId } }).catch(

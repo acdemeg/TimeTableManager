@@ -33,7 +33,7 @@ module.exports = {
         startDate: new Date(Date.parse('2020-06-08T18:00:00.000Z')),
         endDate: new Date(Date.parse('2020-06-08T19:00:00.000Z')),
         status: 'CREATED',
-        timeTableId: 1,
+        timeTableId: 4,
       },
       {
         authorId: 3,
@@ -41,7 +41,7 @@ module.exports = {
         startDate: new Date(Date.parse('2020-09-03T01:00:00.000Z')),
         endDate: new Date(Date.parse('2020-09-03T02:00:00.000Z')),
         status: 'CREATED',
-        timeTableId: 1,
+        timeTableId: 8,
       },
       {
         authorId: 2,
@@ -49,7 +49,7 @@ module.exports = {
         startDate: new Date(Date.parse('2020-02-22T00:00:00.000Z')),
         endDate: new Date(Date.parse('2020-02-22T01:00:00.000Z')),
         status: 'CREATED',
-        timeTableId: 1,
+        timeTableId: 2,
       },
     ]);
   },

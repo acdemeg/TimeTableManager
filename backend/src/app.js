@@ -17,7 +17,7 @@ const { Session } = require('@root/models');
 /**
  *
  *  Есть Вопрос в user-router
- *
+ *  и в api/timetables.js
  *
  *
  */

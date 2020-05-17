@@ -29,13 +29,13 @@ module.exports = {
       },
       {
         timeTableId: 4,
-        attributeId: 1,
+        attributeId: 4,
         orderId: 5,
         value: 'WCG',
       },
       {
         timeTableId: 8,
-        attributeId: 1,
+        attributeId: 5,
         orderId: 4,
         value: 'ESL',
       },
@@ -47,7 +47,7 @@ module.exports = {
       },
       {
         timeTableId: 2,
-        attributeId: 1,
+        attributeId: 3,
         orderId: 6,
         value: 'CodeWars',
       },

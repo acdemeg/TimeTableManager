@@ -33,7 +33,7 @@ const storeSession = {
     const session = await Session.findOne({
       where: {
         id: key,
-      } /*  */,
+      },
       raw: true,
     });
     if (!session) return null;

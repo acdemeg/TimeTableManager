@@ -15,6 +15,30 @@ module.exports = {
         isRequired: false,
         timeTableId: 1,
       },
+      {
+        title: 'Event',
+        type_attr: 'STRING',
+        isRequired: true,
+        timeTableId: 2,
+      },
+      {
+        title: 'Measure',
+        type_attr: 'STRING',
+        isRequired: true,
+        timeTableId: 4,
+      },
+      {
+        title: 'Arrangement',
+        type_attr: 'STRING',
+        isRequired: true,
+        timeTableId: 8,
+      },
+      {
+        title: 'Date',
+        type_attr: 'DATE',
+        isRequired: false,
+        timeTableId: 2,
+      },
     ]);
   },
 

@@ -32,6 +32,7 @@ module.exports = {
       },
       status: {
         type: Sequelize.ENUM('CREATED', 'ACCEPTED', 'CANCELED'),
+        defaultValue: 'CREATED',
         allowNull: false,
       },
       timeTableId: {

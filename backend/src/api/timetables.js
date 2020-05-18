@@ -3,7 +3,7 @@ const attributesAPI = require('./attributes');
 
 const timeTables = {
   addTimeTable: async timeTable => {
-    return await TimeTable.create(
+    const timeTableDB = await TimeTable.create(
       {
         title: timeTable.title,
         startDate: timeTable.startDate,
@@ -12,6 +12,21 @@ const timeTables = {
       },
       { raw: true },
     ).catch(err => `can't add TimeTable ${err}`);
+
+    timeTable.attributes = timeTable.attributes.map(attribute => {
+      return {
+        ...attribute,
+        timeTableId: timeTableDB.id,
+      };
+    });
+
+    const attributes = await Attribute.bulkCreate(timeTable.attributes).catch(
+      err => `can't add Attributes ${err}`,
+    );
+
+    if (timeTableDB.id && attributes[0].id) {
+      return 'success';
+    } else return 'error';
   },
   getTimeTables: async timeTablesIds => {
     /**

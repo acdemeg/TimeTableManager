@@ -10,7 +10,7 @@ const koaBody = require('koa-body');
 const pino = require('koa-pino-logger');
 const err = require('./error');
 const rootRouter = require('./routes/main-router');
-const { passport } = require('./passport');
+// const { passport } = require('./passport');
 const session = require('koa-session');
 const { Session } = require('@root/models');
 
@@ -70,8 +70,8 @@ app.use(serve(staticDir));
 app.use(koaBody());
 app.use(session(CONFIG, app));
 app.use(logger);
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 app.use(rootRouter.routes());
 app.use(err);
 

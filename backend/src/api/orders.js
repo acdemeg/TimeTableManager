@@ -48,9 +48,9 @@ const orders = {
   createOrder: async order => {
     const orderRecord = await Order.create({
       authorId: order.authorId,
+      authorName: order.authorName,
       startDate: order.startDate,
       endDate: order.endDate,
-      status: order.status,
       timeTableId: order.timeTableId,
     }).catch(err => `create Order Error ${err}`);
 
@@ -62,10 +62,9 @@ const orders = {
       err => `Add attributes Error: ${err}`,
     );
 
-    return {
-      order: orderRecord,
-      attributes: attributes,
-    };
+    if (orderRecord.id && attributes[0].id) {
+      return 'success';
+    } else return 'error';
   },
   getOrdersListByUserId: async userId => {
     const ordersArr = await Order.findAll({ where: { authorId: userId } }).catch(

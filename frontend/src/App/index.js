@@ -12,10 +12,10 @@ import Notificatons from '../scenes/Announcement';
 import Navigation from './Navbar';
 import './styles.css';
 
-const App = ({ isLoggedIn, role }) => {
+const App = ({ isLoggedIn, role, name }) => {
   return (
     <>
-      <Navigation />
+      <Navigation isLoggedIn={isLoggedIn} role={role} name={name} />
       <Switch>
         <Route path="/" exact component={TimeTables} />
         <Route
@@ -25,7 +25,10 @@ const App = ({ isLoggedIn, role }) => {
         />
         <Route path="/timeTable/:id" component={TimeTable} />
         <Route path="/timeline" component={isLoggedIn ? Timeline : null} />
-        <Route path="/notifications" component={isLoggedIn ? Notificatons : null} />
+        <Route
+          path="/notifications"
+          component={isLoggedIn && role === 'ADMIN' ? Notificatons : null}
+        />
         <Route path="/profile" component={isLoggedIn ? Profile : null} />
         <Route path="/registration" component={Registration} />
         <Route path="/signIn" component={SignIn} />
@@ -34,9 +37,10 @@ const App = ({ isLoggedIn, role }) => {
   );
 };
 
-const mapStateToProps = ({ authorization: { isLoggedIn }, profile: { role } }) => ({
+const mapStateToProps = ({ authorization: { isLoggedIn }, profile: { name, role } }) => ({
   isLoggedIn,
   role,
+  name,
 });
 
 export default connect(mapStateToProps, null)(App);

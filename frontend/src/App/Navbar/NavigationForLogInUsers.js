@@ -3,13 +3,15 @@ import styles from './Navbar.scss';
 import NavLinkComponent from './NavLinkComponent';
 import LogOut from './LogOut';
 
-function NavigationForLogInUsers({ userName = 'username' }) {
+function NavigationForLogInUsers({ userName = 'username', userRole }) {
   return (
     <>
       <ul>
         <NavLinkComponent path="/" title="Timetables" />
         <NavLinkComponent path="/timeline" title="Timeline" />
-        <NavLinkComponent path="/notifications" title="Notificatons" />
+        {userRole === 'ADMIN' ? (
+          <NavLinkComponent path="/notifications" title="Notificatons" />
+        ) : null}
       </ul>
       <ul className={styles.right}>
         <NavLinkComponent path="/profile" title={userName} />

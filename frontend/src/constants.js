@@ -32,6 +32,12 @@ const scenesEnum = Object.freeze({
   REG: 'Reg',
 });
 
+const orderStatusEnum = Object.freeze({
+  CREATED: 'CREATED',
+  ACCEPTED: 'ACCEPTED',
+  CANCELED: 'CANCELED',
+});
+
 const typeModalEnum = Object.freeze({
   NAME: 'name_redact',
   EMAIL: 'email_redact',
@@ -64,9 +70,18 @@ const messages = Object.freeze({
   CREATE_TIME_TABLE_ERROR: 'Create timetable is failed',
   REG_ERROR: 'Registraton failed',
   ORDER_ADDED: 'You order added',
-  ORDER_ACCEPTED: 'You accetp this order',
-  ORDER_REJECTED: 'You reject this order',
   ORDER_ADDED_ERROR: 'You order do not added',
+  ORDER_REJECTED: 'You reject this order',
+  ORDER_REJECTED_ERROR: "Can't reject this order",
+  ORDER_ACCEPTED: 'You accetp this order',
 });
 
-export { actionsEnum, scenesEnum, timeTableTypeEnum, typeModalEnum, messages, attributeTypeEnum };
+export {
+  actionsEnum,
+  scenesEnum,
+  timeTableTypeEnum,
+  typeModalEnum,
+  messages,
+  attributeTypeEnum,
+  orderStatusEnum,
+};

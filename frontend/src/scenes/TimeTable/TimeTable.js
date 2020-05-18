@@ -21,17 +21,14 @@ const TimeTableDetailField = ({ fieldName, info }) => {
 
 const TimeTable = ({
   timeTables,
-  isOpenModal,
   openModal,
   handleCancel,
   orderSubmit,
-  handleReject,
-  titleModal,
-  typeModal,
-  orderedBy,
-  nameEvent,
+  orderReject,
   notifications,
   profile,
+  isLoggedIn,
+  orders: { isOpenModal, nameEvent, orderId, orderedBy, titleModal, typeModal },
 }) => {
   const params = useParams();
   const scheduleId = Number(params.id);
@@ -72,6 +69,7 @@ const TimeTable = ({
           startDate={startDateObj}
           openModal={openModal}
           orders={orders}
+          profile={profile}
         />
       </div>
       {!isOpenModal ? null : (
@@ -80,11 +78,13 @@ const TimeTable = ({
           typeModal={typeModal}
           onCancel={handleCancel}
           onSubmit={orderSubmit}
-          onReject={handleReject}
+          onReject={orderReject}
           orderedBy={orderedBy}
           nameEvent={nameEvent}
+          orderId={orderId}
           attributes={attributes}
           profile={profile}
+          isLoggedIn={isLoggedIn}
           slotSize={slotSize}
           timeTableId={id}
         />

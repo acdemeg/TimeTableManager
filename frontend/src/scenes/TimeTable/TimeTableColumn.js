@@ -2,7 +2,7 @@ import React from 'react';
 import { TimeTableCell, TimeCell } from './TimeTableCell';
 import DateUtils from './date_utils';
 
-const TimeTableColumn = ({ orders, period, countCell, openModal, slotSize }) => {
+const TimeTableColumn = ({ orders, period, countCell, openModal, slotSize, profile }) => {
   const rows = [];
   const date = new DateUtils(slotSize, period);
   rows.push(<TimeCell time={period.string} key={0} />);
@@ -14,6 +14,7 @@ const TimeTableColumn = ({ orders, period, countCell, openModal, slotSize }) => 
         openModal={openModal}
         order={date.getOrderForCell(orders, i)}
         date={date.getPeriodForCell(i)}
+        profile={profile}
       />,
     );
   }

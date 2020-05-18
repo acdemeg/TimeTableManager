@@ -5,11 +5,9 @@ import ErrorIndicator from '../Error-boundry/Error-indicator';
 import {
   OPEN_MODAL_ORDER,
   CANCEL_MODAL_ORDER,
-  REJECT_MODAL_ORDER,
-  SHOW_ALERT,
   CREATE_ORDER,
+  REJECT_ORDER,
 } from '../../store/actions';
-import { scenesEnum } from '../../constants';
 
 const Wrapped = (View, fetchAction) => {
   const WithData = props => {
@@ -31,26 +29,27 @@ const Wrapped = (View, fetchAction) => {
 
   const mapStateToProps = ({
     timeTablesList: { timeTables, loading, error },
-    orders: { isOpenModal, nameEvent, orderedBy, titleModal, typeModal },
+    authorization: { isLoggedIn },
+    orders,
     profile,
     notifications,
   }) => ({
     timeTables,
     loading,
     error,
-    isOpenModal,
-    titleModal,
-    typeModal,
-    nameEvent,
-    orderedBy,
+    orders,
     notifications,
     profile,
+    isLoggedIn,
   });
 
   const mapDispatchToProps = dispatch => ({
     fetchData: fetchAction(dispatch),
     openModal: ({ type, title, orderInfo }) => dispatch(OPEN_MODAL_ORDER(type, title, orderInfo)),
-    handleCancel: () => dispatch(CANCEL_MODAL_ORDER()),
+    handleCancel: event => {
+      event.preventDefault();
+      dispatch(CANCEL_MODAL_ORDER());
+    },
     orderSubmit: (event, alertText, attributes, profile, timeOrder, timeTableId, slotSize) =>
       CREATE_ORDER(
         event,
@@ -62,10 +61,7 @@ const Wrapped = (View, fetchAction) => {
         slotSize,
         dispatch,
       ),
-    handleReject: alertText => {
-      dispatch(REJECT_MODAL_ORDER());
-      dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, alertText));
-    },
+    orderReject: (event, orderId) => REJECT_ORDER(event, orderId, dispatch),
   });
 
   return connect(mapStateToProps, mapDispatchToProps)(WithData);

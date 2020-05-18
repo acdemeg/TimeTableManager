@@ -1,4 +1,10 @@
-import { timeTableTypeEnum, actionsEnum, scenesEnum, messages } from '../constants';
+import {
+  timeTableTypeEnum,
+  orderStatusEnum,
+  actionsEnum,
+  scenesEnum,
+  messages,
+} from '../constants';
 import appServiceData from '../App/appServiceData';
 
 const TIME_TABLES_LOADED = newTimeTables => ({
@@ -63,10 +69,11 @@ const SUBMIT_MODAL_PROFILE = data => ({
 });
 
 const OPEN_MODAL_ORDER = (type, title, orderInfo) => {
-  const { orderedBy, nameEvent } = orderInfo;
+  const { orderId, orderedBy, nameEvent } = orderInfo;
+  console.log(orderInfo);
   return {
     type: actionsEnum.OPEN_MODAL_ORDER,
-    payload: { type, title, orderedBy, nameEvent },
+    payload: { type, title, orderId, orderedBy, nameEvent },
   };
 };
 
@@ -125,6 +132,17 @@ const REGISTER = (event, dispatch) => {
     if (res) {
       dispatch(SHOW_ALERT(scenesEnum.REG, messages.REG));
     } else dispatch(SHOW_ALERT(scenesEnum.REG, messages.REG_ERROR, 'error'));
+  });
+};
+
+const REJECT_ORDER = (event, orderId, dispatch) => {
+  event.preventDefault();
+  console.log(orderId);
+  appServiceData.updateOrder(orderId, orderStatusEnum.CANCELED).then(res => {
+    if (res) {
+      dispatch(REJECT_MODAL_ORDER());
+      dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_REJECTED));
+    } else dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_REJECTED_ERROR, 'error'));
   });
 };
 
@@ -274,4 +292,5 @@ export {
   LOGIN,
   CREATE_TIME_TABLE,
   CREATE_ORDER,
+  REJECT_ORDER,
 };

@@ -15,9 +15,19 @@
   cursor: pointer;
 }
 
-.cellActive {
+.orderAccepted {
   @extend .cell;
   background-color: darkseagreen;
+}
+
+.orderCanceled {
+  @extend .cell;
+  background-color: crimson;
+}
+
+.orderCreated {
+  @extend .cell;
+  background-color: darkgray;
 }
 
 .timeCell {

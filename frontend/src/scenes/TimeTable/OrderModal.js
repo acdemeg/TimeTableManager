@@ -11,9 +11,11 @@ const OrderModal = ({
   onSubmit,
   onReject,
   orderedBy,
+  orderId,
   nameEvent,
   attributes,
   profile,
+  isLoggedIn,
   slotSize,
   timeTableId,
 }) => {
@@ -24,6 +26,10 @@ const OrderModal = ({
 
     return messages.ORDER_ACCEPTED;
   };
+
+  if (typeModal === typeModalEnum.CREATE_ORDER || typeModal === typeModalEnum.ACCEPT_ORDER) {
+    if (!isLoggedIn) return null;
+  }
 
   return (
     <form
@@ -48,7 +54,7 @@ const OrderModal = ({
           <div className={style.modalFooter}>
             <ModalFooterForm
               typeModal={typeModal}
-              onReject={() => onReject(messages.ORDER_REJECTED)}
+              onReject={event => onReject(event, orderId)}
               onCancel={onCancel}
             />
           </div>

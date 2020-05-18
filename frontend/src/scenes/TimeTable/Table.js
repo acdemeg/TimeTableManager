@@ -5,7 +5,7 @@ import { timeTableTypeEnum } from '../../constants';
 import { TimeCell } from './TimeTableCell';
 import DateUtils from './date_utils';
 
-const Table = ({ slotSize, countColumns, startDate, openModal, orders }) => {
+const Table = ({ slotSize, countColumns, startDate, openModal, orders, profile }) => {
   const columns = [];
   const countCell = slotSize === timeTableTypeEnum.DAY ? 7 : 24;
   const date = new DateUtils(slotSize, startDate);
@@ -50,6 +50,7 @@ const Table = ({ slotSize, countColumns, startDate, openModal, orders }) => {
           countCell={countCell}
           openModal={openModal}
           slotSize={slotSize}
+          profile={profile}
         />
       </div>,
     );

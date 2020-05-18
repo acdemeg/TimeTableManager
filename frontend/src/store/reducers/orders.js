@@ -3,6 +3,7 @@ import { actionsEnum, typeModalEnum } from '../../constants';
 const updateOrders = (state, action) => {
   if (state === undefined) {
     return {
+      orderId: null,
       isOpenModal: false,
       orderedBy: '',
       nameEvent: 'New event',
@@ -33,6 +34,7 @@ const updateOrders = (state, action) => {
 
   const openNeedModal = () => ({
     isOpenModal: true,
+    orderId: action.payload.orderId,
     orderedBy: action.payload.orderedBy,
     nameEvent: action.payload.nameEvent,
     typeModal: action.payload.type,
@@ -40,6 +42,7 @@ const updateOrders = (state, action) => {
   });
 
   const cancelModal = () => ({
+    orderId: state.orders.orderId,
     orderedBy: state.orders.orderedBy,
     nameEvent: state.orders.nameEvent,
     isOpenModal: false,
@@ -57,6 +60,7 @@ const updateOrders = (state, action) => {
 
     case actionsEnum.REJECT_MODAL_ORDER:
       return {
+        orderId: null,
         isOpenModal: false,
         orderedBy: '',
         nameEvent: 'New event',

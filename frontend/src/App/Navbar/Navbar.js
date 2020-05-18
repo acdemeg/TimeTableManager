@@ -1,14 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import styles from './Navbar.scss';
 import NavigationForLogInUsers from './NavigationForLogInUsers';
 import NavigationForUnLogInUsers from './NavigationForUnLogInUsers';
 
-function Navigation({ isLoggedIn, name }) {
+function Navigation({ isLoggedIn, name, role }) {
   let navBar;
 
   if (isLoggedIn) {
-    navBar = <NavigationForLogInUsers userName={name} />;
+    navBar = <NavigationForLogInUsers userName={name} userRole={role} />;
   } else navBar = <NavigationForUnLogInUsers />;
 
   return (
@@ -23,9 +22,4 @@ function Navigation({ isLoggedIn, name }) {
   );
 }
 
-const mapStateToProps = ({ authorization: { isLoggedIn }, profile: { name } }) => ({
-  isLoggedIn,
-  name,
-});
-
-export default connect(mapStateToProps, null)(Navigation);
+export default Navigation;

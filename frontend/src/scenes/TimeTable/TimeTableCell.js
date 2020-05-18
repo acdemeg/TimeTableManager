@@ -1,12 +1,20 @@
 import React from 'react';
 import styles from './TimeTable.scss';
-import { typeModalEnum } from '../../constants';
+import { typeModalEnum, orderStatusEnum } from '../../constants';
 
-const Cell = ({ styleCell, openModal, typeModal, date, attributeValues, orderedBy }) => {
+const Cell = ({ styleCell, openModal, typeModal, date, attributeValues, order, role }) => {
   const orderInfo = {
-    orderedBy,
+    orderId: order ? order.id : null,
+    orderedBy: order ? order.authorName : null,
     nameEvent: attributeValues ? attributeValues[0].value : null,
   };
+
+  if (role === 'USER') {
+    if (order) {
+      if (order.status === orderStatusEnum.CANCELED || order.status === orderStatusEnum.CREATED)
+        return null;
+    }
+  }
 
   return (
     <div
@@ -38,17 +46,24 @@ const Cell = ({ styleCell, openModal, typeModal, date, attributeValues, orderedB
   );
 };
 
-const TimeTableCell = ({ order, openModal, date }) => {
+const TimeTableCell = ({ order, openModal, date, profile: { role } }) => {
   if (order) {
     const { attributeValues } = order;
     return (
       <Cell
-        styleCell={styles.cellActive}
+        styleCell={
+          order.status === orderStatusEnum.CANCELED
+            ? styles.orderCanceled
+            : `order.status === orderStatusEnum.CREATED
+            ? styles.orderCreated
+            : styles.orderAccepted`
+        }
         openModal={openModal}
-        typeModal={typeModalEnum.INFO_ORDER}
-        orderedBy={order.authorName}
+        typeModal={role === 'ADMIN' ? typeModalEnum.ACCEPT_ORDER : typeModalEnum.INFO_ORDER}
+        order={order}
         attributeValues={attributeValues}
         date={date}
+        role={role}
       />
     );
   }
@@ -58,6 +73,7 @@ const TimeTableCell = ({ order, openModal, date }) => {
       openModal={openModal}
       typeModal={typeModalEnum.CREATE_ORDER}
       date={date}
+      role={role}
     />
   );
 };

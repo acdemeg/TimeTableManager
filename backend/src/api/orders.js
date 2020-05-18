@@ -4,9 +4,13 @@ const attributesAPI = require('./attributes');
 
 const orders = {
   updateOrderById: async (orderId, obj) => {
-    return await Order.update({ status: obj.status }, { where: { id: orderId } }).catch(
+    const res = await Order.update({ status: obj.status }, { where: { id: orderId } }).catch(
       err => `can't update order status ${err}`,
     );
+    if (res) {
+      return 'success';
+    }
+    return 'error';
   },
   searchInfoAboutOrders: async queryString => {
     if (queryString.userId) {

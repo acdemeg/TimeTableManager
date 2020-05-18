@@ -22,7 +22,7 @@ ordersRouter
       ctx.body = await orders.getOrdersInfoById(ctx.params.id);
     },
   )
-  .put(
+  .patch(
     '/:id',
     /* auth, */ async ctx => {
       ctx.body = await orders.updateOrderById(ctx.params.id, ctx.request.body);

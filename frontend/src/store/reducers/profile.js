@@ -3,9 +3,11 @@ import { actionsEnum, typeModalEnum } from '../../constants';
 const updateProfile = (state, action) => {
   if (state === undefined) {
     return {
+      id: null,
       isOpenModal: false,
       email: 'My Email',
       name: 'My Profile',
+      role: 'USER',
       typeModal: undefined,
       titleModal: '',
     };
@@ -35,15 +37,19 @@ const updateProfile = (state, action) => {
 
   const openNeedModal = () => ({
     isOpenModal: true,
+    id: state.profile.id,
     email: state.profile.email,
     name: state.profile.name,
+    role: state.profile.role,
     typeModal: action.payload.type,
     titleModal: action.payload.title,
   });
 
   const cancelModal = () => ({
+    id: state.profile.id,
     email: state.profile.email,
     name: state.profile.name,
+    role: state.profile.role,
     isOpenModal: false,
   });
 
@@ -60,8 +66,10 @@ const updateProfile = (state, action) => {
     case actionsEnum.PROFILE_LOADED:
       return {
         ...state.profile,
+        id: action.payload.id,
         name: action.payload.name,
         email: action.payload.email,
+        role: action.payload.role,
       };
 
     case actionsEnum.PROFILE_ERROR:

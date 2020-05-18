@@ -4,47 +4,57 @@ import ModalBodyForm from './ModalBodyForm';
 import ModalFooterForm from './ModalFooterForm';
 import style from './TimeTable.scss';
 
-const OrderModal = ({ title, typeModal, onCancel, onSubmit, onReject }) => {
-  let inputValue = 'unknown';
-  const getValueFromInput = value => {
-    inputValue = value;
-  };
-
+const OrderModal = ({
+  titleModal,
+  typeModal,
+  onCancel,
+  onSubmit,
+  onReject,
+  orderedBy,
+  nameEvent,
+  attributes,
+  profile,
+  slotSize,
+  timeTableId,
+}) => {
   const getAlertText = () => {
     if (typeModal === typeModalEnum.CREATE_ORDER) {
       return messages.ORDER_ADDED;
     }
 
-    if (typeModal === typeModalEnum.ACCEPT_ORDER) {
-      return messages.ORDER_ACCEPTED;
-    }
-
-    if (typeModal === typeModalEnum.REJECT_ORDER) {
-      return messages.ORDER_REJECTED;
-    }
-
-    return messages.FAIL_UPDATE;
+    return messages.ORDER_ACCEPTED;
   };
 
   return (
-    <div className="modalOverlay">
-      <div className={style.modalWindow}>
-        <div className={style.modalHeader}>
-          <div className={style.modalTitle}>{title}</div>
-        </div>
-        <div>
-          <ModalBodyForm typeModal={typeModal} getValueFromInput={getValueFromInput} />
-        </div>
-        <div className={style.modalFooter}>
-          <ModalFooterForm
-            typeModal={typeModal}
-            onSubmit={() => onSubmit(inputValue, getAlertText())}
-            onReject={onReject}
-            onCancel={onCancel}
-          />
+    <form
+      id="OrderSubmit"
+      onSubmit={event =>
+        onSubmit(event, getAlertText(), attributes, profile, titleModal.date, timeTableId, slotSize)
+      }
+    >
+      <div className="modalOverlay">
+        <div className={style.modalWindow}>
+          <div className={style.modalHeader}>
+            <div className={style.modalTitle}>{titleModal.string}</div>
+          </div>
+          <div>
+            <ModalBodyForm
+              typeModal={typeModal}
+              orderedBy={orderedBy}
+              nameEvent={nameEvent}
+              attributes={attributes}
+            />
+          </div>
+          <div className={style.modalFooter}>
+            <ModalFooterForm
+              typeModal={typeModal}
+              onReject={() => onReject(messages.ORDER_REJECTED)}
+              onCancel={onCancel}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 

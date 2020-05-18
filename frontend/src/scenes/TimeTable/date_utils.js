@@ -8,6 +8,7 @@ class DateUtils {
   constructor(slotSize, period) {
     this.slotSize = slotSize;
     this.time = period;
+    this.currentCellTime = null;
   }
 
   getOrdersForColumn(orders) {
@@ -33,7 +34,6 @@ class DateUtils {
       const cellTime = this.time.date.getTime() + millisecInHour * (numberCell - 1);
       return orders.find(order => Date.parse(order.startDate) === cellTime);
     }
-
     const cellTime = this.time.date.start.getTime() + millisecInDay * (numberCell - 1);
     return orders.find(order => Date.parse(order.startDate) === cellTime);
   }
@@ -92,41 +92,34 @@ class DateUtils {
 
   getPeriodForHour() {
     return {
-      string: `${this.time.date.getDate()}
-              ${this.time.date.toLocaleString('eng', { month: 'long' })}
-              ${this.time.date.getFullYear()}
-              ${this.time.date.getHours()}:00
+      string: `${this.currentCellTime.getDate()}
+              ${this.currentCellTime.toLocaleString('eng', { month: 'long' })}
+              ${this.currentCellTime.getFullYear()}
+              ${this.currentCellTime.getHours()}:00
               -
-              ${new Date(this.time.date.getTime() + millisecInHour).getHours()}:00`,
+              ${new Date(this.currentCellTime.getTime() + millisecInHour).getHours()}:00`,
 
-      date: this.time.date,
+      date: this.currentCellTime,
     };
   }
 
   getPeriodForDay() {
     return {
-      string: `${this.time.date.start.getDate()}
-              ${this.time.date.start.toLocaleString('eng', { month: 'long' })}
-              ${this.time.date.start.getFullYear()}`,
+      string: `${this.currentCellTime.getDate()}
+              ${this.currentCellTime.toLocaleString('eng', { month: 'long' })}
+              ${this.currentCellTime.getFullYear()}`,
 
-      date: this.time.date, // { date: { end, start } }
+      date: this.currentCellTime, // { date: { end, start } }
     };
   }
 
-  getPeriodForCells(currentCell) {
+  getPeriodForCell(numberCell) {
     if (this.slotSize === timeTableTypeEnum.HOUR) {
-      if (currentCell === 1) {
-        return this.getPeriodForHour();
-      }
-      this.time.date = new Date(this.time.date.getTime() + millisecInHour * (currentCell - 1));
+      this.currentCellTime = new Date(this.time.date.getTime() + millisecInHour * (numberCell - 1));
       return this.getPeriodForHour();
     }
-
-    if (currentCell === 1) {
-      return this.getPeriodForDay();
-    }
-    this.time.date.start = new Date(
-      this.time.date.start.getTime() + millisecInDay * (currentCell - 1),
+    this.currentCellTime = new Date(
+      this.time.date.start.getTime() + millisecInDay * (numberCell - 1),
     );
     return this.getPeriodForDay();
   }

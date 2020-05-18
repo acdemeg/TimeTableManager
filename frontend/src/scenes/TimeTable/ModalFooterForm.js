@@ -2,11 +2,11 @@ import React from 'react';
 import { typeModalEnum } from '../../constants';
 import Button from '../../components/buttons/Button';
 
-const ModalFooterForm = ({ typeModal, onCancel, onSubmit, onReject }) => {
+const ModalFooterForm = ({ typeModal, onCancel, onReject }) => {
   if (typeModal === typeModalEnum.CREATE_ORDER) {
     return (
       <div>
-        <Button title="Place order" handler={onSubmit} />
+        <Button title="Place order" handler={() => {}} />
         <Button title="Cancel" handler={onCancel} />
       </div>
     );
@@ -17,7 +17,7 @@ const ModalFooterForm = ({ typeModal, onCancel, onSubmit, onReject }) => {
 
   return (
     <div>
-      <Button title="Approve" handler={onSubmit} />
+      <Button title="Approve" handler={() => {}} />
       <Button title="Reject" handler={onReject} />
       <Button title="Cancel" handler={onCancel} />
     </div>

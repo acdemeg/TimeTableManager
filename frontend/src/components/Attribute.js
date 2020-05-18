@@ -13,11 +13,20 @@ const Container = styled.div`
   margin: 3% auto;
 `;
 
-const Attribute = () => {
+const Attribute = ({ numField }) => {
   return (
     <Container>
-      <TextInput labelName="Attribute name" labeId={`Attribute name ${attributeKeysGen()}`} />
-      <SelectInput labelName="Attr type" labeId={`Attr type ${attributeKeysGen()}`} />
+      <TextInput
+        labelName="Attribute name"
+        nameForm={`Attribute name ${numField}`}
+        labeId={`Attribute name ${attributeKeysGen()}`}
+      />
+      <SelectInput
+        type="attribute"
+        labelName="Attr type"
+        nameForm={`Attr type ${numField}`}
+        labeId={`Attr type ${attributeKeysGen()}`}
+      />
       <div style={{ marginLeft: '3%' }}>
         Required
         <input
@@ -27,6 +36,7 @@ const Attribute = () => {
             transform: 'scale(1.5)',
           }}
           type="checkbox"
+          name={`Checkbox ${numField}`}
         />
       </div>
     </Container>

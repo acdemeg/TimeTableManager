@@ -1,15 +1,16 @@
 import React from 'react';
 
-const DateInput = ({ labelName, labelId, getValueFromInput }) => {
+const DateInput = ({ labelName, labelId, nameForm }) => {
   return (
-    <label htmlFor={labelId} style={{ margin: '5% 0 0' }}>
+    <label htmlFor={labelId}>
       {labelName}
-      <input
-        className="input"
-        id={labelId}
-        type="date"
-        onChange={e => getValueFromInput(e.target.value)}
-      />
+      {React.createElement('input', {
+        id: labelId,
+        className: 'input',
+        type: 'date',
+        name: nameForm,
+        required: true,
+      })}
     </label>
   );
 };

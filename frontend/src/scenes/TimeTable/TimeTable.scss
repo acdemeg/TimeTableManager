@@ -92,3 +92,9 @@ input:invalid {
 .modalFooter button:last-child {
   margin-left: 15px;
 }
+
+.buttonModal {
+  padding: 0;
+  border-width: inherit;
+  background-color: inherit;
+}

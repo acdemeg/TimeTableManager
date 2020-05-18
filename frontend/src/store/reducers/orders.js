@@ -17,8 +17,6 @@ const updateOrders = (state, action) => {
     if (typeModal === typeModalEnum.CREATE_ORDER) {
       return {
         ...state.orders,
-        orderedBy: action.payload.orderedBy,
-        nameEvent: action.payload.nameEvent,
         isOpenModal: false,
       };
     }
@@ -35,8 +33,8 @@ const updateOrders = (state, action) => {
 
   const openNeedModal = () => ({
     isOpenModal: true,
-    orderedBy: state.orders.orderedBy,
-    nameEvent: state.orders.nameEvent,
+    orderedBy: action.payload.orderedBy,
+    nameEvent: action.payload.nameEvent,
     typeModal: action.payload.type,
     titleModal: action.payload.title,
   });
@@ -48,16 +46,16 @@ const updateOrders = (state, action) => {
   });
 
   switch (action.type) {
-    case actionsEnum.OPEN_MODAL_ORDERS:
+    case actionsEnum.OPEN_MODAL_ORDER:
       return openNeedModal(state, action);
 
-    case actionsEnum.CANCEL_MODAL_ORDERS:
+    case actionsEnum.CANCEL_MODAL_ORDER:
       return cancelModal();
 
-    case actionsEnum.SUBMIT_MODAL_ORDERS:
+    case actionsEnum.SUBMIT_MODAL_ORDER:
       return updateInfo();
 
-    case actionsEnum.REJECT_MODAL_ORDERS:
+    case actionsEnum.REJECT_MODAL_ORDER:
       return {
         isOpenModal: false,
         orderedBy: '',

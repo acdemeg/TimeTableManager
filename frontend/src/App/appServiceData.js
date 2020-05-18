@@ -6,6 +6,11 @@ const appServiceData = {
     return res.data;
   },
 
+  async createTimeTable(timeTable) {
+    const res = await axios.post(`/timetables`, timeTable);
+    return res.data === 'success';
+  },
+
   async getOrdersOfUser(id) {
     if (!id) return [];
     const res = await axios.get(`/orders/${id}`);
@@ -19,13 +24,13 @@ const appServiceData = {
   },
 
   async createOrder(order) {
-    const res = await axios.post(`/orders`, JSON.stringify(order));
-    return res;
+    const res = await axios.post(`/orders`, order);
+    return res.data === 'success';
   },
 
   async updateOrder(id, newStatus) {
-    const res = await axios.patch(`/orders/${id}`, JSON.stringify({ status: newStatus }));
-    return res;
+    const res = await axios.patch(`/orders/${id}`, { status: newStatus });
+    return res.data === 'success';
   },
 
   async regUser(user) {

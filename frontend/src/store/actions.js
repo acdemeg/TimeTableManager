@@ -1,4 +1,4 @@
-import { actionsEnum, scenesEnum, messages } from '../constants';
+import { timeTableTypeEnum, actionsEnum, scenesEnum, messages } from '../constants';
 import appServiceData from '../App/appServiceData';
 
 const TIME_TABLES_LOADED = newTimeTables => ({
@@ -62,22 +62,24 @@ const SUBMIT_MODAL_PROFILE = data => ({
   payload: data,
 });
 
-const OPEN_MODAL_ORDERS = (type, title) => ({
-  type: actionsEnum.OPEN_MODAL_ORDERS,
-  payload: { type, title },
+const OPEN_MODAL_ORDER = (type, title, orderInfo) => {
+  const { orderedBy, nameEvent } = orderInfo;
+  return {
+    type: actionsEnum.OPEN_MODAL_ORDER,
+    payload: { type, title, orderedBy, nameEvent },
+  };
+};
+
+const CANCEL_MODAL_ORDER = () => ({
+  type: actionsEnum.CANCEL_MODAL_ORDER,
 });
 
-const CANCEL_MODAL_ORDERS = () => ({
-  type: actionsEnum.CANCEL_MODAL_ORDERS,
+const SUBMIT_MODAL_ORDER = () => ({
+  type: actionsEnum.SUBMIT_MODAL_ORDER,
 });
 
-const SUBMIT_MODAL_ORDERS = data => ({
-  type: actionsEnum.SUBMIT_MODAL_ORDERS,
-  payload: data,
-});
-
-const REJECT_MODAL_ORDERS = () => ({
-  type: actionsEnum.REJECT_MODAL_ORDERS,
+const REJECT_MODAL_ORDER = () => ({
+  type: actionsEnum.REJECT_MODAL_ORDER,
 });
 
 const LOG_IN = userId => ({
@@ -123,6 +125,93 @@ const REGISTER = (event, dispatch) => {
     if (res) {
       dispatch(SHOW_ALERT(scenesEnum.REG, messages.REG));
     } else dispatch(SHOW_ALERT(scenesEnum.REG, messages.REG_ERROR, 'error'));
+  });
+};
+
+const CREATE_ORDER = (
+  event,
+  alertText,
+  attributes,
+  profile,
+  timeOrder,
+  timeTableId,
+  slotSize,
+  dispatch,
+) => {
+  event.preventDefault();
+
+  const formDate = new FormData(document.getElementById('OrderSubmit'));
+  const attributeValues = [];
+
+  attributes.forEach(attribute => {
+    attributeValues.push({
+      timeTableId: attribute.timeTableId,
+      attributeId: attribute.id,
+      value: formDate.get(attribute.title),
+      orderId: null,
+    });
+  });
+
+  const millisec = slotSize === timeTableTypeEnum.HOUR ? 3600000 : 86400000;
+
+  const order = {
+    authorId: profile.id,
+    authorName: profile.name,
+    startDate: timeOrder,
+    endDate: new Date(timeOrder.getTime() + millisec),
+    timeTableId,
+    attributeValues,
+  };
+  console.log(order);
+
+  appServiceData.createOrder(order).then(res => {
+    if (res) {
+      dispatch(SUBMIT_MODAL_ORDER());
+      dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, alertText));
+    } else dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_ADDED_ERROR, 'error'));
+  });
+};
+
+const CREATE_TIME_TABLE = (event, dispatch) => {
+  event.preventDefault();
+
+  const formDate = new FormData(document.getElementById('CreateTimeTableForm'));
+
+  const timeTable = {
+    title: formDate.get('Timetable name'),
+    startDate: formDate.get('Start range'),
+    endDate: formDate.get('End range'),
+    slotSize: formDate.get('Slot size'),
+  };
+
+  const attributes = [];
+
+  attributes.push({
+    title: formDate.get(`Attribute name 1`),
+    type_attr: formDate.get(`Attr type 1`),
+    isRequired: formDate.get(`Checkbox 1`),
+    timeTableId: null,
+  });
+
+  for (let i = 2; i < 100; i += 2) {
+    if (formDate.get(`Attribute name ${i}`)) {
+      attributes.push({
+        title: formDate.get(`Attribute name ${i}`),
+        type_attr: formDate.get(`Attr type ${i}`),
+        isRequired: formDate.get(`Checkbox ${i}`),
+        timeTableId: null,
+      });
+    } else break;
+  }
+
+  timeTable.attributes = attributes;
+  console.log(timeTable);
+
+  appServiceData.createTimeTable(timeTable).then(res => {
+    if (res) {
+      dispatch(SHOW_ALERT(scenesEnum.CREATE_TIME_TABLE, messages.CREATE_TIME_TABLE));
+    } else
+      dispatch(SHOW_ALERT(scenesEnum.CREATE_TIME_TABLE, messages.CREATE_TIME_TABLE_ERROR, 'error'));
   });
 };
 
@@ -172,10 +261,10 @@ export {
   OPEN_MODAL_PROFILE,
   CANCEL_MODAL_PROFILE,
   SUBMIT_MODAL_PROFILE,
-  OPEN_MODAL_ORDERS,
-  CANCEL_MODAL_ORDERS,
-  SUBMIT_MODAL_ORDERS,
-  REJECT_MODAL_ORDERS,
+  OPEN_MODAL_ORDER,
+  CANCEL_MODAL_ORDER,
+  SUBMIT_MODAL_ORDER,
+  REJECT_MODAL_ORDER,
   PROFILE_ERROR,
   MAKE_ORDER,
   UPDATE_ORDER,
@@ -183,4 +272,6 @@ export {
   LOG_OUT,
   REGISTER,
   LOGIN,
+  CREATE_TIME_TABLE,
+  CREATE_ORDER,
 };

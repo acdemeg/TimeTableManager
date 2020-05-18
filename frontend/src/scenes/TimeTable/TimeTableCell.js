@@ -2,23 +2,29 @@ import React from 'react';
 import styles from './TimeTable.scss';
 import { typeModalEnum } from '../../constants';
 
-const Cell = ({ styleCell, openModal, typeModal, date, attributeValues }) => {
+const Cell = ({ styleCell, openModal, typeModal, date, attributeValues, orderedBy }) => {
+  const orderInfo = {
+    orderedBy,
+    nameEvent: attributeValues ? attributeValues[0].value : null,
+  };
+
   return (
     <div
       role="gridcell"
-      tabIndex={0} // for lint
+      tabIndex={0}
       className={styleCell}
       onKeyDown={() =>
-        // for lint
         openModal({
           type: typeModal,
           title: date,
+          orderInfo,
         })
       }
       onClick={() =>
         openModal({
           type: typeModal,
           title: date,
+          orderInfo,
         })
       }
     >
@@ -40,6 +46,7 @@ const TimeTableCell = ({ order, openModal, date }) => {
         styleCell={styles.cellActive}
         openModal={openModal}
         typeModal={typeModalEnum.INFO_ORDER}
+        orderedBy={order.authorName}
         attributeValues={attributeValues}
         date={date}
       />

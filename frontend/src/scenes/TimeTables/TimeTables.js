@@ -14,7 +14,7 @@ const Container = styled.div`
   margin-left: 5%;
 `;
 
-const TimeTables = ({ timeTables }) => (
+const TimeTables = ({ timeTables, profile }) => (
   <div style={{ textAlign: 'center' }}>
     <div className={styles.googleFont}>Available TimeTables</div>
     <Container>
@@ -22,7 +22,7 @@ const TimeTables = ({ timeTables }) => (
         <Schedule key={schedule.id} schedule={schedule} />
       ))}
     </Container>
-    <ButtonAddTimeTable />
+    {profile.role === 'ADMIN' ? <ButtonAddTimeTable /> : null}
   </div>
 );
 

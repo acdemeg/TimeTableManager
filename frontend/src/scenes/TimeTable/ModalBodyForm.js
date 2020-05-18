@@ -1,27 +1,44 @@
 import React from 'react';
 import { typeModalEnum } from '../../constants';
-import TextInput from '../../components/inputs/TextInput';
-import DateInput from '../../components/inputs/DateInput';
 import style from './TimeTable.scss';
+import { getNewIdGenerator } from '../../utils';
 
-const ModalBodyForm = ({ typeModal, getValueFromInput }) => {
+const attributeKeysGen = getNewIdGenerator();
+
+const ModalBodyForm = ({ typeModal, orderedBy, nameEvent, attributes }) => {
+  const attributeFields = [];
+  let typeInput;
+
+  // for (const attribute of attributes) {
+  //   if (attribute.type_attr === 'DATE') {
+  //     typeInput = 'date';
+  //   } else typeInput = 'text';
+
+  attributes.forEach(attribute => {
+    if (attribute.type_attr === 'DATE') {
+      typeInput = 'date';
+    } else typeInput = 'text';
+
+    attributeFields.push(
+      <div className={style.modalBodyField} key={attributeKeysGen()}>
+        <label htmlFor={attribute.title}>
+          {`${attribute.title}${attribute.isRequired ? '*' : ''}`}
+          {React.createElement('input', {
+            id: attribute.title,
+            className: 'input',
+            type: typeInput,
+            name: attribute.title,
+            required: attribute.isRequired,
+          })}
+        </label>
+      </div>,
+    );
+  });
+
   if (typeModal === typeModalEnum.CREATE_ORDER) {
     return (
       <div>
-        <div className={style.modalBodyField}>
-          <TextInput
-            labelName="Title Event*"
-            labeId="Title Event"
-            getValueFromInput={getValueFromInput}
-          />
-        </div>
-        <div className={style.modalBodyField}>
-          <DateInput
-            labelName="Date Event"
-            labeId="Date Event"
-            getValueFromInput={getValueFromInput}
-          />
-        </div>
+        {attributeFields}
         <div style={{ textAlign: 'center' }}>* - required atttributes</div>
       </div>
     );
@@ -32,12 +49,12 @@ const ModalBodyForm = ({ typeModal, getValueFromInput }) => {
       <p className={style.modalBodyField}>
         <b>Ordered By:</b>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        {`${'User'}`}
+        {orderedBy}
       </p>
       <p className={style.modalBodyField}>
         <b>Title Event:</b>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        {`${'Meeting'}`}
+        {nameEvent}
       </p>
     </div>
   );

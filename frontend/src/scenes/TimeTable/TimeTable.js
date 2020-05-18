@@ -24,18 +24,19 @@ const TimeTable = ({
   isOpenModal,
   openModal,
   handleCancel,
-  handleSubmit,
+  orderSubmit,
   handleReject,
   titleModal,
   typeModal,
-  // orderedBy,
-  // nameEvent,
+  orderedBy,
+  nameEvent,
   notifications,
+  profile,
 }) => {
   const params = useParams();
   const scheduleId = Number(params.id);
   const timeTable = timeTables.filter(val => val.id === scheduleId)[0];
-  const { title, startDate, endDate, slotSize, orders } = timeTable;
+  const { id, title, startDate, endDate, slotSize, attributes, orders } = timeTable;
   const startDateObj = new Date(Date.parse(startDate));
   const endDateObj = new Date(Date.parse(endDate));
   const millisecInWeek = 604800000;
@@ -75,11 +76,17 @@ const TimeTable = ({
       </div>
       {!isOpenModal ? null : (
         <OrderModal
-          title={titleModal}
+          titleModal={titleModal}
           typeModal={typeModal}
           onCancel={handleCancel}
-          onSubmit={handleSubmit}
+          onSubmit={orderSubmit}
           onReject={handleReject}
+          orderedBy={orderedBy}
+          nameEvent={nameEvent}
+          attributes={attributes}
+          profile={profile}
+          slotSize={slotSize}
+          timeTableId={id}
         />
       )}
       <Notification notifications={notifications} currentScene={scenesEnum.TIME_TABLE} />

@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import Spinner from '../Spinner';
 import ErrorIndicator from '../Error-boundry/Error-indicator';
 import {
-  OPEN_MODAL_ORDERS,
-  CANCEL_MODAL_ORDERS,
-  SUBMIT_MODAL_ORDERS,
-  REJECT_MODAL_ORDERS,
+  OPEN_MODAL_ORDER,
+  CANCEL_MODAL_ORDER,
+  REJECT_MODAL_ORDER,
   SHOW_ALERT,
+  CREATE_ORDER,
 } from '../../store/actions';
 import { scenesEnum } from '../../constants';
 
@@ -32,6 +32,7 @@ const Wrapped = (View, fetchAction) => {
   const mapStateToProps = ({
     timeTablesList: { timeTables, loading, error },
     orders: { isOpenModal, nameEvent, orderedBy, titleModal, typeModal },
+    profile,
     notifications,
   }) => ({
     timeTables,
@@ -43,18 +44,26 @@ const Wrapped = (View, fetchAction) => {
     nameEvent,
     orderedBy,
     notifications,
+    profile,
   });
 
   const mapDispatchToProps = dispatch => ({
     fetchData: fetchAction(dispatch),
-    openModal: ({ type, title }) => dispatch(OPEN_MODAL_ORDERS(type, title)),
-    handleCancel: () => dispatch(CANCEL_MODAL_ORDERS()),
-    handleSubmit: (data, alertText) => {
-      dispatch(SUBMIT_MODAL_ORDERS(data));
-      dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, alertText));
-    },
+    openModal: ({ type, title, orderInfo }) => dispatch(OPEN_MODAL_ORDER(type, title, orderInfo)),
+    handleCancel: () => dispatch(CANCEL_MODAL_ORDER()),
+    orderSubmit: (event, alertText, attributes, profile, timeOrder, timeTableId, slotSize) =>
+      CREATE_ORDER(
+        event,
+        alertText,
+        attributes,
+        profile,
+        timeOrder,
+        timeTableId,
+        slotSize,
+        dispatch,
+      ),
     handleReject: alertText => {
-      dispatch(REJECT_MODAL_ORDERS());
+      dispatch(REJECT_MODAL_ORDER());
       dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, alertText));
     },
   });

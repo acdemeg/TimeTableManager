@@ -11,9 +11,9 @@ const TimeTableColumn = ({ orders, period, countCell, openModal, slotSize }) => 
     rows.push(
       <TimeTableCell
         key={i}
-        order={date.getOrderForCell(orders, i)}
         openModal={openModal}
-        date={date.getPeriodForCells(i).string}
+        order={date.getOrderForCell(orders, i)}
+        date={date.getPeriodForCell(i)}
       />,
     );
   }

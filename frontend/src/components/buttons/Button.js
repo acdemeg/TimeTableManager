@@ -1,30 +1,32 @@
 import React from 'react';
+import style from '../../scenes/TimeTable/TimeTable.scss';
 
 function Button({ title, handler }) {
   return (
-    <div
-      role="button"
-      tabIndex={0} // for lint
-      onClick={handler}
-      onKeyDown={handler}
-      className="button"
-      style={{
-        margin: '0 0.5vw',
-        backgroundColor: `${(() => {
-          if (title === 'Reject') {
-            return 'orangered';
-          }
-          if (title === 'Cancel' || title === '+ Add attribute' || title === 'OK') {
-            return 'bisque';
-          }
-          return 'mediumseagreen';
-        })()}`,
-        width: 'fit-content',
-        alignSelf: 'center',
-      }}
-    >
-      {title}
-    </div>
+    <button className={style.buttonModal} type="submit">
+      <div
+        onClick={handler}
+        onKeyDown={handler}
+        role="button"
+        tabIndex={0} // for lint
+        className="button"
+        style={{
+          backgroundColor: `${(() => {
+            if (title === 'Reject') {
+              return 'orangered';
+            }
+            if (title === 'Cancel' || title === '+ Add attribute' || title === 'OK') {
+              return 'bisque';
+            }
+            return 'mediumseagreen';
+          })()}`,
+          width: 'fit-content',
+          alignSelf: 'center',
+        }}
+      >
+        {title}
+      </div>
+    </button>
   );
 }
 

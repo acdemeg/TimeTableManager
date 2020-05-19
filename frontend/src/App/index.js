@@ -8,7 +8,7 @@ import Timeline from '../scenes/Timeline';
 import Profile from '../scenes/Profile';
 import Registration from '../scenes/Registration';
 import SignIn from '../scenes/SignIn';
-import Notificatons from '../scenes/Announcement';
+import TimeTablesInfo from '../scenes/TimeTablesInfo';
 import Navigation from './Navbar';
 import './styles.css';
 
@@ -26,8 +26,8 @@ const App = ({ isLoggedIn, role, name }) => {
         <Route path="/timeTable/:id" component={TimeTable} />
         <Route path="/timeline" component={isLoggedIn ? Timeline : null} />
         <Route
-          path="/notifications"
-          component={isLoggedIn && role === 'ADMIN' ? Notificatons : null}
+          path="/timeTablesInfo"
+          component={isLoggedIn && role === 'ADMIN' ? TimeTablesInfo : null}
         />
         <Route path="/profile" component={isLoggedIn ? Profile : null} />
         <Route path="/registration" component={Registration} />

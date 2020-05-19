@@ -8,23 +8,14 @@ import timeTableHeader from '../TimeTables/TimeTables.scss';
 import WithData from '../../components/hoc-helpers/WithData';
 import OrderModal from './OrderModal';
 import Notification from '../../components/Notification';
-
-const TimeTableDetailField = ({ fieldName, info }) => {
-  return (
-    <div>
-      <b>{fieldName}</b>
-      &emsp;
-      {info}
-    </div>
-  );
-};
+import TimeTableDetailField from './TimeTableDetailField';
 
 const TimeTable = ({
   timeTables,
   openModal,
   handleCancel,
   orderSubmit,
-  orderReject,
+  orderUpdateStatus,
   notifications,
   profile,
   isLoggedIn,
@@ -59,9 +50,11 @@ const TimeTable = ({
             ${endDateObj.toLocaleString('eng', { month: 'long' })}  
             ${endDateObj.getFullYear()} year`}
         />
-        <TimeTableDetailField fieldName="Required order attributes:" info="Name" />
-        <TimeTableDetailField fieldName="Order attributes:" info="Description" />
+        <TimeTableDetailField role={profile.role} color="crimson" info="Canceled order" />
+        <TimeTableDetailField role={profile.role} color="mediumaquamarine" info="Accepted order" />
+        <TimeTableDetailField role={profile.role} color="gray" info="Created order" />
       </div>
+
       <div className={styles.table}>
         <Table
           slotSize={slotSize}
@@ -74,11 +67,11 @@ const TimeTable = ({
       </div>
       {!isOpenModal ? null : (
         <OrderModal
+          orderUpdateStatus={orderUpdateStatus}
           titleModal={titleModal}
           typeModal={typeModal}
           onCancel={handleCancel}
           onSubmit={orderSubmit}
-          onReject={orderReject}
           orderedBy={orderedBy}
           nameEvent={nameEvent}
           orderId={orderId}

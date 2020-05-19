@@ -6,7 +6,8 @@ import {
   OPEN_MODAL_ORDER,
   CANCEL_MODAL_ORDER,
   CREATE_ORDER,
-  REJECT_ORDER,
+  ORDER_UPDATE_STATUS,
+  ORDER_REMOVE,
 } from '../../store/actions';
 
 const Wrapped = (View, fetchAction) => {
@@ -61,7 +62,9 @@ const Wrapped = (View, fetchAction) => {
         slotSize,
         dispatch,
       ),
-    orderReject: (event, orderId) => REJECT_ORDER(event, orderId, dispatch),
+    orderUpdateStatus: (event, orderId, newStatus) =>
+      ORDER_UPDATE_STATUS(event, orderId, newStatus, dispatch),
+    removeOrder: (event, orderId) => ORDER_REMOVE(event, orderId, dispatch),
   });
 
   return connect(mapStateToProps, mapDispatchToProps)(WithData);

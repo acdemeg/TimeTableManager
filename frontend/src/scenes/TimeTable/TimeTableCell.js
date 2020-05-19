@@ -3,10 +3,20 @@ import styles from './TimeTable.scss';
 import { typeModalEnum, orderStatusEnum } from '../../constants';
 
 const Cell = ({ styleCell, openModal, typeModal, date, attributeValues, order }) => {
+  const getAttributeValue = numAttr => {
+    if (attributeValues) {
+      if (attributeValues[numAttr]) {
+        return attributeValues[numAttr].value;
+      }
+      return null;
+    }
+    return null;
+  };
+
   const orderInfo = {
     orderId: order ? order.id : null,
     orderedBy: order ? order.authorName : null,
-    nameEvent: attributeValues ? attributeValues[0].value : null,
+    nameEvent: getAttributeValue(0),
   };
 
   return (
@@ -29,12 +39,10 @@ const Cell = ({ styleCell, openModal, typeModal, date, attributeValues, order })
         })
       }
     >
-      {attributeValues ? (
-        <div>
-          <b>{attributeValues[0] ? attributeValues[0].value : null}</b>
-          <p>{attributeValues[1] ? attributeValues[1].value : null}</p>
-        </div>
-      ) : null}
+      <div>
+        <b>{getAttributeValue(0)}</b>
+        <p>{getAttributeValue(1)}</p>
+      </div>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { actionsEnum } from '../../constants';
 const checkUserAuthorization = (state, action) => {
   if (state === undefined) {
     return {
-      isLoggedIn: false,
+      isLoggedIn: true, // TODO stub
       userId: undefined,
     };
   }

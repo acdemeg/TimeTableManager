@@ -30,7 +30,10 @@ const appServiceData = {
 
   async updateOrder(id, newStatus) {
     const res = await axios.patch(`/orders/${id}`, { status: newStatus });
-    console.log(res);
+    return res.data === 'success';
+  },
+  async removeOrder(id) {
+    const res = await axios.delete(`/orders/${id}`);
     return res.data === 'success';
   },
 

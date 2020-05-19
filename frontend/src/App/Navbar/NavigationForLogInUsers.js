@@ -9,9 +9,7 @@ function NavigationForLogInUsers({ userName = 'username', userRole }) {
       <ul>
         <NavLinkComponent path="/" title="Timetables" />
         <NavLinkComponent path="/timeline" title="Timeline" />
-        {userRole === 'ADMIN' ? (
-          <NavLinkComponent path="/notifications" title="Notificatons" />
-        ) : null}
+        {userRole === 'ADMIN' ? <NavLinkComponent path="/timeTablesInfo" title="Orders" /> : null}
       </ul>
       <ul className={styles.right}>
         <NavLinkComponent path="/profile" title={userName} />

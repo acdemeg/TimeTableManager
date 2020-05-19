@@ -70,7 +70,6 @@ const SUBMIT_MODAL_PROFILE = data => ({
 
 const OPEN_MODAL_ORDER = (type, title, orderInfo) => {
   const { orderId, orderedBy, nameEvent } = orderInfo;
-  console.log(orderInfo);
   return {
     type: actionsEnum.OPEN_MODAL_ORDER,
     payload: { type, title, orderId, orderedBy, nameEvent },
@@ -135,14 +134,27 @@ const REGISTER = (event, dispatch) => {
   });
 };
 
-const REJECT_ORDER = (event, orderId, dispatch) => {
+const ORDER_UPDATE_STATUS = (event, orderId, newStatus, dispatch) => {
   event.preventDefault();
-  console.log(orderId);
-  appServiceData.updateOrder(orderId, orderStatusEnum.CANCELED).then(res => {
+  appServiceData.updateOrder(orderId, newStatus).then(res => {
+    if (newStatus === orderStatusEnum.CANCELED) {
+      if (res) {
+        dispatch(REJECT_MODAL_ORDER());
+        dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_REJECTED));
+      } else dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_REJECTED_ERROR, 'error'));
+    } else if (res) {
+      dispatch(SUBMIT_MODAL_ORDER());
+      dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_ACCEPTED));
+    } else dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_ACCEPTED_ERROR, 'error'));
+  });
+};
+
+const ORDER_REMOVE = (event, orderId, dispatch) => {
+  event.preventDefault();
+  appServiceData.removeOrder(orderId).then(res => {
     if (res) {
-      dispatch(REJECT_MODAL_ORDER());
-      dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_REJECTED));
-    } else dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_REJECTED_ERROR, 'error'));
+      dispatch(SHOW_ALERT(scenesEnum.TIMELINE, messages.ORDER_REMOVED));
+    } else dispatch(SHOW_ALERT(scenesEnum.TIMELINE, messages.ORDER_REMOVED_ERROR, 'error'));
   });
 };
 
@@ -180,7 +192,6 @@ const CREATE_ORDER = (
     timeTableId,
     attributeValues,
   };
-  console.log(order);
 
   appServiceData.createOrder(order).then(res => {
     if (res) {
@@ -223,7 +234,6 @@ const CREATE_TIME_TABLE = (event, dispatch) => {
   }
 
   timeTable.attributes = attributes;
-  console.log(timeTable);
 
   appServiceData.createTimeTable(timeTable).then(res => {
     if (res) {
@@ -261,16 +271,6 @@ const MAKE_ORDER = userId => {
   };
 };
 
-const UPDATE_ORDER = (id, newStatus, dispatch, userId) => {
-  appServiceData.updateOrder(id, newStatus).then(() => {
-    dispatch(ORDERS_REQUESTED());
-    appServiceData
-      .getOrdersOfUser(userId)
-      .then(data => dispatch(ORDERS_LOADED(data)))
-      .catch(err => dispatch(ORDERS_ERROR(err)));
-  });
-};
-
 export {
   fetchTimeTables,
   fetchOrders,
@@ -285,12 +285,12 @@ export {
   REJECT_MODAL_ORDER,
   PROFILE_ERROR,
   MAKE_ORDER,
-  UPDATE_ORDER,
+  ORDER_REMOVE,
   LOG_IN,
   LOG_OUT,
   REGISTER,
   LOGIN,
   CREATE_TIME_TABLE,
   CREATE_ORDER,
-  REJECT_ORDER,
+  ORDER_UPDATE_STATUS,
 };

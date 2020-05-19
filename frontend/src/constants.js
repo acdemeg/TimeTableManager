@@ -69,11 +69,14 @@ const messages = Object.freeze({
   CREATE_TIME_TABLE: 'You succses create timetable',
   CREATE_TIME_TABLE_ERROR: 'Create timetable is failed',
   REG_ERROR: 'Registraton failed',
-  ORDER_ADDED: 'You order added',
-  ORDER_ADDED_ERROR: 'You order do not added',
-  ORDER_REJECTED: 'You reject this order',
-  ORDER_REJECTED_ERROR: "Can't reject this order",
-  ORDER_ACCEPTED: 'You accetp this order',
+  ORDER_ADDED: 'Your order added',
+  ORDER_ADDED_ERROR: 'Your order do not added',
+  ORDER_REJECTED: 'You reject order',
+  ORDER_REJECTED_ERROR: "Can't reject order",
+  ORDER_ACCEPTED: 'You accetp order',
+  ORDER_ACCEPTED_ERROR: "Can't accetp order",
+  ORDER_REMOVED: 'Your order removed',
+  ORDER_REMOVED_ERROR: 'Your order do not removed',
 });
 
 export {

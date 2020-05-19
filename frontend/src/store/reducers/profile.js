@@ -7,7 +7,7 @@ const updateProfile = (state, action) => {
       isOpenModal: false,
       email: 'My Email',
       name: 'My Profile',
-      role: 'USER',
+      role: 'ADMIN', // TODO stub
       typeModal: undefined,
       titleModal: '',
     };

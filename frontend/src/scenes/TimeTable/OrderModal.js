@@ -5,11 +5,11 @@ import ModalFooterForm from './ModalFooterForm';
 import style from './TimeTable.scss';
 
 const OrderModal = ({
+  orderUpdateStatus,
   titleModal,
   typeModal,
   onCancel,
   onSubmit,
-  onReject,
   orderedBy,
   orderId,
   nameEvent,
@@ -54,8 +54,9 @@ const OrderModal = ({
           <div className={style.modalFooter}>
             <ModalFooterForm
               typeModal={typeModal}
-              onReject={event => onReject(event, orderId)}
+              orderUpdateStatus={orderUpdateStatus}
               onCancel={onCancel}
+              orderId={orderId}
             />
           </div>
         </div>

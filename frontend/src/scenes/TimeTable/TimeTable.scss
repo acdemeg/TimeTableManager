@@ -15,19 +15,36 @@
   cursor: pointer;
 }
 
+.cell:hover {
+  background-color: skyblue;
+  opacity: 50%;
+}
+
 .orderAccepted {
   @extend .cell;
-  background-color: darkseagreen;
+  background-color: mediumaquamarine;
+}
+.orderAccepted:hover {
+  background-color: mediumspringgreen;
+  opacity: unset;
 }
 
 .orderCanceled {
   @extend .cell;
   background-color: crimson;
 }
+.orderCanceled:hover {
+  background-color: red;
+  opacity: unset;
+}
 
 .orderCreated {
   @extend .cell;
   background-color: darkgray;
+}
+.orderCreated:hover {
+  background-color: gainsboro;
+  opacity: unset;
 }
 
 .timeCell {

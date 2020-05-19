@@ -15,14 +15,7 @@ const updateOrders = (state, action) => {
   const updateInfo = () => {
     const { typeModal } = state.orders;
 
-    if (typeModal === typeModalEnum.CREATE_ORDER) {
-      return {
-        ...state.orders,
-        isOpenModal: false,
-      };
-    }
-
-    if (typeModal === typeModalEnum.ACCEPT_ORDER) {
+    if (typeModal === typeModalEnum.CREATE_ORDER || typeModal === typeModalEnum.ACCEPT_ORDER) {
       return {
         ...state.orders,
         isOpenModal: false,

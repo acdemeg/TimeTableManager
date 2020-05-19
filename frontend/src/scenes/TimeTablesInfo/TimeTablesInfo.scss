@@ -1,0 +1,29 @@
+.timeTableInfo {
+  background-color: whitesmoke;
+  box-shadow: 0px 0px 10px black;
+  min-width: 500px;
+  min-height: 200px;
+  margin-top: 10%;
+  border-radius: 20px 20px 5px 5px;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.stateTable {
+  height: 20px;
+  background-color: green;
+  border-radius: 20px 20px 0 0;
+  text-align: center;
+  color: whitesmoke;
+}
+
+.bodyInfo {
+  padding-left: 20px;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  flex-wrap: nowrap;
+}

@@ -1,17 +1,9 @@
 import React from 'react';
-import styled from '@emotion/styled';
 import styles from '../TimeTables/TimeTables.scss';
 import { fetchTimeTables } from '../../store/actions';
 import WithData from '../../components/hoc-helpers/WithData';
 import TimeTableInfo from './TimeTableInfo';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: center;
-  margin-bottom: 10%;
-`;
+import Container from '../TimeTables/ContainerStyle';
 
 const TimeTablesInfo = ({ timeTables }) => {
   if (timeTables.length === 0) {

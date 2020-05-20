@@ -1,3 +1,5 @@
+import { orderStatusEnum } from '../constants';
+
 const searchConflictOrders = orders => {
   const conflictOrders = new Set();
 
@@ -5,7 +7,13 @@ const searchConflictOrders = orders => {
     const conflictOrder = orders.find(order => {
       if (curOrder.id !== order.id) {
         if (curOrder.startDate === order.startDate) {
-          return order;
+          if (
+            curOrder.status !== orderStatusEnum.CANCELED ||
+            order.status !== orderStatusEnum.CANCELED
+          ) {
+            return order;
+          }
+          return null;
         }
         return null;
       }

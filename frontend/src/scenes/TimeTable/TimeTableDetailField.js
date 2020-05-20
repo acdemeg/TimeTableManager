@@ -1,10 +1,7 @@
 import React from 'react';
 
-const TimeTableDetailField = ({ fieldName, info, color, role }) => {
+const TimeTableDetailField = ({ fieldName, info, color }) => {
   if (color) {
-    if (role !== 'ADMIN') {
-      return null;
-    }
     return (
       <div>
         <div

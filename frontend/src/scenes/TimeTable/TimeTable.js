@@ -12,6 +12,7 @@ import TimeTableDetailField from './TimeTableDetailField';
 
 const TimeTable = ({
   timeTables,
+  currentTimeTable,
   openModal,
   handleCancel,
   orderSubmit,
@@ -21,9 +22,16 @@ const TimeTable = ({
   isLoggedIn,
   orders: { isOpenModal, nameEvent, orderId, orderedBy, titleModal, typeModal },
 }) => {
-  const params = useParams();
-  const scheduleId = Number(params.id);
-  const timeTable = timeTables.filter(val => val.id === scheduleId)[0];
+  let timeTable;
+
+  if (currentTimeTable) {
+    timeTable = currentTimeTable;
+  } else {
+    const params = useParams();
+    const scheduleId = Number(params.id);
+    timeTable = [...timeTables.filter(val => val.id === scheduleId)];
+  }
+
   const { id, title, startDate, endDate, slotSize, attributes, orders } = timeTable;
   const startDateObj = new Date(Date.parse(startDate));
   const endDateObj = new Date(Date.parse(endDate));

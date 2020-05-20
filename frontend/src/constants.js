@@ -2,6 +2,9 @@ const actionsEnum = Object.freeze({
   TIME_TABLES_LOADED: 'FETCH_TIME_TABLES_SUCCESS',
   TIME_TABLES_REQUESTED: 'FETCH_TIME_TABLES_REQUESTED',
   TIME_TABLES_ERROR: 'FETCH_TIME_TABLES_FAILURE',
+  TIME_TABLE_LOADED: 'FETCH_TIME_TABLE_SUCCESS',
+  TIME_TABLE_REQUESTED: 'FETCH_TIME_TABLE_REQUESTED',
+  TIME_TABLE_ERROR: 'FETCH_TIME_TABLE_FAILURE',
   PROFILE_LOADED: 'FETCH_PROFILE_SUCCESS',
   PROFILE_ERROR: 'FETCH_PROFILE_FAILURE',
   ORDERS_ERROR: 'FETCH_ORDERS_FAILURE',
@@ -18,6 +21,8 @@ const actionsEnum = Object.freeze({
   REJECT_MODAL_ORDER: 'REJECT_MODAL_ORDERS',
   MAKE_ORDER: 'MAKE_ORDER',
   UPDATE_ORDER: 'UPDATE_ORDER',
+  SET_CONFLICT_ORDERS: 'ADD_CONFLICT_ORDERS',
+  RESOLVE_CONFLICT_ORDER: 'RESOLVE_CONFLICT_ORDER',
   LOG_IN: 'LOG_IN',
   LOG_OUT: 'LOG_OUT',
 });
@@ -27,9 +32,20 @@ const scenesEnum = Object.freeze({
   TIME_TABLES: 'Timetables',
   CREATE_TIME_TABLE: 'Createtimetable',
   TIME_TABLE: 'Timetable',
+  ADMIN_PANEL_TABLE: 'AdminPanelTable',
   TIMELINE: 'Timeline',
   LOG_IN: 'Log-In',
   REG: 'Reg',
+});
+
+const typeAlertEnum = Object.freeze({
+  INFO: 'info',
+  ERROR: 'error',
+});
+
+const usersRoleEnum = Object.freeze({
+  ADMIN: 'ADMIN',
+  USER: 'USER',
 });
 
 const orderStatusEnum = Object.freeze({
@@ -87,4 +103,6 @@ export {
   messages,
   attributeTypeEnum,
   orderStatusEnum,
+  usersRoleEnum,
+  typeAlertEnum,
 };

@@ -6,6 +6,12 @@ const appServiceData = {
     return res.data;
   },
 
+  async getTimeTableById(id) {
+    if (!id) return null;
+    const res = await axios.get(`/timetables/${id}`);
+    return res.data;
+  },
+
   async createTimeTable(timeTable) {
     const res = await axios.post(`/timetables`, timeTable);
     return res.data === 'success';

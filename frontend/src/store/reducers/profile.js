@@ -1,4 +1,4 @@
-import { actionsEnum, typeModalEnum } from '../../constants';
+import { actionsEnum, usersRoleEnum, typeModalEnum } from '../../constants';
 
 const updateProfile = (state, action) => {
   if (state === undefined) {
@@ -7,7 +7,7 @@ const updateProfile = (state, action) => {
       isOpenModal: false,
       email: 'My Email',
       name: 'My Profile',
-      role: 'ADMIN', // TODO stub
+      role: usersRoleEnum.ADMIN, // TODO stub
       typeModal: undefined,
       titleModal: '',
     };

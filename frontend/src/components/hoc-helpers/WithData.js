@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import Spinner from '../Spinner';
 import ErrorIndicator from '../Error-boundry/Error-indicator';
 import {
@@ -14,8 +15,11 @@ const Wrapped = (View, fetchAction) => {
   const WithData = props => {
     const { loading, error, fetchData } = props;
 
+    const params = useParams();
+    const id = Number(params.id);
+
     useEffect(() => {
-      fetchData();
+      fetchData(id);
     }, []);
 
     if (loading) {
@@ -29,7 +33,7 @@ const Wrapped = (View, fetchAction) => {
   };
 
   const mapStateToProps = ({
-    timeTablesList: { timeTables, loading, error },
+    timeTablesList: { currentTimeTable, timeTables, loading, error },
     authorization: { isLoggedIn },
     orders,
     profile,
@@ -42,10 +46,11 @@ const Wrapped = (View, fetchAction) => {
     notifications,
     profile,
     isLoggedIn,
+    currentTimeTable,
   });
 
   const mapDispatchToProps = dispatch => ({
-    fetchData: fetchAction(dispatch),
+    fetchData: id => fetchAction(id, dispatch),
     openModal: ({ type, title, orderInfo }) => dispatch(OPEN_MODAL_ORDER(type, title, orderInfo)),
     handleCancel: event => {
       event.preventDefault();

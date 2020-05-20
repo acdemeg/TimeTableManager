@@ -3,9 +3,24 @@ import {
   orderStatusEnum,
   actionsEnum,
   scenesEnum,
+  typeAlertEnum,
   messages,
 } from '../constants';
 import appServiceData from '../App/appServiceData';
+
+const TIME_TABLE_LOADED = newTimeTable => ({
+  type: actionsEnum.TIME_TABLE_LOADED,
+  payload: newTimeTable,
+});
+
+const TIME_TABLE_REQUESTED = () => ({
+  type: actionsEnum.TIME_TABLE_REQUESTED,
+});
+
+const TIME_TABLE_ERROR = error => ({
+  type: actionsEnum.TIME_TABLE_ERROR,
+  payload: error,
+});
 
 const TIME_TABLES_LOADED = newTimeTables => ({
   type: actionsEnum.TIME_TABLES_LOADED,
@@ -45,7 +60,7 @@ const ORDERS_ERROR = error => ({
   payload: error,
 });
 
-const SHOW_ALERT = (scene, text, typeAlert = 'info') => ({
+const SHOW_ALERT = (scene, text, typeAlert = typeAlertEnum.INFO) => ({
   type: actionsEnum.SHOW_ALERT,
   payload: { scene, text, typeAlert },
 });
@@ -113,7 +128,7 @@ const LOGIN = (event, dispatch) => {
       dispatch(LOG_IN(user.id));
       dispatch(PROFILE_LOADED(user));
     } else {
-      dispatch(SHOW_ALERT(scenesEnum.LOG_IN, messages.LOG_IN_ERROR, 'error'));
+      dispatch(SHOW_ALERT(scenesEnum.LOG_IN, messages.LOG_IN_ERROR, typeAlertEnum.ERROR));
     }
   });
 };
@@ -130,7 +145,7 @@ const REGISTER = (event, dispatch) => {
   appServiceData.regUser(user).then(res => {
     if (res) {
       dispatch(SHOW_ALERT(scenesEnum.REG, messages.REG));
-    } else dispatch(SHOW_ALERT(scenesEnum.REG, messages.REG_ERROR, 'error'));
+    } else dispatch(SHOW_ALERT(scenesEnum.REG, messages.REG_ERROR, typeAlertEnum.ERROR));
   });
 };
 
@@ -141,11 +156,19 @@ const ORDER_UPDATE_STATUS = (event, orderId, newStatus, dispatch) => {
       if (res) {
         dispatch(REJECT_MODAL_ORDER());
         dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_REJECTED));
-      } else dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_REJECTED_ERROR, 'error'));
+      } else {
+        dispatch(
+          SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_REJECTED_ERROR, typeAlertEnum.ERROR),
+        );
+      }
     } else if (res) {
       dispatch(SUBMIT_MODAL_ORDER());
       dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_ACCEPTED));
-    } else dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_ACCEPTED_ERROR, 'error'));
+    } else {
+      dispatch(
+        SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_ACCEPTED_ERROR, typeAlertEnum.ERROR),
+      );
+    }
   });
 };
 
@@ -154,7 +177,9 @@ const ORDER_REMOVE = (event, orderId, dispatch) => {
   appServiceData.removeOrder(orderId).then(res => {
     if (res) {
       dispatch(SHOW_ALERT(scenesEnum.TIMELINE, messages.ORDER_REMOVED));
-    } else dispatch(SHOW_ALERT(scenesEnum.TIMELINE, messages.ORDER_REMOVED_ERROR, 'error'));
+    } else {
+      dispatch(SHOW_ALERT(scenesEnum.TIMELINE, messages.ORDER_REMOVED_ERROR, typeAlertEnum.ERROR));
+    }
   });
 };
 
@@ -197,7 +222,9 @@ const CREATE_ORDER = (
     if (res) {
       dispatch(SUBMIT_MODAL_ORDER());
       dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, alertText));
-    } else dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_ADDED_ERROR, 'error'));
+    } else {
+      dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_ADDED_ERROR, typeAlertEnum.ERROR));
+    }
   });
 };
 
@@ -222,6 +249,7 @@ const CREATE_TIME_TABLE = (event, dispatch) => {
     timeTableId: null,
   });
 
+  // 50 max count attributes
   for (let i = 2; i < 100; i += 2) {
     if (formDate.get(`Attribute name ${i}`)) {
       attributes.push({
@@ -239,16 +267,30 @@ const CREATE_TIME_TABLE = (event, dispatch) => {
     if (res) {
       dispatch(SHOW_ALERT(scenesEnum.CREATE_TIME_TABLE, messages.CREATE_TIME_TABLE));
     } else
-      dispatch(SHOW_ALERT(scenesEnum.CREATE_TIME_TABLE, messages.CREATE_TIME_TABLE_ERROR, 'error'));
+      dispatch(
+        SHOW_ALERT(
+          scenesEnum.CREATE_TIME_TABLE,
+          messages.CREATE_TIME_TABLE_ERROR,
+          typeAlertEnum.ERROR,
+        ),
+      );
   });
 };
 
-const fetchTimeTables = dispatch => () => {
-  dispatch(TIME_TABLES_REQUESTED());
-  appServiceData
-    .getTimeTables()
-    .then(data => dispatch(TIME_TABLES_LOADED(data)))
-    .catch(err => dispatch(TIME_TABLES_ERROR(err)));
+const fetchTimeTables = (id, dispatch) => {
+  if (id) {
+    dispatch(TIME_TABLE_REQUESTED());
+    appServiceData
+      .getTimeTableById(id)
+      .then(data => dispatch(TIME_TABLE_LOADED(data)))
+      .catch(err => dispatch(TIME_TABLE_ERROR(err)));
+  } else {
+    dispatch(TIME_TABLES_REQUESTED());
+    appServiceData
+      .getTimeTables()
+      .then(data => dispatch(TIME_TABLES_LOADED(data)))
+      .catch(err => dispatch(TIME_TABLES_ERROR(err)));
+  }
 };
 
 const fetchOrders = (dispatch, userId) => {

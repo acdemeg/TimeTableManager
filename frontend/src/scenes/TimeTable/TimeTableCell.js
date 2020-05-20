@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './TimeTable.scss';
-import { typeModalEnum, orderStatusEnum } from '../../constants';
+import { typeModalEnum, usersRoleEnum, orderStatusEnum } from '../../constants';
 
 const Cell = ({ styleCell, openModal, typeModal, date, attributeValues, order }) => {
   const getAttributeValue = numAttr => {
@@ -47,18 +47,22 @@ const Cell = ({ styleCell, openModal, typeModal, date, attributeValues, order })
   );
 };
 
-const TimeTableCell = ({ order, openModal, date, profile: { role } }) => {
+const TimeTableCell = ({ order, openModal, date, profile: { role, id } }) => {
   if (order) {
-    if (role === 'USER') {
-      if (order.status === orderStatusEnum.CANCELED || order.status === orderStatusEnum.CREATED) {
-        return (
-          <Cell
-            styleCell={styles.cell}
-            openModal={openModal}
-            typeModal={typeModalEnum.CREATE_ORDER}
-            date={date}
-          />
-        );
+    if (role === usersRoleEnum.USER) {
+      //  ADMIN sees all orders all users
+      if (order.authorId !== id) {
+        // USER sees all ACCEPTED orders and its CREATED and CANCELED ordes
+        if (order.status === orderStatusEnum.CANCELED || order.status === orderStatusEnum.CREATED) {
+          return (
+            <Cell
+              styleCell={styles.cell}
+              openModal={openModal}
+              typeModal={typeModalEnum.CREATE_ORDER}
+              date={date}
+            />
+          );
+        }
       }
     }
     const { attributeValues } = order;
@@ -72,7 +76,9 @@ const TimeTableCell = ({ order, openModal, date, profile: { role } }) => {
             : styles.orderAccepted
         }
         openModal={openModal}
-        typeModal={role === 'ADMIN' ? typeModalEnum.ACCEPT_ORDER : typeModalEnum.INFO_ORDER}
+        typeModal={
+          role === usersRoleEnum.ADMIN ? typeModalEnum.ACCEPT_ORDER : typeModalEnum.INFO_ORDER
+        }
         order={order}
         attributeValues={attributeValues}
         date={date}

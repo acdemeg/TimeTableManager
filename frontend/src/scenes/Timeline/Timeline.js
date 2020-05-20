@@ -29,13 +29,13 @@ const Timeline = ({ timeTables, profile, notifications, removeOrder }) => {
           startDate: order.startDate,
           endDate: order.endDate,
           orderStatus: order.status,
-          titleMainAttrib: timeTable.attributes[0].title,
-          valueMainAttrib: order.attributeValues.find(v => {
+          titleMainAttrib: timeTable.attributes[0] ? timeTable.attributes[0].title : null,
+          attr: order.attributeValues.find(v => {
             if (order.attributeValues[0]) {
               return v.attributeId === timeTable.attributes[0].id;
             }
             return null;
-          }).value,
+          }),
         });
       }
     });

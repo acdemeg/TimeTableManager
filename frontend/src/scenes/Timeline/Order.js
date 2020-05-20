@@ -12,13 +12,32 @@ const Order = ({ event, removeOrder }) => {
     startDate,
     endDate,
     titleMainAttrib = null,
-    valueMainAttrib = null,
+    attr = null,
     slotSize,
     orderStatus,
   } = event;
 
   const startDateObj = new Date(Date.parse(startDate));
   const endDateObj = new Date(Date.parse(endDate));
+
+  const getMainAttr = () => {
+    if (titleMainAttrib) {
+      if (attr) {
+        if (attr.value) {
+          return (
+            <p>
+              {titleMainAttrib}
+              :&nbsp;
+              <i>{attr.value}</i>
+            </p>
+          );
+        }
+        return null;
+      }
+      return null;
+    }
+    return null;
+  };
 
   return (
     <div>
@@ -41,11 +60,7 @@ const Order = ({ event, removeOrder }) => {
           </p>
         </div>
         <div>
-          <p>
-            {titleMainAttrib}
-            :&nbsp;
-            <i>{valueMainAttrib}</i>
-          </p>
+          {getMainAttr()}
           <p>
             Status:&nbsp;
             <i

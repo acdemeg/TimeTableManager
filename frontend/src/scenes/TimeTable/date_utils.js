@@ -29,13 +29,24 @@ class DateUtils {
     return ordersColumn;
   }
 
-  getOrderForCell(orders, numberCell) {
+  getOrderForCell(orders, numberCell, userId) {
+    let cellTime;
+
     if (this.slotSize === timeTableTypeEnum.HOUR) {
-      const cellTime = this.time.date.getTime() + millisecInHour * (numberCell - 1);
-      return orders.find(order => Date.parse(order.startDate) === cellTime);
+      cellTime = this.time.date.getTime() + millisecInHour * (numberCell - 1);
+    } else {
+      cellTime = this.time.date.start.getTime() + millisecInDay * (numberCell - 1);
     }
-    const cellTime = this.time.date.start.getTime() + millisecInDay * (numberCell - 1);
-    return orders.find(order => Date.parse(order.startDate) === cellTime);
+
+    const ordersCell = orders.filter(order => Date.parse(order.startDate) === cellTime);
+    // if some orders in cell user will see only its ordes or nothing
+    if (ordersCell.length > 1) {
+      const ownOrder = ordersCell.filter(order => order.authorId === userId);
+      const [order] = ownOrder.length === 0 ? ordersCell : ownOrder;
+      return order;
+    }
+    const [order] = ordersCell;
+    return order;
   }
 
   getStartPeriodColumn() {

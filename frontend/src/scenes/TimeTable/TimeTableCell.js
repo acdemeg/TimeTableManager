@@ -53,7 +53,7 @@ const TimeTableCell = ({ order, openModal, date, profile: { role, id } }) => {
       //  ADMIN sees all orders all users
       if (order.authorId !== id) {
         // USER sees all ACCEPTED orders and its CREATED and CANCELED ordes
-        if (order.status === orderStatusEnum.CANCELED || order.status === orderStatusEnum.CREATED) {
+        if (order.status !== orderStatusEnum.ACCEPTED) {
           return (
             <Cell
               styleCell={styles.cell}

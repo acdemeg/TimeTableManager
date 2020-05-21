@@ -91,8 +91,8 @@ const messages = Object.freeze({
   ORDER_REJECTED_ERROR: "Can't reject order",
   ORDER_ACCEPTED: 'You accetp order',
   ORDER_ACCEPTED_ERROR: "Can't accetp order",
-  ORDER_REMOVED: 'Your order removed',
-  ORDER_REMOVED_ERROR: 'Your order do not removed',
+  ORDER_REMOVED: 'You removed order',
+  ORDER_REMOVED_ERROR: 'You do not removed order',
 });
 
 export {

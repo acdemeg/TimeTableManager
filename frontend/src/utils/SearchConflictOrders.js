@@ -2,25 +2,24 @@ import { orderStatusEnum } from '../constants';
 
 const searchConflictOrders = orders => {
   const conflictOrders = new Set();
-
   orders.forEach(curOrder => {
-    const conflictOrder = orders.find(order => {
+    const confForCurOrder = orders.filter(order => {
       if (curOrder.id !== order.id) {
         if (curOrder.startDate === order.startDate) {
           if (
-            curOrder.status !== orderStatusEnum.CANCELED ||
-            order.status !== orderStatusEnum.CANCELED
+            curOrder.status === orderStatusEnum.CANCELED ||
+            order.status === orderStatusEnum.CANCELED
           ) {
-            return order;
+            return null;
           }
-          return null;
+          return order;
         }
         return null;
       }
       return null;
     });
-    if (conflictOrder) {
-      conflictOrders.add(conflictOrder);
+    if (confForCurOrder.length > 0) {
+      confForCurOrder.forEach(order => conflictOrders.add(order));
     }
     return null;
   });

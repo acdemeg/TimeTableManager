@@ -9,6 +9,7 @@
 
 .title {
   font-weight: bold;
+  margin-bottom: 2%;
 }
 
 .stateTable {
@@ -57,15 +58,27 @@
   flex-wrap: nowrap;
 }
 
-.Slot {
-  background-color: antiquewhite;
-  margin-top: 1%;
-}
-
 .slotTitle {
   font-weight: bold;
   text-align: center;
-  background-color: aqua;
-  margin-bottom: 1%;
+  background-color: gainsboro;
   font-size: xx-large;
+}
+
+.cartOrder {
+  box-shadow: 0px 0px 10px black;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-top: 10%;
+  margin-bottom: 10%;
+  min-width: 360px;
+  border-radius: 20px;
+  background-color: aliceblue;
+}
+
+.buttonsCartOrder {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }

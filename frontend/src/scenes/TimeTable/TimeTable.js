@@ -29,7 +29,7 @@ const TimeTable = ({
   } else {
     const params = useParams();
     const scheduleId = Number(params.id);
-    timeTable = [...timeTables.filter(val => val.id === scheduleId)];
+    [timeTable] = timeTables.filter(val => val.id === scheduleId);
   }
 
   const { id, title, startDate, endDate, slotSize, attributes, orders } = timeTable;

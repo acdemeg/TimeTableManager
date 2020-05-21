@@ -156,9 +156,15 @@ const ORDER_UPDATE_STATUS = (event, orderId, newStatus, dispatch) => {
       if (res) {
         dispatch(REJECT_MODAL_ORDER());
         dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_REJECTED));
+        dispatch(SHOW_ALERT(scenesEnum.ADMIN_PANEL_TABLE, messages.ORDER_REJECTED));
       } else {
         dispatch(
           SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_REJECTED_ERROR, typeAlertEnum.ERROR),
+          SHOW_ALERT(
+            scenesEnum.ADMIN_PANEL_TABLE,
+            messages.ORDER_REJECTED_ERROR,
+            typeAlertEnum.ERROR,
+          ),
         );
       }
     } else if (res) {
@@ -177,8 +183,10 @@ const ORDER_REMOVE = (event, orderId, dispatch) => {
   appServiceData.removeOrder(orderId).then(res => {
     if (res) {
       dispatch(SHOW_ALERT(scenesEnum.TIMELINE, messages.ORDER_REMOVED));
+      dispatch(SHOW_ALERT(scenesEnum.ADMIN_PANEL_TABLE, messages.ORDER_REMOVED));
     } else {
       dispatch(SHOW_ALERT(scenesEnum.TIMELINE, messages.ORDER_REMOVED_ERROR, typeAlertEnum.ERROR));
+      dispatch(SHOW_ALERT(scenesEnum.ADMIN_PANEL_TABLE, messages.ORDER_REMOVED));
     }
   });
 };

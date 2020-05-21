@@ -12,7 +12,7 @@ const TimeTableColumn = ({ orders, period, countCell, openModal, slotSize, profi
       <TimeTableCell
         key={i}
         openModal={openModal}
-        order={date.getOrderForCell(orders, i)}
+        order={date.getOrderForCell(orders, i, profile.id)}
         date={date.getPeriodForCell(i)}
         profile={profile}
       />,

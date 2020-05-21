@@ -149,23 +149,32 @@ const REGISTER = (event, dispatch) => {
   });
 };
 
-const ORDER_UPDATE_STATUS = (event, orderId, newStatus, dispatch) => {
+const fetchTimeTables = (id, dispatch) => {
+  if (id) {
+    dispatch(TIME_TABLE_REQUESTED());
+    appServiceData
+      .getTimeTableById(id)
+      .then(data => dispatch(TIME_TABLE_LOADED(data)))
+      .catch(err => dispatch(TIME_TABLE_ERROR(err)));
+  } else {
+    dispatch(TIME_TABLES_REQUESTED());
+    appServiceData
+      .getTimeTables()
+      .then(data => dispatch(TIME_TABLES_LOADED(data)))
+      .catch(err => dispatch(TIME_TABLES_ERROR(err)));
+  }
+};
+
+const ORDER_UPDATE_STATUS = (event, orderId, timeTableId, newStatus, scene, dispatch) => {
   event.preventDefault();
+  fetchTimeTables(timeTableId, dispatch);
   appServiceData.updateOrder(orderId, newStatus).then(res => {
     if (newStatus === orderStatusEnum.CANCELED) {
       if (res) {
         dispatch(REJECT_MODAL_ORDER());
-        dispatch(SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_REJECTED));
-        dispatch(SHOW_ALERT(scenesEnum.ADMIN_PANEL_TABLE, messages.ORDER_REJECTED));
+        dispatch(SHOW_ALERT(scene, messages.ORDER_REJECTED));
       } else {
-        dispatch(
-          SHOW_ALERT(scenesEnum.TIME_TABLE, messages.ORDER_REJECTED_ERROR, typeAlertEnum.ERROR),
-          SHOW_ALERT(
-            scenesEnum.ADMIN_PANEL_TABLE,
-            messages.ORDER_REJECTED_ERROR,
-            typeAlertEnum.ERROR,
-          ),
-        );
+        dispatch(SHOW_ALERT(scene, messages.ORDER_REJECTED_ERROR, typeAlertEnum.ERROR));
       }
     } else if (res) {
       dispatch(SUBMIT_MODAL_ORDER());
@@ -178,15 +187,14 @@ const ORDER_UPDATE_STATUS = (event, orderId, newStatus, dispatch) => {
   });
 };
 
-const ORDER_REMOVE = (event, orderId, dispatch) => {
+const ORDER_REMOVE = (event, orderId, timeTableId, scene, dispatch) => {
   event.preventDefault();
+  fetchTimeTables(timeTableId, dispatch);
   appServiceData.removeOrder(orderId).then(res => {
     if (res) {
-      dispatch(SHOW_ALERT(scenesEnum.TIMELINE, messages.ORDER_REMOVED));
-      dispatch(SHOW_ALERT(scenesEnum.ADMIN_PANEL_TABLE, messages.ORDER_REMOVED));
+      dispatch(SHOW_ALERT(scene, messages.ORDER_REMOVED));
     } else {
-      dispatch(SHOW_ALERT(scenesEnum.TIMELINE, messages.ORDER_REMOVED_ERROR, typeAlertEnum.ERROR));
-      dispatch(SHOW_ALERT(scenesEnum.ADMIN_PANEL_TABLE, messages.ORDER_REMOVED));
+      dispatch(SHOW_ALERT(scene, messages.ORDER_REMOVED_ERROR, typeAlertEnum.ERROR));
     }
   });
 };
@@ -202,7 +210,7 @@ const CREATE_ORDER = (
   dispatch,
 ) => {
   event.preventDefault();
-
+  fetchTimeTables(timeTableId, dispatch);
   const formDate = new FormData(document.getElementById('OrderSubmit'));
   const attributeValues = [];
 
@@ -253,7 +261,7 @@ const CREATE_TIME_TABLE = (event, dispatch) => {
   attributes.push({
     title: formDate.get(`Attribute name 1`),
     type_attr: formDate.get(`Attr type 1`),
-    isRequired: formDate.get(`Checkbox 1`),
+    isRequired: Boolean(formDate.get(`Checkbox 1`)),
     timeTableId: null,
   });
 
@@ -263,12 +271,12 @@ const CREATE_TIME_TABLE = (event, dispatch) => {
       attributes.push({
         title: formDate.get(`Attribute name ${i}`),
         type_attr: formDate.get(`Attr type ${i}`),
-        isRequired: formDate.get(`Checkbox ${i}`),
+        isRequired: Boolean(formDate.get(`Checkbox ${i}`)),
         timeTableId: null,
       });
-    } else break;
+    }
   }
-
+  console.log(attributes);
   timeTable.attributes = attributes;
 
   appServiceData.createTimeTable(timeTable).then(res => {
@@ -285,40 +293,12 @@ const CREATE_TIME_TABLE = (event, dispatch) => {
   });
 };
 
-const fetchTimeTables = (id, dispatch) => {
-  if (id) {
-    dispatch(TIME_TABLE_REQUESTED());
-    appServiceData
-      .getTimeTableById(id)
-      .then(data => dispatch(TIME_TABLE_LOADED(data)))
-      .catch(err => dispatch(TIME_TABLE_ERROR(err)));
-  } else {
-    dispatch(TIME_TABLES_REQUESTED());
-    appServiceData
-      .getTimeTables()
-      .then(data => dispatch(TIME_TABLES_LOADED(data)))
-      .catch(err => dispatch(TIME_TABLES_ERROR(err)));
-  }
-};
-
 const fetchOrders = (dispatch, userId) => {
   dispatch(ORDERS_REQUESTED());
   appServiceData
     .getOrdersOfUser(userId)
     .then(data => dispatch(ORDERS_LOADED(data)))
     .catch(err => dispatch(ORDERS_ERROR(err)));
-};
-
-const MAKE_ORDER = userId => {
-  const order = {
-    userId,
-  };
-
-  appServiceData.createOrder(order).then(() => {});
-
-  return {
-    type: actionsEnum.MAKE_ORDER,
-  };
 };
 
 export {
@@ -334,7 +314,6 @@ export {
   SUBMIT_MODAL_ORDER,
   REJECT_MODAL_ORDER,
   PROFILE_ERROR,
-  MAKE_ORDER,
   ORDER_REMOVE,
   LOG_IN,
   LOG_OUT,

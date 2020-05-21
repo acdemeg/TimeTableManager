@@ -20,11 +20,20 @@ const CreateTimeTable = ({ onCreateTimeTable, notifications }) => {
     <Attribute key={attributeKeysGen()} numField={attributeNumberGen()} />,
   ]);
 
-  const addAttribute = () => {
+  const addAttribute = event => {
+    event.preventDefault();
     return setAttributes([
       ...attributes,
       <Attribute key={attributeKeysGen()} numField={attributeNumberGen()} />,
     ]);
+  };
+
+  const removeAttribute = event => {
+    event.preventDefault();
+    if (attributes.length > 1) {
+      return setAttributes([...attributes.slice(0, -1)]);
+    }
+    return null;
   };
 
   return (
@@ -48,10 +57,13 @@ const CreateTimeTable = ({ onCreateTimeTable, notifications }) => {
           />
           <p>Slot attributes</p>
           {attributes}
-          <Button title="+ Add attribute" handler={addAttribute} />
+          <div className={styles.buttons}>
+            <Button title="+ Add attribute" handler={addAttribute} />
+            <Button title="- Delete attribute" handler={removeAttribute} />
+          </div>
         </div>
       </div>
-      <div className={styles.buttons}>
+      <div style={{ textAlign: 'center' }}>
         <Button title="Save" handler={() => {}} />
       </div>
       <Notification notifications={notifications} currentScene={scenesEnum.CREATE_TIME_TABLE} />

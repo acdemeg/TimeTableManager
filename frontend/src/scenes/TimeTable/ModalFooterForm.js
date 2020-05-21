@@ -1,8 +1,8 @@
 import React from 'react';
-import { typeModalEnum, orderStatusEnum } from '../../constants';
+import { typeModalEnum, scenesEnum, orderStatusEnum } from '../../constants';
 import Button from '../../components/buttons/Button';
 
-const ModalFooterForm = ({ typeModal, onCancel, orderUpdateStatus, orderId }) => {
+const ModalFooterForm = ({ typeModal, onCancel, orderUpdateStatus, timeTableId, orderId }) => {
   if (typeModal === typeModalEnum.CREATE_ORDER) {
     return (
       <div>
@@ -19,11 +19,27 @@ const ModalFooterForm = ({ typeModal, onCancel, orderUpdateStatus, orderId }) =>
     <div>
       <Button
         title="Approve"
-        handler={event => orderUpdateStatus(event, orderId, orderStatusEnum.ACCEPTED)}
+        handler={event =>
+          orderUpdateStatus(
+            event,
+            orderId,
+            timeTableId,
+            orderStatusEnum.ACCEPTED,
+            scenesEnum.TIME_TABLE,
+          )
+        }
       />
       <Button
         title="Reject"
-        handler={event => orderUpdateStatus(event, orderId, orderStatusEnum.CANCELED)}
+        handler={event =>
+          orderUpdateStatus(
+            event,
+            orderId,
+            timeTableId,
+            orderStatusEnum.CANCELED,
+            scenesEnum.TIME_TABLE,
+          )
+        }
       />
       <Button title="Cancel" handler={onCancel} />
     </div>

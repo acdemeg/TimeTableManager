@@ -57,6 +57,7 @@ const OrderModal = ({
               orderUpdateStatus={orderUpdateStatus}
               onCancel={onCancel}
               orderId={orderId}
+              timeTableId={timeTableId}
             />
           </div>
         </div>

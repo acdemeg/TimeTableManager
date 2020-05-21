@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './TimeTablesInfo.scss';
-import { orderStatusEnum } from '../../constants';
+import { orderStatusEnum, scenesEnum } from '../../constants';
 import ButtonSmall from '../../components/buttons/ButtonSmall';
 
 const CartOrder = ({ order, attributes, removeOrder, orderUpdateStatus }) => {
-  const { id, authorName, status, attributeValues } = order;
+  const { id, authorName, status, timeTableId, attributeValues } = order;
 
   const getMainAttr = () => {
     if (attributes.length > 0) {
@@ -56,10 +56,22 @@ const CartOrder = ({ order, attributes, removeOrder, orderUpdateStatus }) => {
           </p>
         </div>
         <div className={styles.buttonsCartOrder}>
-          <ButtonSmall title="remove" color="is-danger" handler={event => removeOrder(event, id)} />
+          <ButtonSmall
+            title="remove"
+            color="is-danger"
+            handler={event => removeOrder(event, id, timeTableId, scenesEnum.ADMIN_PANEL_TABLE)}
+          />
           <ButtonSmall
             title="cancel"
-            handler={event => orderUpdateStatus(event, id, orderStatusEnum.CANCELED)}
+            handler={event =>
+              orderUpdateStatus(
+                event,
+                id,
+                timeTableId,
+                orderStatusEnum.CANCELED,
+                scenesEnum.ADMIN_PANEL_TABLE,
+              )
+            }
           />
         </div>
       </div>

@@ -67,9 +67,10 @@ const Wrapped = (View, fetchAction) => {
         slotSize,
         dispatch,
       ),
-    orderUpdateStatus: (event, orderId, newStatus) =>
-      ORDER_UPDATE_STATUS(event, orderId, newStatus, dispatch),
-    removeOrder: (event, orderId) => ORDER_REMOVE(event, orderId, dispatch),
+    orderUpdateStatus: (event, orderId, timeTableId, newStatus, scene) =>
+      ORDER_UPDATE_STATUS(event, orderId, timeTableId, newStatus, scene, dispatch),
+    removeOrder: (event, orderId, timeTableId, scene) =>
+      ORDER_REMOVE(event, orderId, timeTableId, scene, dispatch),
   });
 
   return connect(mapStateToProps, mapDispatchToProps)(WithData);

@@ -5,7 +5,7 @@ function Button({ title, handler }) {
   return (
     <button className={style.buttonModal} type="submit">
       <div
-        onClick={handler}
+        onClick={e => handler(e)}
         onKeyDown={handler}
         role="button"
         tabIndex={0} // for lint
@@ -15,7 +15,12 @@ function Button({ title, handler }) {
             if (title === 'Reject') {
               return 'orangered';
             }
-            if (title === 'Cancel' || title === '+ Add attribute' || title === 'OK') {
+            if (
+              title === 'Cancel' ||
+              title === '+ Add attribute' ||
+              title === '- Delete attribute' ||
+              title === 'OK'
+            ) {
               return 'bisque';
             }
             return 'mediumseagreen';

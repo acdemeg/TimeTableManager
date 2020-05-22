@@ -11,7 +11,10 @@ function NavigationForLogInUsers({ userName = 'username', userRole }) {
         <NavLinkComponent path="/" title="Timetables" />
         <NavLinkComponent path="/timeline" title="Timeline" />
         {userRole === usersRoleEnum.ADMIN ? (
-          <NavLinkComponent path="/timeTablesInfo" title="Orders" />
+          <>
+            <NavLinkComponent path="/timeTablesInfo" title="Orders" />
+            <NavLinkComponent path="/usersInfo" title="Users" />
+          </>
         ) : null}
       </ul>
       <ul className={styles.right}>

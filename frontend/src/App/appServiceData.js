@@ -6,6 +6,11 @@ const appServiceData = {
     return res.data;
   },
 
+  async getUsers() {
+    const res = await axios.get(`/users`);
+    return res.data;
+  },
+
   async getTimeTableById(id) {
     if (!id) return null;
     const res = await axios.get(`/timetables/${id}`);
@@ -26,6 +31,11 @@ const appServiceData = {
   async getProfileOfUser(id) {
     if (!id) return {};
     const res = await axios.get(`/users/${id}`);
+    return res.data;
+  },
+  async updateProfileById(id, data) {
+    if (!id) return {};
+    const res = await axios.put(`/users/${id}`, data);
     return res.data;
   },
 

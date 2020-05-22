@@ -4,7 +4,7 @@ import InputForm from './InputForm';
 import ButtonModal from '../../components/buttons/ButtonModal';
 import './Modal.css';
 
-const Modal = ({ title, typeModal, onCancel, onSubmit }) => {
+const Modal = ({ title, typeModal, onCancel, onSubmit, profile }) => {
   let inputValue = 'unknown';
   const getValueFromInput = value => {
     inputValue = value;
@@ -24,21 +24,26 @@ const Modal = ({ title, typeModal, onCancel, onSubmit }) => {
 
   return (
     <div className="modalOverlay">
-      <div className="modalWindow">
-        <div className="modalHeader">
-          <div className="modalTitle">{title}</div>
+      <form
+        id="ProfileModalSubmit"
+        onSubmit={event => {
+          event.preventDefault();
+          onSubmit(inputValue, getAlertText(), typeModal, profile);
+        }}
+      >
+        <div className="modalWindow">
+          <div className="modalHeader">
+            <div className="modalTitle">{title}</div>
+          </div>
+          <div className="modalBody">
+            <InputForm typeModal={typeModal} getValueFromInput={getValueFromInput} />
+          </div>
+          <div className="modalFooter">
+            <ButtonModal view={{ title: 'Cancel', style: 'cancel' }} handler={onCancel} />
+            <ButtonModal view={{ title: 'Submit', style: 'submit' }} handler={() => {}} />
+          </div>
         </div>
-        <div className="modalBody">
-          <InputForm typeModal={typeModal} getValueFromInput={getValueFromInput} />
-        </div>
-        <div className="modalFooter">
-          <ButtonModal view={{ title: 'Cancel', style: 'cancel' }} handler={onCancel} />
-          <ButtonModal
-            view={{ title: 'Submit', style: 'submit' }}
-            handler={() => onSubmit(inputValue, getAlertText())}
-          />
-        </div>
-      </div>
+      </form>
     </div>
   );
 };

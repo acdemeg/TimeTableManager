@@ -1,7 +1,7 @@
 import React from 'react';
 import Schedule from '../../components/Schedule';
 import styles from './TimeTables.scss';
-import { fetchTimeTables } from '../../store/actions';
+import { fetchFullInfo } from '../../store/actions';
 import ButtonAddTimeTable from '../../components/buttons/ButtonAddTimeTable';
 import WithData from '../../components/hoc-helpers/WithData';
 import { usersRoleEnum } from '../../constants';
@@ -21,4 +21,4 @@ const TimeTables = ({ timeTables, profile }) => {
   );
 };
 
-export default WithData(TimeTables, fetchTimeTables);
+export default WithData(TimeTables, fetchFullInfo);

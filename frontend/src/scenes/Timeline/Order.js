@@ -1,10 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './Timeline.scss';
-import { timeTableTypeEnum, scenesEnum, orderStatusEnum } from '../../constants';
+import { timeTableTypeEnum, orderStatusEnum } from '../../constants';
 import ButtonSmall from '../../components/buttons/ButtonSmall';
 
-const Order = ({ event, removeOrder }) => {
+const Order = ({ event, removeOrder, scene }) => {
   const {
     orderId,
     timeTableId,
@@ -80,10 +80,7 @@ const Order = ({ event, removeOrder }) => {
             </i>
           </p>
         </div>
-        <ButtonSmall
-          title="remove order"
-          handler={e => removeOrder(e, orderId, null, scenesEnum.TIMELINE)}
-        />
+        <ButtonSmall title="remove order" handler={e => removeOrder(e, orderId, null, scene)} />
       </div>
     </div>
   );

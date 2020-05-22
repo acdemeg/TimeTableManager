@@ -5,6 +5,7 @@ import {
   scenesEnum,
   typeAlertEnum,
   messages,
+  typeModalEnum,
 } from '../constants';
 import appServiceData from '../App/appServiceData';
 
@@ -36,11 +37,6 @@ const TIME_TABLES_ERROR = error => ({
   payload: error,
 });
 
-const ORDERS_LOADED = newOrders => ({
-  type: actionsEnum.ORDERS_LOADED,
-  payload: newOrders,
-});
-
 const PROFILE_ERROR = error => ({
   type: actionsEnum.PROFILE_ERROR,
   payload: error,
@@ -55,8 +51,27 @@ const ORDERS_REQUESTED = () => ({
   type: actionsEnum.ORDERS_REQUESTED,
 });
 
+const ORDERS_LOADED = newOrders => ({
+  type: actionsEnum.ORDERS_LOADED,
+  payload: newOrders,
+});
+
 const ORDERS_ERROR = error => ({
   type: actionsEnum.ORDERS_ERROR,
+  payload: error,
+});
+
+const USERS_REQUESTED = () => ({
+  type: actionsEnum.USERS_REQUESTED,
+});
+
+const USERS_LOADED = users => ({
+  type: actionsEnum.USERS_LOADED,
+  payload: users,
+});
+
+const USERS_ERROR = error => ({
+  type: actionsEnum.USERS_ERROR,
   payload: error,
 });
 
@@ -165,9 +180,29 @@ const fetchTimeTables = (id, dispatch) => {
   }
 };
 
+const fetchOrders = (dispatch, userId) => {
+  dispatch(ORDERS_REQUESTED());
+  appServiceData
+    .getOrdersOfUser(userId)
+    .then(data => dispatch(ORDERS_LOADED(data)))
+    .catch(err => dispatch(ORDERS_ERROR(err)));
+};
+
+const fetchUsers = dispatch => {
+  dispatch(USERS_REQUESTED());
+  appServiceData
+    .getUsers()
+    .then(data => dispatch(USERS_LOADED(data)))
+    .catch(err => dispatch(USERS_ERROR(err)));
+};
+
+const fetchFullInfo = (id, dispatch) => {
+  fetchUsers(dispatch);
+  fetchTimeTables(id, dispatch);
+};
+
 const ORDER_UPDATE_STATUS = (event, orderId, timeTableId, newStatus, scene, dispatch) => {
   event.preventDefault();
-  fetchTimeTables(timeTableId, dispatch);
   appServiceData.updateOrder(orderId, newStatus).then(res => {
     if (newStatus === orderStatusEnum.CANCELED) {
       if (res) {
@@ -185,11 +220,25 @@ const ORDER_UPDATE_STATUS = (event, orderId, timeTableId, newStatus, scene, disp
       );
     }
   });
+  fetchTimeTables(timeTableId, dispatch);
+};
+
+const UPDATE_PROFILE = (data, alertText, typeModal, profile, dispatch) => {
+  let newData;
+  dispatch(SUBMIT_MODAL_PROFILE(data));
+  if (typeModal === typeModalEnum.NAME) {
+    newData = { name: data, email: profile.email };
+  } else newData = { name: profile.name, email: data };
+
+  appServiceData.updateProfileById(profile.id, newData).then(res => {
+    if (res) {
+      dispatch(SHOW_ALERT(scenesEnum.PROFILE, alertText));
+    } else dispatch(SHOW_ALERT(scenesEnum.PROFILE, `${alertText} failed`, typeAlertEnum.ERROR));
+  });
 };
 
 const ORDER_REMOVE = (event, orderId, timeTableId, scene, dispatch) => {
   event.preventDefault();
-  fetchTimeTables(timeTableId, dispatch);
   appServiceData.removeOrder(orderId).then(res => {
     if (res) {
       dispatch(SHOW_ALERT(scene, messages.ORDER_REMOVED));
@@ -197,6 +246,9 @@ const ORDER_REMOVE = (event, orderId, timeTableId, scene, dispatch) => {
       dispatch(SHOW_ALERT(scene, messages.ORDER_REMOVED_ERROR, typeAlertEnum.ERROR));
     }
   });
+  if (scene === scenesEnum.USERS_INFO) {
+    fetchFullInfo(timeTableId, dispatch);
+  } else fetchTimeTables(timeTableId, dispatch);
 };
 
 const CREATE_ORDER = (
@@ -293,17 +345,11 @@ const CREATE_TIME_TABLE = (event, dispatch) => {
   });
 };
 
-const fetchOrders = (dispatch, userId) => {
-  dispatch(ORDERS_REQUESTED());
-  appServiceData
-    .getOrdersOfUser(userId)
-    .then(data => dispatch(ORDERS_LOADED(data)))
-    .catch(err => dispatch(ORDERS_ERROR(err)));
-};
-
 export {
+  fetchFullInfo,
   fetchTimeTables,
   fetchOrders,
+  fetchUsers,
   SHOW_ALERT,
   HIDE_ALERT,
   OPEN_MODAL_PROFILE,
@@ -322,4 +368,5 @@ export {
   CREATE_TIME_TABLE,
   CREATE_ORDER,
   ORDER_UPDATE_STATUS,
+  UPDATE_PROFILE,
 };

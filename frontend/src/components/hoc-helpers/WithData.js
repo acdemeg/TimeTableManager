@@ -38,6 +38,7 @@ const Wrapped = (View, fetchAction) => {
     orders,
     profile,
     notifications,
+    users: { users },
   }) => ({
     timeTables,
     loading,
@@ -47,6 +48,7 @@ const Wrapped = (View, fetchAction) => {
     profile,
     isLoggedIn,
     currentTimeTable,
+    users,
   });
 
   const mapDispatchToProps = dispatch => ({

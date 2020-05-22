@@ -10,6 +10,9 @@ const actionsEnum = Object.freeze({
   ORDERS_ERROR: 'FETCH_ORDERS_FAILURE',
   ORDERS_LOADED: 'FETCH_ORDERS_SUCCESS',
   ORDERS_REQUESTED: 'FETCH_ORDERS_REQUESTED',
+  USERS_ERROR: 'FETCH_USERS_FAILURE',
+  USERS_LOADED: 'FETCH_USERS_SUCCESS',
+  USERS_REQUESTED: 'FETCH_USERS_REQUESTED',
   SHOW_ALERT: 'SHOW_ALERT',
   HIDE_ALERT: 'HIDE_ALERT',
   OPEN_MODAL_PROFILE: 'OPEN_MODAL_PROFILE',
@@ -33,6 +36,7 @@ const scenesEnum = Object.freeze({
   CREATE_TIME_TABLE: 'Createtimetable',
   TIME_TABLE: 'Timetable',
   ADMIN_PANEL_TABLE: 'AdminPanelTable',
+  USERS_INFO: 'UsersInfo',
   TIMELINE: 'Timeline',
   LOG_IN: 'Log-In',
   REG: 'Reg',
@@ -76,8 +80,8 @@ const attributeTypeEnum = Object.freeze({
 
 const messages = Object.freeze({
   MAKE_ORDER: 'You make to order',
-  EMAIL_UPDATE: 'Your email updated',
-  NAME_UPDATE: 'Your name updated',
+  EMAIL_UPDATE: 'Your email update',
+  NAME_UPDATE: 'Your name update',
   LOG_IN: 'You logged your account',
   LOG_OUT: 'You logout your account',
   LOG_IN_ERROR: 'Incorrect email or password',

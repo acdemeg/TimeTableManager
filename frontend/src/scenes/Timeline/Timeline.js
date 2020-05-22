@@ -6,6 +6,7 @@ import { fetchTimeTables } from '../../store/actions';
 import style from './Timeline.scss';
 import Order from './Order';
 import Notification from '../../components/Notification';
+import searchOrdersOfUser from '../../utils/SearchOrdersOfUser';
 import { scenesEnum } from '../../constants';
 
 const Container = styled.div`
@@ -16,30 +17,7 @@ const Container = styled.div`
 `;
 
 const Timeline = ({ timeTables, profile, notifications, removeOrder }) => {
-  const events = [];
-
-  timeTables.forEach(timeTable => {
-    timeTable.orders.forEach(order => {
-      if (profile.id === order.authorId) {
-        events.push({
-          slotSize: timeTable.slotSize,
-          orderId: order.id,
-          timeTableId: timeTable.id,
-          timeTableTitle: timeTable.title,
-          startDate: order.startDate,
-          endDate: order.endDate,
-          orderStatus: order.status,
-          titleMainAttrib: timeTable.attributes[0] ? timeTable.attributes[0].title : null,
-          attr: order.attributeValues.find(v => {
-            if (order.attributeValues[0]) {
-              return v.attributeId === timeTable.attributes[0].id;
-            }
-            return null;
-          }),
-        });
-      }
-    });
-  });
+  const events = searchOrdersOfUser(timeTables, profile);
 
   return (
     <div>
@@ -60,7 +38,14 @@ const Timeline = ({ timeTables, profile, notifications, removeOrder }) => {
         <Container>
           {events.map(event => {
             if (new Date(Date.parse(event.endDate)).getTime() > Date.now()) {
-              return <Order key={event.orderId} event={event} removeOrder={removeOrder} />;
+              return (
+                <Order
+                  key={event.orderId}
+                  event={event}
+                  removeOrder={removeOrder}
+                  scene={scenesEnum.TIMELINE}
+                />
+              );
             }
             return null;
           })}

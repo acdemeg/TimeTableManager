@@ -10,6 +10,7 @@ import Profile from '../scenes/Profile';
 import Registration from '../scenes/Registration';
 import SignIn from '../scenes/SignIn';
 import TimeTablesInfo from '../scenes/TimeTablesInfo';
+import UsersInfo from '../scenes/UsersInfo';
 import Navigation from './Navbar';
 import { usersRoleEnum } from '../constants';
 import './styles.css';
@@ -33,6 +34,10 @@ const App = ({ isLoggedIn, role, name }) => {
         <Route
           path="/timeTablesInfo"
           component={isLoggedIn && role === usersRoleEnum.ADMIN ? TimeTablesInfo : null}
+        />
+        <Route
+          path="/usersInfo"
+          component={isLoggedIn && role === usersRoleEnum.ADMIN ? UsersInfo : null}
         />
         <Route
           path="/adminPanelTable/:id"

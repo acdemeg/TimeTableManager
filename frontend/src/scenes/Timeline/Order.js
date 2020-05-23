@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './Timeline.scss';
 import { timeTableTypeEnum, orderStatusEnum } from '../../constants';
-import ButtonSmall from '../../components/buttons/ButtonSmall';
+import ButtonRound from '../../components/buttons/ButtonRound';
 
 const Order = ({ event, removeOrder, scene }) => {
   const {
@@ -80,7 +80,7 @@ const Order = ({ event, removeOrder, scene }) => {
             </i>
           </p>
         </div>
-        <ButtonSmall title="remove order" handler={e => removeOrder(e, orderId, null, scene)} />
+        <ButtonRound title="remove order" handler={e => removeOrder(e, orderId, null, scene)} />
       </div>
     </div>
   );

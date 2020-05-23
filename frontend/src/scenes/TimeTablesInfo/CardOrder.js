@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './TimeTablesInfo.scss';
 import { orderStatusEnum, scenesEnum } from '../../constants';
-import ButtonSmall from '../../components/buttons/ButtonSmall';
+import ButtonRound from '../../components/buttons/ButtonRound';
 
 const CartOrder = ({ order, attributes, removeOrder, orderUpdateStatus }) => {
   const { id, authorName, status, timeTableId, attributeValues } = order;
@@ -56,12 +56,12 @@ const CartOrder = ({ order, attributes, removeOrder, orderUpdateStatus }) => {
           </p>
         </div>
         <div className={styles.buttonsCartOrder}>
-          <ButtonSmall
+          <ButtonRound
             title="remove"
             color="is-danger"
             handler={event => removeOrder(event, id, timeTableId, scenesEnum.ADMIN_PANEL_TABLE)}
           />
-          <ButtonSmall
+          <ButtonRound
             title="cancel"
             handler={event =>
               orderUpdateStatus(

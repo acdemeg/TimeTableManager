@@ -52,6 +52,14 @@ const appServiceData = {
     const res = await axios.delete(`/orders/${id}`);
     return res.data === 'success';
   },
+  async removeUser(id) {
+    const res = await axios.delete(`/users/${id}`);
+    return res.data === 'success';
+  },
+  async removeTimeTable(id) {
+    const res = await axios.delete(`/timetables/${id}`);
+    return res.data === 'success';
+  },
 
   async regUser(user) {
     const res = await axios.post(`/users/register`, user).catch(err => `${err}`);

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import style from './UsersInfo.scss';
+import SearchInput from '../../components/inputs/SearchInput';
 import { getNewIdGenerator } from '../../utils';
 
 const keysGen = getNewIdGenerator();
@@ -36,7 +37,8 @@ const SearchBar = ({ users, setUser }) => {
   return (
     <div className={style.searchBar}>
       <div className={style.searchInput}>
-        <input onChange={e => sortUserList(e)} />
+        <SearchInput sortUserList={sortUserList} />
+        <p style={{ paddingLeft: '10px' }}>Name</p>
       </div>
       <div className={style.userList}>{usersList}</div>
     </div>

@@ -6,12 +6,13 @@ import searchOrdersOfUser from '../../utils/SearchOrdersOfUser';
 import { scenesEnum } from '../../constants';
 
 const UserOrders = ({ user, timeTables, removeOrder }) => {
+  if (!user) return null;
   const events = searchOrdersOfUser(timeTables, user);
 
   return (
     <div className={style.ordersUser}>
       <div className={header.googleFont}>
-        List orders
+        List orders for &nbsp;
         {`${user.name}`}
       </div>
       <div className={style.ordersWrapper}>

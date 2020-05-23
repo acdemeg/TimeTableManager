@@ -6,12 +6,13 @@ import {
   faLock,
   faExclamation,
   faUser,
+  faSearch,
 } from '@fortawesome/free-solid-svg-icons';
 
 const compose = (...func) => comp => func.reduceRight((wrapped, f) => f(wrapped), comp);
 
 function initFontAwesomeLibrary() {
-  library.add(faEnvelope, faCheck, faLock, faExclamation, faUser);
+  library.add(faEnvelope, faCheck, faLock, faExclamation, faUser, faSearch);
 }
 
 const getNewIdGenerator = () => {

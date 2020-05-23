@@ -33,6 +33,7 @@ const actionsEnum = Object.freeze({
 const scenesEnum = Object.freeze({
   PROFILE: 'Profile',
   TIME_TABLES: 'Timetables',
+  TIME_TABLES_INFO: 'TimetablesInfo',
   CREATE_TIME_TABLE: 'Createtimetable',
   TIME_TABLE: 'Timetable',
   ADMIN_PANEL_TABLE: 'AdminPanelTable',
@@ -97,6 +98,10 @@ const messages = Object.freeze({
   ORDER_ACCEPTED_ERROR: "Can't accetp order",
   ORDER_REMOVED: 'You removed order',
   ORDER_REMOVED_ERROR: 'You do not removed order',
+  USER_REMOVED: 'You removed user',
+  USER_REMOVED_ERROR: 'You do not removed of user',
+  TIME_TABLE_REMOVED: 'You removed timetable',
+  TIME_TABLE_REMOVED_ERROR: 'You do not removed of timetable',
 });
 
 export {

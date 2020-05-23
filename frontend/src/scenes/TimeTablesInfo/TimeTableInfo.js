@@ -2,8 +2,10 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './TimeTablesInfo.scss';
 import getNavLinkTitle from './NavLinkTitle';
+import { scenesEnum } from '../../constants';
+import ButtonRound from '../../components/buttons/ButtonRound';
 
-const TimeTableInfo = ({ timeTable }) => {
+const TimeTableInfo = ({ timeTable, removeTimeTable }) => {
   const { id, title, startDate, orders, endDate, slotSize } = timeTable;
   const startDateObj = new Date(Date.parse(startDate));
   const endDateObj = new Date(Date.parse(endDate));
@@ -33,6 +35,13 @@ const TimeTableInfo = ({ timeTable }) => {
                 ${endDateObj.toLocaleString('eng', { month: 'long' })}  
                 ${endDateObj.getFullYear()} year`}
             </i>
+          </div>
+          <div className={styles.removeTable}>
+            <ButtonRound
+              title="remove timetable"
+              color="is-danger is-outlined"
+              handler={e => removeTimeTable(e, id, scenesEnum.TIME_TABLES_INFO)}
+            />
           </div>
         </div>
       </div>

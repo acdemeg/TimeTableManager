@@ -2,8 +2,14 @@
   margin-top: 5%;
 }
 
+.wrapperUser {
+  border-width: 20px 0;
+  border-style: solid;
+  border-color: cornflowerblue;
+}
+
 .searchBar {
-  background-color: cornflowerblue;
+  background-color: whitesmoke;
   min-width: 20%;
   height: 500px;
   float: left;
@@ -11,17 +17,20 @@
 
 .searchInput {
   height: 100px;
+  font-size: larger;
+  font-weight: 700;
+  padding-top: 20px;
 }
 
 .userList {
-  background-color: mediumaquamarine;
+  background-color: gainsboro;
   height: 400px;
   padding-left: 10px;
   overflow-y: scroll;
   font-size: larger;
 }
 .profileUser {
-  background-color: gold;
+  background-color: whitesmoke;
   height: 500px;
 }
 
@@ -39,14 +48,13 @@
 .photoWrapper {
   width: 600px;
   height: 500px;
-  background-color: blueviolet;
+  background-color: antiquewhite;
   float: left;
 }
 
 .userPhoto {
   height: 350px;
   width: 300px;
-  background-color: black;
   margin: 75px auto;
 }
 
@@ -61,5 +69,5 @@
 }
 
 .userLine:hover {
-  background-color: red;
+  background-color: cadetblue;
 }

@@ -251,6 +251,30 @@ const ORDER_REMOVE = (event, orderId, timeTableId, scene, dispatch) => {
   } else fetchTimeTables(timeTableId, dispatch);
 };
 
+const USER_REMOVE = (event, userId, scene, dispatch) => {
+  event.preventDefault();
+  appServiceData.removeUser(userId).then(res => {
+    if (res) {
+      dispatch(SHOW_ALERT(scene, messages.USER_REMOVED));
+    } else {
+      dispatch(SHOW_ALERT(scene, messages.USER_REMOVED_ERROR, typeAlertEnum.ERROR));
+    }
+  });
+  fetchFullInfo(null, dispatch);
+};
+
+const TIME_TABLE_REMOVE = (event, timeTableId, scene, dispatch) => {
+  event.preventDefault();
+  appServiceData.removeTimeTable(timeTableId).then(res => {
+    if (res) {
+      dispatch(SHOW_ALERT(scene, messages.TIME_TABLE_REMOVED));
+    } else {
+      dispatch(SHOW_ALERT(scene, messages.TIME_TABLE_REMOVED_ERROR, typeAlertEnum.ERROR));
+    }
+  });
+  fetchFullInfo(null, dispatch);
+};
+
 const CREATE_ORDER = (
   event,
   alertText,
@@ -369,4 +393,6 @@ export {
   CREATE_ORDER,
   ORDER_UPDATE_STATUS,
   UPDATE_PROFILE,
+  USER_REMOVE,
+  TIME_TABLE_REMOVE,
 };

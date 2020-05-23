@@ -9,16 +9,17 @@ import SearchBar from './SearchBar';
 import { scenesEnum } from '../../constants';
 import Notification from '../../components/Notification';
 
-const UsersInfo = ({ users, timeTables, removeOrder, notifications }) => {
-  console.log(users);
+const UsersInfo = ({ users, timeTables, removeOrder, notifications, removeUser }) => {
   const [user, setUser] = useState(users[0]);
 
   return (
     <div>
       <div className={header.googleFont}>Users Info</div>
       <div className={style.wrapper}>
-        <SearchBar users={users} setUser={setUser} />
-        <UserProfile user={user} timeTables={timeTables} />
+        <div className={style.wrapperUser}>
+          <SearchBar users={users} setUser={setUser} />
+          <UserProfile user={user} timeTables={timeTables} removeUser={removeUser} />
+        </div>
         <UserOrders user={user} timeTables={timeTables} removeOrder={removeOrder} />
       </div>
       <Notification notifications={notifications} currentScene={scenesEnum.USERS_INFO} />

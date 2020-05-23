@@ -9,6 +9,8 @@ import {
   CREATE_ORDER,
   ORDER_UPDATE_STATUS,
   ORDER_REMOVE,
+  USER_REMOVE,
+  TIME_TABLE_REMOVE,
 } from '../../store/actions';
 
 const Wrapped = (View, fetchAction) => {
@@ -73,6 +75,9 @@ const Wrapped = (View, fetchAction) => {
       ORDER_UPDATE_STATUS(event, orderId, timeTableId, newStatus, scene, dispatch),
     removeOrder: (event, orderId, timeTableId, scene) =>
       ORDER_REMOVE(event, orderId, timeTableId, scene, dispatch),
+    removeUser: (event, userId, scene) => USER_REMOVE(event, userId, scene, dispatch),
+    removeTimeTable: (event, timeTableId, scene) =>
+      TIME_TABLE_REMOVE(event, timeTableId, scene, dispatch),
   });
 
   return connect(mapStateToProps, mapDispatchToProps)(WithData);

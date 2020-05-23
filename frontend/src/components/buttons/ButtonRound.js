@@ -1,10 +1,10 @@
 import React from 'react';
 
-function ButtonSmall({ title, color = 'is-warning', handler }) {
+function ButtonRound({ title, size = 'is-small', color = 'is-warning', handler }) {
   return (
     <button
       type="button"
-      className={`button is-small is-rounded ${color}`}
+      className={`button ${size} is-rounded ${color}`}
       style={{ marginTop: '10px', position: 'inherit' }}
       onClick={event => handler(event)}
     >
@@ -13,4 +13,4 @@ function ButtonSmall({ title, color = 'is-warning', handler }) {
   );
 }
 
-export default ButtonSmall;
+export default ButtonRound;

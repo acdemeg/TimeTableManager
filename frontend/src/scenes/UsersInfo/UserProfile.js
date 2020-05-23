@@ -1,9 +1,10 @@
 import React from 'react';
 import style from './UsersInfo.scss';
 import header from '../TimeTables/TimeTables.scss';
-import { orderStatusEnum } from '../../constants';
+import { orderStatusEnum, scenesEnum } from '../../constants';
+import ButtonRound from '../../components/buttons/ButtonRound';
 
-const UserProfile = ({ user, timeTables }) => {
+const UserProfile = ({ user, timeTables, removeUser }) => {
   if (!user) {
     return (
       <div className={style.profileUser}>
@@ -11,6 +12,7 @@ const UserProfile = ({ user, timeTables }) => {
       </div>
     );
   }
+  const imagePath = user.imagePath ? user.imagePath : 'default_avatar.png';
   let createdOrders = 0;
   let acceptedOrders = 0;
   let canceledOrdres = 0;
@@ -35,7 +37,7 @@ const UserProfile = ({ user, timeTables }) => {
     <div className={style.profileUser}>
       <div className={style.photoWrapper}>
         <div className={style.userPhoto}>
-          <img alt="avatar" src={`/upload/${user.imagePath}`} width="300px" height="350px" />
+          <img alt="avatar" src={`/upload/${imagePath}`} width="300px" height="350px" />
         </div>
       </div>
       <div className={style.userInfo}>
@@ -69,6 +71,12 @@ const UserProfile = ({ user, timeTables }) => {
             <i style={{ color: 'crimson' }}>{canceledOrdres}</i>
           </p>
         </div>
+        <ButtonRound
+          title="REMOVE USER"
+          color="is-danger is-outlined"
+          size="is-normal"
+          handler={e => removeUser(e, user.id, scenesEnum.USERS_INFO)}
+        />
       </div>
     </div>
   );

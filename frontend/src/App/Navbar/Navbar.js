@@ -3,11 +3,11 @@ import styles from './Navbar.scss';
 import NavigationForLogInUsers from './NavigationForLogInUsers';
 import NavigationForUnLogInUsers from './NavigationForUnLogInUsers';
 
-function Navigation({ isLoggedIn, name, role }) {
+function Navigation({ isLoggedIn, profile }) {
   let navBar;
 
   if (isLoggedIn) {
-    navBar = <NavigationForLogInUsers userName={name} userRole={role} />;
+    navBar = <NavigationForLogInUsers profile={profile} />;
   } else navBar = <NavigationForUnLogInUsers />;
 
   return (

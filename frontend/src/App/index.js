@@ -15,10 +15,10 @@ import Navigation from './Navbar';
 import { usersRoleEnum } from '../constants';
 import './styles.css';
 
-const App = ({ isLoggedIn, role, name }) => {
+const App = ({ isLoggedIn, role, profile }) => {
   return (
     <>
-      <Navigation isLoggedIn={isLoggedIn} role={role} name={name} />
+      <Navigation isLoggedIn={isLoggedIn} profile={profile} />
       <Switch>
         <Route path="/" exact component={TimeTables} />
         <Route path="/registration" component={Registration} />
@@ -48,10 +48,10 @@ const App = ({ isLoggedIn, role, name }) => {
   );
 };
 
-const mapStateToProps = ({ authorization: { isLoggedIn }, profile: { name, role } }) => ({
+const mapStateToProps = ({ authorization: { isLoggedIn }, profile: { role }, profile }) => ({
   isLoggedIn,
   role,
-  name,
+  profile,
 });
 
 export default connect(mapStateToProps, null)(App);

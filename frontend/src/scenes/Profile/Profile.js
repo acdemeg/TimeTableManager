@@ -18,14 +18,17 @@ function Profile({
   updateProfile,
   notifications,
 }) {
+  const imagePath = profile.imagePath ? profile.imagePath : 'default_avatar.png';
   return (
     <div>
       <div className="profile">
         <div className="profile-header">
           <b>My profile</b>
         </div>
-
         <div className="profile-container">
+          <div className="image_container">
+            <img src={`/upload/${imagePath}`} alt="avatar" width="350px" height="350px" />
+          </div>
           <div style={{ float: 'left' }}>
             <ProfileField value={profile.name} title="Name" icon="user" />
             <ProfileField value={profile.email} title="Email" icon="envelope" />

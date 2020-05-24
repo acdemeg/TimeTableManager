@@ -26,7 +26,7 @@ const Timeline = ({ timeTables, profile, notifications, removeOrder }) => {
         <p className={style.title}>Upcoming events</p>
         <Container>
           {events.map(event => {
-            if (new Date(Date.parse(event.endDate)).getTime() < Date.now()) {
+            if (new Date(Date.parse(event.endDate)).getTime() > Date.now()) {
               return <Order key={event.orderId} event={event} removeOrder={removeOrder} />;
             }
             return null;
@@ -37,7 +37,7 @@ const Timeline = ({ timeTables, profile, notifications, removeOrder }) => {
         <p className={style.title}>Previous events</p>
         <Container>
           {events.map(event => {
-            if (new Date(Date.parse(event.endDate)).getTime() > Date.now()) {
+            if (new Date(Date.parse(event.endDate)).getTime() < Date.now()) {
               return (
                 <Order
                   key={event.orderId}

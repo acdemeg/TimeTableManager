@@ -1,13 +1,18 @@
-# Lineate Sunday School project template
+# Lineate Sunday School Final project 
 
-This repo contains the template of the project for Thumbtack(Lineate) Sunday School.
-If you are a student of the school - please replace the content of this file with your project info.
+How use app:
+
+User can create orders and watch all its orders with any status and all other people's orders with status ACCEPTED. User can change its name and email on Profile page. User can remove its order. User can view its timeline orders.
+
+Admin can watch all orders all users with any status. Admin can remove any order and any user. Admin can create and remove timetable. Admin can watch profile the user and his timeline. Admin can remove user.
+Admin can watch and resolve conflict ordes. Admin can make self-destruction. Admin can all.
 
 
 ## How to run app:
 1. `docker-compose up -d`
 2. cd ./backside/backend/src
 3. npx sequelize-cli db:migrate ->  npx sequelize-cli db:seed:all
+  or restor from dump
 4. Go to http://localhost
 
 ## Requirements:
@@ -22,50 +27,6 @@ If you are a student of the school - please replace the content of this file wit
 2. Frontend template: 'frontend folder
 3. Database backups: 'ops' folder
 
-docker-compose file uses postgres as database.
-You can change db_user and db_password in docker-compose.yml file.
-
-## How to use Docker:
-Run all commands project root folder
-
-### Start containers
-`docker-compose up -d`
-### Show logs containers
-`docker-compose logs -f web`
-
 ## How to watch static:
 `cd ./frontend && npm run watch`
 
-# DB commands
-## Make a dump
-`docker-compose exec db sh -c 'exec pg_dump -U postgres time_tables > /backup/dump.sql'`
-
-## Restore from the dump
-`docker-compose exec db sh -c 'exec psql -U postgres time_tables < /backup/dump.sql'`
-
-# Useful commands
-## Clean all docker containers info
-`docker-compose stop && docker-compose down --rmi local --volumes --remove-orphans`
-
-## Styling
-(You should pick one of these)
-1. CSS
-2. SASS
-3. CSS-in-JS
-
-## CSS frameworks
-(You should pick one of these)
-1. Bulma (https://bulma.io/)
-2. Bootstrap
-3. My own styles
-4. Rebass
-
-# Frontend
-## Project structure
-### components 
-Contains all base (global) components of the app. Like 'button', 'table', 'form'
-### scenes 
-Contains big container components with a lot of logic in them.
-Usually each of Route component will be a scene.
-
-Each scene could include its own 'components' folder and even its own 'scenes' folder.

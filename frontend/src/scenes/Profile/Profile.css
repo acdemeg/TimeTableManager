@@ -14,6 +14,15 @@
     margin: 0 auto;
   }
 
+  .image_container {
+    width: 350px;
+    height: 350px;
+    background-color: antiquewhite;
+    margin-bottom: 5%;
+    border: solid;
+    border-color: burlywood;
+  }
+
   .profile-field {
     margin-bottom: 10px;
     font-size: 20pt;

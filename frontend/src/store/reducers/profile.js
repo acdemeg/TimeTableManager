@@ -7,9 +7,10 @@ const updateProfile = (state, action) => {
       isOpenModal: false,
       email: 'My Email',
       name: 'My Profile',
-      role: usersRoleEnum.ADMIN, // TODO stub
+      role: usersRoleEnum.USER,
       typeModal: undefined,
       titleModal: '',
+      imagePath: null,
     };
   }
 
@@ -41,6 +42,7 @@ const updateProfile = (state, action) => {
     email: state.profile.email,
     name: state.profile.name,
     role: state.profile.role,
+    imagePath: state.profile.imagePath,
     typeModal: action.payload.type,
     titleModal: action.payload.title,
   });
@@ -50,6 +52,7 @@ const updateProfile = (state, action) => {
     email: state.profile.email,
     name: state.profile.name,
     role: state.profile.role,
+    imagePath: state.profile.imagePath,
     isOpenModal: false,
   });
 
@@ -70,6 +73,7 @@ const updateProfile = (state, action) => {
         name: action.payload.name,
         email: action.payload.email,
         role: action.payload.role,
+        imagePath: action.payload.imagePath,
       };
 
     case actionsEnum.PROFILE_ERROR:

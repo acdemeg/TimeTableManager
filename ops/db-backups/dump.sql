@@ -82,6 +82,18 @@ CREATE TYPE public."enum_TimeTables_slotSize" AS ENUM (
 
 ALTER TYPE public."enum_TimeTables_slotSize" OWNER TO postgres;
 
+--
+-- Name: enum_Users_role; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public."enum_Users_role" AS ENUM (
+    'USER',
+    'ADMIN'
+);
+
+
+ALTER TYPE public."enum_Users_role" OWNER TO postgres;
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -204,9 +216,10 @@ ALTER SEQUENCE public."Notifications_id_seq" OWNED BY public."Notifications".id;
 CREATE TABLE public."Orders" (
     id integer NOT NULL,
     "authorId" integer NOT NULL,
+    "authorName" character varying(255) NOT NULL,
     "startDate" timestamp with time zone NOT NULL,
     "endDate" timestamp with time zone NOT NULL,
-    status public."enum_Orders_status" NOT NULL,
+    status public."enum_Orders_status" DEFAULT 'CREATED'::public."enum_Orders_status" NOT NULL,
     "timeTableId" integer NOT NULL
 );
 
@@ -245,6 +258,18 @@ CREATE TABLE public."SequelizeMeta" (
 
 
 ALTER TABLE public."SequelizeMeta" OWNER TO postgres;
+
+--
+-- Name: Sessions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Sessions" (
+    id uuid NOT NULL,
+    sess jsonb NOT NULL
+);
+
+
+ALTER TABLE public."Sessions" OWNER TO postgres;
 
 --
 -- Name: TimeTables; Type: TABLE; Schema: public; Owner: postgres
@@ -291,7 +316,9 @@ CREATE TABLE public."Users" (
     id integer NOT NULL,
     name character varying(255) NOT NULL,
     email character varying(255) NOT NULL,
-    password character varying(255) NOT NULL
+    password character varying(255) NOT NULL,
+    role public."enum_Users_role" DEFAULT 'USER'::public."enum_Users_role" NOT NULL,
+    "imagePath" character varying(255)
 );
 
 
@@ -367,10 +394,25 @@ ALTER TABLE ONLY public."Users" ALTER COLUMN id SET DEFAULT nextval('public."Use
 
 COPY public."AttributeValues" (id, "timeTableId", "attributeId", "orderId", value) FROM stdin;
 1	1	1	2	Meeting
-2	1	2	2	15
+2	1	2	2	Count people 10
 3	1	1	3	JAVA Conference
-4	1	1	4	JS Challenge
-5	1	2	4	20
+4	1	1	1	IT-Boroda
+5	4	4	5	WCG
+6	8	5	4	ESL
+7	1	2	3	Count people 25
+8	2	3	6	CodeWars
+9	1	1	7	Golang-conferece
+10	1	2	7	max count people 50
+11	2	3	8	Day open doors
+12	2	4	8	\N
+13	2	3	9	Coronavirus Info
+14	2	4	9	\N
+15	8	7	10	English for developers
+16	4	6	11	Halloween
+17	4	6	12	Day of Great Macaroni Monster
+18	3	5	13	Moscow meetup
+19	4	6	14	Day of Remembrance Smalltalk
+20	4	6	20	Day of Linux Admins
 \.
 
 
@@ -380,7 +422,12 @@ COPY public."AttributeValues" (id, "timeTableId", "attributeId", "orderId", valu
 
 COPY public."Attributes" (id, title, type_attr, "isRequired", "timeTableId") FROM stdin;
 1	Name Event	STRING	t	1
-2	Count people	NUMBER	f	1
+2	Description	STRING	f	1
+3	Event	STRING	t	2
+4	Date	DATE	f	2
+5	Event name	STRING	t	3
+6	Measure	STRING	t	4
+7	Arrangement	STRING	t	8
 \.
 
 
@@ -399,11 +446,33 @@ COPY public."Notifications" (id, "orderId", "userId", type, "isRead") FROM stdin
 -- Data for Name: Orders; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Orders" (id, "authorId", "startDate", "endDate", status, "timeTableId") FROM stdin;
-1	1	2020-04-11 16:00:00+00	2020-04-11 17:00:00+00	CREATED	1
-2	2	2020-04-11 16:00:00+00	2020-04-11 17:00:00+00	CREATED	1
-3	2	2020-04-11 16:00:00+00	2020-04-11 17:00:00+00	CREATED	1
-4	1	2021-04-11 16:00:00+00	2021-04-11 17:00:00+00	CREATED	1
+COPY public."Orders" (id, "authorId", "authorName", "startDate", "endDate", status, "timeTableId") FROM stdin;
+1	1	Admin	2020-04-14 19:00:00+00	2020-04-14 20:00:00+00	ACCEPTED	1
+2	2	John Doe	2020-04-09 19:00:00+00	2020-04-09 20:00:00+00	CREATED	1
+3	2	John Doe	2020-04-12 19:00:00+00	2020-04-12 20:00:00+00	CREATED	1
+4	3	Michail	2020-06-08 18:00:00+00	2020-06-08 19:00:00+00	CREATED	4
+5	3	Michail	2020-09-03 01:00:00+00	2020-09-03 02:00:00+00	CREATED	8
+6	2	John Doe	2020-02-22 00:00:00+00	2020-02-22 01:00:00+00	ACCEPTED	2
+7	4	Ivan	2020-04-11 23:00:00+00	2020-04-12 00:00:00+00	CANCELED	1
+8	4	Ivan	2020-02-20 21:00:00+00	2020-02-20 22:00:00+00	CREATED	2
+9	4	Ivan	2020-02-22 19:00:00+00	2020-02-22 20:00:00+00	ACCEPTED	2
+10	4	Ivan	2020-09-02 20:00:00+00	2020-09-02 21:00:00+00	CREATED	8
+11	3	Michail	2020-06-17 18:00:00+00	2020-06-18 18:00:00+00	ACCEPTED	4
+12	3	Michail	2020-06-22 18:00:00+00	2020-06-23 18:00:00+00	ACCEPTED	4
+13	3	Michail	2020-04-17 21:00:00+00	2020-04-17 22:00:00+00	CREATED	3
+14	2	John Doe	2020-06-08 18:00:00+00	2020-06-09 18:00:00+00	CREATED	4
+15	2	John Doe	2020-05-12 18:00:00+00	2020-05-13 18:00:00+00	CANCELED	6
+16	2	John Doe	2020-05-24 18:00:00+00	2020-05-25 18:00:00+00	CREATED	6
+17	2	John Doe	2020-05-23 18:00:00+00	2020-05-24 18:00:00+00	CREATED	6
+18	1	Admin	2020-05-30 18:00:00+00	2020-05-31 18:00:00+00	ACCEPTED	6
+19	1	Admin	2020-05-29 18:00:00+00	2020-05-30 18:00:00+00	ACCEPTED	6
+20	1	Admin	2020-06-14 18:00:00+00	2020-06-15 18:00:00+00	ACCEPTED	4
+21	3	Michail	2020-07-21 18:00:00+00	2020-07-22 18:00:00+00	CREATED	5
+22	4	Ivan	2020-07-21 18:00:00+00	2020-07-22 18:00:00+00	CREATED	5
+23	2	John Doe	2020-07-21 18:00:00+00	2020-07-22 18:00:00+00	CREATED	5
+24	1	Admin	2020-07-29 18:00:00+00	2020-07-30 18:00:00+00	ACCEPTED	5
+25	4	Ivan	2020-07-24 18:00:00+00	2020-07-25 18:00:00+00	CREATED	5
+26	4	Ivan	2020-07-31 18:00:00+00	2020-08-01 18:00:00+00	CANCELED	5
 \.
 
 
@@ -418,6 +487,15 @@ COPY public."SequelizeMeta" (name) FROM stdin;
 20200414155725-create-notification.js
 20200511085944-create-attribute.js
 20200511115126-create-attribute-value.js
+20200514153933-create-session.js
+\.
+
+
+--
+-- Data for Name: Sessions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Sessions" (id, sess) FROM stdin;
 \.
 
 
@@ -426,6 +504,7 @@ COPY public."SequelizeMeta" (name) FROM stdin;
 --
 
 COPY public."TimeTables" (id, title, "startDate", "endDate", "slotSize") FROM stdin;
+1	DevOps Battle 2.2	2020-04-09 18:00:00+00	2020-04-15 17:00:00+00	HOUR
 2	Skolkovo Junior Challenge 2020	2020-02-19 18:00:00+00	2020-02-25 17:00:00+00	HOUR
 3	Moscow JS Meetup	2020-04-16 18:00:00+00	2020-04-21 17:00:00+00	HOUR
 4	ISDEF Spring 2020	2020-06-07 18:00:00+00	2020-06-28 17:00:00+00	DAY
@@ -433,7 +512,6 @@ COPY public."TimeTables" (id, title, "startDate", "endDate", "slotSize") FROM st
 6	MCOM Foodtech Anticrisis	2020-05-03 18:00:00+00	2020-05-31 17:00:00+00	DAY
 7	Serverless Architecture Conference 2020	2020-06-30 18:00:00+00	2020-07-05 17:00:00+00	HOUR
 8	HR API Online-marathon 2020	2020-09-02 18:00:00+00	2020-09-05 17:00:00+00	HOUR
-1	World cyber game	2020-04-09 18:00:00+00	2020-04-15 17:00:00+00	HOUR
 \.
 
 
@@ -441,10 +519,22 @@ COPY public."TimeTables" (id, title, "startDate", "endDate", "slotSize") FROM st
 -- Data for Name: Users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Users" (id, name, email, password) FROM stdin;
-1	Admin	admin@google.com	admin_passw
-2	John Doe	joo@google.com	user_passw
-3	Michael	ptr@gmail.com	hardPass
+COPY public."Users" (id, name, email, password, role, "imagePath") FROM stdin;
+1	Admin	admin@google.com	admin_passw	ADMIN	user_avatar_1.png
+2	John Doe	joo@google.com	john_passw	USER	user_avatar_2.png
+3	Michail	micha@mail.ru	mich_passw	USER	user_avatar_3.png
+4	Ivan	iv@mail.ru	iv_passw	USER	user_avatar_4.png
+5	Petr	Petr@mail.ru	Petr_passw	USER	user_avatar_5.png
+6	Dima	Dima@mail.ru	Dima_passw	USER	user_avatar_6.png
+7	Anton	Anton@mail.ru	Anton_passw	USER	user_avatar_7.png
+8	Joseph	Joseph@mail.ru	Joseph_passw	USER	user_avatar_8.png
+9	Micle	Micle@mail.ru	Micle_passw	USER	user_avatar_9.png
+10	Luisa	Luisa@mail.ru	Luisa_passw	USER	user_avatar_10.png
+11	Sebastian	Sebastian@mail.ru	Sebastian_passw	USER	user_avatar_11.png
+12	Vika	Vika@mail.ru	Vika_passw	USER	user_avatar_12.png
+13	Polina	Polina@mail.ru	Polina_passw	USER	user_avatar_13.png
+14	Achmed	Achmed@mail.ru	Achmed_passw	USER	user_avatar_14.png
+15	Kim_Chen_In	Kim_Chen_In@mail.ru	Kim_Chen_In_passw	USER	user_avatar_15.png
 \.
 
 
@@ -452,14 +542,14 @@ COPY public."Users" (id, name, email, password) FROM stdin;
 -- Name: AttributeValues_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."AttributeValues_id_seq"', 5, true);
+SELECT pg_catalog.setval('public."AttributeValues_id_seq"', 20, true);
 
 
 --
 -- Name: Attributes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Attributes_id_seq"', 2, true);
+SELECT pg_catalog.setval('public."Attributes_id_seq"', 7, true);
 
 
 --
@@ -473,21 +563,21 @@ SELECT pg_catalog.setval('public."Notifications_id_seq"', 3, true);
 -- Name: Orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Orders_id_seq"', 4, true);
+SELECT pg_catalog.setval('public."Orders_id_seq"', 26, true);
 
 
 --
 -- Name: TimeTables_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."TimeTables_id_seq"', 21, true);
+SELECT pg_catalog.setval('public."TimeTables_id_seq"', 8, true);
 
 
 --
 -- Name: Users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Users_id_seq"', 3, true);
+SELECT pg_catalog.setval('public."Users_id_seq"', 15, true);
 
 
 --
@@ -528,6 +618,14 @@ ALTER TABLE ONLY public."Orders"
 
 ALTER TABLE ONLY public."SequelizeMeta"
     ADD CONSTRAINT "SequelizeMeta_pkey" PRIMARY KEY (name);
+
+
+--
+-- Name: Sessions Sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Sessions"
+    ADD CONSTRAINT "Sessions_pkey" PRIMARY KEY (id);
 
 
 --

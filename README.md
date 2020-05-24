@@ -6,9 +6,10 @@ If you are a student of the school - please replace the content of this file wit
 ## How to run app:
 1. `docker-compose up -d`
 2. cd ./backside/backend/src
-3. npx sequelize-cli db:migrate ->  npx sequelize-cli db:seed:all
+3. npx sequelize-cli db:migrate ->  npx sequelize-cli db:seed:all 
+  or restor from dump
 4. Go to http://localhost
-
+<!--  -->
 ## Requirements:
 1. Node v12.x or higher
 2. NPM v6.x or higher

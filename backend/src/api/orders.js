@@ -12,6 +12,20 @@ const orders = {
     }
     return 'error';
   },
+  deleteOrderById: async orderId => {
+    const res = await Order.destroy({
+      where: {
+        id: orderId,
+      },
+    })
+      .then(res => (res ? 'succses delete order' : `order with id = ${orderId} doesn't exist`))
+      .catch(err => `reject delete order ${err}`);
+
+    if (res) {
+      return 'success';
+    }
+    return 'error';
+  },
   searchInfoAboutOrders: async queryString => {
     if (queryString.userId) {
       const userId = Number(queryString.userId);
@@ -31,21 +45,22 @@ const orders = {
 
     return [];
   },
-  deleteOrderById: async orderId => {
-    return await Order.destroy({
-      where: {
-        id: orderId,
-      },
-    })
-      .then(res => (res ? 'succses delete order' : `order with id = ${orderId} doesn't exist`))
-      .catch(err => `reject delete order ${err}`);
-  },
   getOrdersInfoById: async orderId => {
     const order = await Order.findOne({ where: { id: orderId } }).catch(
       err => `can't get order ${err}`,
     );
     if (order) {
-      return await attributesAPI.getAttributesForOrders(order);
+      const attributeValues = await attributesAPI.getAttributesForOrders(orderId);
+      return {
+        id: order.id,
+        authorId: order.authorId,
+        authorName: order.authorName,
+        startDate: order.startDate,
+        endDate: order.endDate,
+        status: order.status,
+        timeTableId: order.timeTableId,
+        attributeValues: attributeValues,
+      };
     }
     return `order with id = ${orderId} doesn't exist`;
   },
@@ -66,7 +81,7 @@ const orders = {
       err => `Add attributes Error: ${err}`,
     );
 
-    if (orderRecord.id && attributes[0].id) {
+    if (orderRecord.id && attributes) {
       return 'success';
     } else return 'error';
   },

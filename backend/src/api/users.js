@@ -3,7 +3,11 @@ const { User, Session } = require('@root/models');
 
 const users = {
   getUsers: async () => {
-    return await User.findAll().catch(err => `can't get users ${err}`);
+    return await User.findAll({
+      attributes: {
+        exclude: ['password'],
+      },
+    }).catch(err => `can't get users ${err}`);
   },
   logIn: async (ctx, next) => {
     /* await passport.authenticate('local', async function(err, user) {
@@ -36,6 +40,7 @@ const users = {
         name: user.name,
         email: user.email,
         role: user.role,
+        imagePath: user.imagePath,
       };
     } else return 'wrong email or password';
   },
@@ -71,18 +76,25 @@ const users = {
     return 'Profile';
   },
   updateProfileById: async (userId, obj) => {
-    return await User.update({ name: obj.name }, { where: { id: userId } }).catch(
-      err => `can't update profile ${err}`,
-    );
+    const [res] = await User.update(
+      { name: obj.name, email: obj.email },
+      { where: { id: userId } },
+    ).catch(err => `can't update profile ${err}`);
+    return res;
   },
   deleteProfileById: async userId => {
-    return await User.destroy({
+    const res = await User.destroy({
       where: {
         id: userId,
       },
     })
       .then(res => (res ? 'succses delete profile' : `user with id = ${userId} doesn't exist`))
       .catch(err => `reject delete profile ${err}`);
+
+    if (res) {
+      return 'success';
+    }
+    return 'error';
   },
 };
 

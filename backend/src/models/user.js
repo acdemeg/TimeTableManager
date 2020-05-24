@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING,
       password: DataTypes.STRING,
       role: DataTypes.ENUM('USER', 'ADMIN'),
+      imagePath: DataTypes.STRING,
     },
     {},
   );

@@ -51,6 +51,76 @@ module.exports = {
         orderId: 6,
         value: 'CodeWars',
       },
+      {
+        timeTableId: 1,
+        attributeId: 1,
+        orderId: 7,
+        value: 'Golang-conferece',
+      },
+      {
+        timeTableId: 1,
+        attributeId: 2,
+        orderId: 7,
+        value: 'max count people 50',
+      },
+      {
+        timeTableId: 2,
+        attributeId: 3,
+        orderId: 8,
+        value: 'Day open doors',
+      },
+      {
+        timeTableId: 2,
+        attributeId: 4,
+        orderId: 8,
+      },
+      {
+        timeTableId: 2,
+        attributeId: 3,
+        orderId: 9,
+        value: 'Coronavirus Info',
+      },
+      {
+        timeTableId: 2,
+        attributeId: 4,
+        orderId: 9,
+      },
+      {
+        timeTableId: 8,
+        attributeId: 7,
+        orderId: 10,
+        value: 'English for developers',
+      },
+      {
+        timeTableId: 4,
+        attributeId: 6,
+        orderId: 11,
+        value: 'Halloween',
+      },
+      {
+        timeTableId: 4,
+        attributeId: 6,
+        orderId: 12,
+        value: 'Day of Great Macaroni Monster',
+      },
+      {
+        timeTableId: 3,
+        attributeId: 5,
+        orderId: 13,
+        value: 'Moscow meetup',
+      },
+      {
+        timeTableId: 4,
+        attributeId: 6,
+        orderId: 14,
+        value: 'Day of Remembrance Smalltalk',
+      },
+      {
+        timeTableId: 4,
+        attributeId: 6,
+        orderId: 20,
+        value: 'Day of Linux Admins',
+      },
     ]);
   },
 

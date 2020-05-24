@@ -22,6 +22,18 @@ module.exports = {
         timeTableId: 2,
       },
       {
+        title: 'Date',
+        type_attr: 'DATE',
+        isRequired: false,
+        timeTableId: 2,
+      },
+      {
+        title: 'Event name',
+        type_attr: 'STRING',
+        isRequired: true,
+        timeTableId: 3,
+      },
+      {
         title: 'Measure',
         type_attr: 'STRING',
         isRequired: true,
@@ -32,12 +44,6 @@ module.exports = {
         type_attr: 'STRING',
         isRequired: true,
         timeTableId: 8,
-      },
-      {
-        title: 'Date',
-        type_attr: 'DATE',
-        isRequired: false,
-        timeTableId: 2,
       },
     ]);
   },

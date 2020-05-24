@@ -26,6 +26,9 @@ module.exports = {
         defaultValue: 'USER',
         allowNull: false,
       },
+      imagePath: {
+        type: Sequelize.STRING,
+      },
     });
   },
   down: queryInterface => {

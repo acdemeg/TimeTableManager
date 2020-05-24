@@ -85,22 +85,36 @@ const timeTables = {
     }
     return [];
   },
-  getAttributes: async () => {
-    return await Attribute.findAll().catch(err => `can't get Attributes ${err}`);
-  },
   getTimeTableById: async timeTableId => {
     const timeTable = await TimeTable.findOne({ where: { id: timeTableId } }).catch(
       err => `can't find TimeTable with id = ${timeTableId} ${err}`,
     );
     if (timeTable) {
       const orders = await timeTables.getOrdersForTimeTables(timeTable.id);
+      const attributes = await timeTables.getAttributes(timeTable.id);
       const attributeValues = await attributesAPI.getAttributesForOrders(
         orders.map(order => order.id),
       );
+
       return {
-        timeTable: timeTable,
-        orders: orders,
-        attributeValues,
+        id: timeTable.id,
+        title: timeTable.title,
+        startDate: timeTable.startDate,
+        endDate: timeTable.endDate,
+        slotSize: timeTable.slotSize,
+        attributes: attributes,
+        orders: orders.map(order => {
+          return {
+            id: order.id,
+            authorId: order.authorId,
+            authorName: order.authorName,
+            startDate: order.startDate,
+            endDate: order.endDate,
+            status: order.status,
+            timeTableId: order.timeTableId,
+            attributeValues: attributeValues.filter(value => value.orderId === order.id),
+          };
+        }),
       };
     }
     return `timeTable with id = ${timeTableId} doesn't exist`;
@@ -111,7 +125,7 @@ const timeTables = {
     );
   },
   deleteTimeTableById: async timeTableId => {
-    return await TimeTable.destroy({
+    const res = await TimeTable.destroy({
       where: {
         id: timeTableId,
       },
@@ -120,6 +134,11 @@ const timeTables = {
         res ? 'succses delete timeTable' : `timeTable with id = ${timeTableId} doesn't exist`,
       )
       .catch(err => `reject delete timeTable ${err}`);
+
+    if (res) {
+      return 'success';
+    }
+    return 'error';
   },
   getOrdersForTimeTables: async timeTableIds => {
     const timeTablesIds = Array.isArray(timeTableIds) ? timeTableIds : [timeTableIds];
@@ -127,6 +146,14 @@ const timeTables = {
       err => `can't get orders ${err}`,
     );
     return orders;
+  },
+  getAttributes: async id => {
+    if (id) {
+      return await Attribute.findAll({ where: { timeTableId: id } }).catch(
+        err => `can't get Attributes ${err}`,
+      );
+    }
+    return await Attribute.findAll().catch(err => `can't get Attributes ${err}`);
   },
 };
 

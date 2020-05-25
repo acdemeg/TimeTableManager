@@ -2,6 +2,8 @@
 
 RUN DEMO:
 https://timetables-manager-2020.herokuapp.com/
+login Admin: admin@google.com
+Passw Admin: admin_passw
 
 How use app:
 

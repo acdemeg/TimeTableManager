@@ -1,5 +1,8 @@
 # Lineate Sunday School Final project 
 
+RUN DEMO:
+https://timetables-manager-2020.herokuapp.com/
+
 How use app:
 
 User can create orders and watch all its orders with any status and all other people's orders with status ACCEPTED. User can change its name and email on Profile page. User can remove its order. User can view its timeline orders.

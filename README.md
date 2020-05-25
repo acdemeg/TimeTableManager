@@ -1,5 +1,8 @@
 # Lineate Sunday School project template
 
+RUN DEMO:
+https://timetables-manager-2020.herokuapp.com/
+
 This repo contains the template of the project for Thumbtack(Lineate) Sunday School.
 If you are a student of the school - please replace the content of this file with your project info.
 

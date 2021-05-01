@@ -1,0 +1,27 @@
+{
+  "development": {
+    "url": "postgres://postgres:passw@db:5432/time_tables",
+    "username": "postgres",
+    "password": "passw",
+    "database": "time_tables",
+    "host": "127.0.0.1",
+    "port": "5441",
+    "dialect": "postgres"
+  },
+  "test": {
+    "url": "postgres://test:passw@db:5432/time_tables",
+    "username": "test",
+    "password": "test",
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "url": "postgres://root:root@db:5432/time_tables",
+    "username": "root",
+    "password": "root",
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}

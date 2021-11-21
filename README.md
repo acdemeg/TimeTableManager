@@ -10,7 +10,7 @@ For ADMIN:
 
 For USER:
 * login: joo@google.com
-* password: john_passw
+* password: joo_passw
 
 ## Description App
 

@@ -1,6 +1,6 @@
 # TimeTable Manager
 
-Live: https://timetables-manager-2020.herokuapp.com/
+Live DEMO: http://devproject.site:8000/
 
 This repo contain example project TimeTableManager based on next tech stack:
 ReactJs, Redux, Scss, NodeJs, Sequelize, Koa2Js, Postgresql, Docker.
